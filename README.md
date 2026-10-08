@@ -1,10 +1,10 @@
-# The Software Engineer Fares Mohammed
+# Fares Mohammed — Software Engineering Portfolio
 
-A personal portfolio for Fares Mohammed, a Software Engineering student at Universiti Kebangsaan Malaysia. Built with React and Vite, with a black-and-gold character companion, restrained motion and responsive layouts.
+A responsive portfolio for a Software Engineering student at Universiti Kebangsaan Malaysia, built with React and Vite. The presentation uses ink (`#0d0e12`), amber (`#ffd27a`) and lavender (`#aaa0ff`), with Syne headings and DM Sans body text.
 
-## Run locally
+## Run
 
-Requires Node.js 22.12+ or 24 LTS.
+Use Node.js 22.12+ or Node.js 24 LTS.
 
 ```sh
 npm ci
@@ -16,31 +16,33 @@ npm run build
 npm run preview
 ```
 
-## What is included
+The production output is `dist/`. The portfolio is a static site with no required environment variables or server-side services.
 
-- Home, selected projects, skills, experience, about and contact sections.
-- Five project detail dialogs and Mobile / Web / AI filters.
-- Six avatar poses that crossfade as the visitor moves between sections.
-- An optional six-stop guided tour, section shortcuts, previous / next controls and a motion toggle.
-- Native dialogs with keyboard dismissal, semantic navigation and a mobile menu.
-- Reduced-motion support, page metadata and a custom favicon.
+## Customize
 
-## Update the content
+- `src/App.jsx`: page structure, navigation, theme, motion controls and guide.
+- `src/data.js`: verified profile links, five project records and tour copy.
+- `src/design.css`: color tokens, typography, navigation and primary page layout.
+- `src/details.css`: project cards, dialogs, guide and supporting interface styles.
+- `src/responsive.css`: responsive layout and reduced-motion overrides.
+- `src/components/Projects.jsx`: project filters, conceptual artwork and accessible native detail dialogs.
+- `src/components/AvatarStage.jsx` and `AvatarScene.js`: progressively enhanced Three.js character scene and static fallbacks.
+- `index.html`: title, search description, Google Fonts and Open Graph/Twitter metadata. Update the canonical, page and image URLs together when changing domains.
 
-`src/data.js` contains the profile, project details and tour copy. Email, LinkedIn, WhatsApp and CV are intentionally unset at the owner's request. The connected public GitHub profile is available. To add contact details, replace the relevant `null` values with verified URLs. To add a CV, place the chosen PDF under `public/` and set `profile.cv` to its root-relative URL, for example `/Fares-Mohammed-CV.pdf`.
+Email, LinkedIn, WhatsApp and CV remain unset because the owner deferred supplying them. These controls appear only when their verified values are added to `profile`. Place a supplied CV in `public/` and set `profile.cv` to its root-relative path. The public GitHub profile is already connected.
 
-Project GitHub links, demos and screenshots are unset until real materials are supplied. The colored project panels are graphic identities, not application screenshots. The MyCohort/TMC, Coda and UWC detail text expands the project summaries supplied for this portfolio; review it when adding project-specific evidence. No outcomes or adoption metrics are invented.
+Project repository links, demos and screenshots remain unset until real materials are available. Add them to the corresponding project record; existing conditional UI will display them. The illustrated project panels are conceptual graphic identities, not application screenshots. Preserve the supplied project descriptions and avoid adding unverified outcomes or metrics.
 
-The character is a raster sprite animation: gentle CSS movement and transitions between six poses. It is not a rigged 3D model. The supplied character's black-and-gold clothing, mask and glasses are preserved.
+## Character and motion
 
-## Deploy
+The supplied black-and-gold avatar is presented with six transparent raster poses. On suitable desktop devices, Three.js adds a **2.5D sprite scene** with depth, lighting effects and section-aware movement. No true 3D character mesh or rigged GLB is bundled. The scene accepts a future `modelUrl`, but a real model must be supplied before that path is used.
 
-Use the Vercel Vite preset, `npm run build`, output directory `dist` and Node.js 24. Link the repository and its production branch to enable redeployment after content changes. This portfolio has no server-side dependencies and needs no environment variables.
+Mobile, reduced-motion preferences, paused motion, limited devices and renderer failures use the static character fallback. The scene is loaded progressively; portfolio content remains usable without it. GSAP and Lenis support the enhanced desktop presentation, with motion controls available to visitors.
 
-## Assets
+## Publish and verify
 
-The avatar poses live in `public/assets/avatar-0.webp` through `avatar-5.webp`. See `ASSET-NOTES.md` for the generation prompt. UI icons use Lucide; typography uses DM Sans, Space Grotesk and Instrument Serif via Google Fonts, with local system fallbacks.
+For the existing Vercel project, use the Vite preset, build command `npm run build`, output `dist`, and Node.js 24. The configured public URL is `https://the-software-engineer-fares-mohammed.vercel.app/`.
 
-## Verification
+Before publishing, run the production build and check desktop/mobile navigation, all four project filters, dialog keyboard focus and Escape dismissal, guide controls, theme, and reduced-motion behavior. Check `/og.png` and the social metadata on the deployed domain after publishing.
 
-Production build, mobile/desktop layouts, project filters, project dialogs, guided tour, navigation and motion controls are checked in the browser before release. No old CV or private contact details are bundled.
+Avatar images are in `public/assets/`; the social preview is `public/og.png`. See `ASSET-NOTES.md` for provenance. Scratch conversion files in `tmp/` are excluded from version control.

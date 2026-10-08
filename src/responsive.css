@@ -1,0 +1,881 @@
+@media (min-width: 1600px) {
+  .hero {
+    min-height: 930px;
+  }
+  .hero h1 {
+    font-size: 90px;
+  }
+  .hero-art {
+    height: 700px;
+  }
+  .hero-art .avatar-anchor {
+    height: 660px;
+  }
+}
+@media (max-width: 1199px) {
+  .page-width {
+    width: calc(100% - 72px);
+  }
+  .header {
+    padding-inline: 36px;
+    gap: 18px;
+  }
+  .desktop-nav {
+    gap: 20px;
+  }
+  .brand {
+    min-width: 140px;
+  }
+  .header-connect {
+    display: none;
+  }
+  .hero {
+    min-height: 800px;
+    grid-template-columns: 1.05fr 1fr;
+  }
+  .hero h1 {
+    font-size: 68px;
+    letter-spacing: -3.8px;
+  }
+  .hero-art {
+    height: 590px;
+  }
+  .hero-art .avatar-anchor {
+    height: 550px;
+  }
+  .hero-actions {
+    gap: 18px;
+  }
+  .hero-actions .text-button {
+    font-size: 10px;
+  }
+  .hero-location {
+    font-size: 9px;
+  }
+  .about-section {
+    gap: 65px;
+  }
+  .about-art {
+    height: 570px;
+  }
+  .about-art .avatar-anchor {
+    height: 530px;
+  }
+  .outline-word {
+    font-size: 56px;
+  }
+  .skills-layout {
+    gap: 35px;
+    grid-template-columns: 0.7fr 1.3fr;
+  }
+  .skills-art {
+    height: 400px;
+  }
+  .skills-art .avatar-anchor {
+    height: 400px;
+  }
+  .orbit-badge {
+    padding: 9px;
+    font-size: 9px;
+  }
+  .skill-card {
+    padding: 22px;
+  }
+  .skill-card h3 {
+    font-size: 16px;
+  }
+  .experience-layout {
+    gap: 50px;
+  }
+  .experience-art .outline-word {
+    font-size: 39px;
+  }
+  .contact-layout {
+    gap: 25px;
+  }
+  .contact-copy h2 {
+    font-size: 76px;
+  }
+  .contact-arrow {
+    width: 50px;
+    height: 50px;
+    margin-left: 15px;
+  }
+  .project-title h3 {
+    font-size: 23px;
+  }
+  .project-card:first-child .project-info {
+    padding: 28px;
+  }
+}
+@media (max-width: 900px) {
+  .desktop-nav {
+    gap: 17px;
+  }
+  .header {
+    padding-inline: 28px;
+  }
+  .page-width {
+    width: calc(100% - 56px);
+  }
+  .hero {
+    min-height: 740px;
+  }
+  .hero h1 {
+    font-size: 55px;
+    letter-spacing: -3px;
+  }
+  .hero .eyebrow {
+    font-size: 8px;
+    letter-spacing: 1.5px;
+  }
+  .hero-art {
+    height: 540px;
+  }
+  .hero-art .avatar-anchor {
+    height: 500px;
+  }
+  .hero-actions {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .hero-description {
+    font-size: 14px;
+  }
+  .hero-location {
+    flex-wrap: wrap;
+    margin-top: 25px;
+  }
+  .hero-location .small-dot {
+    display: none;
+  }
+  .hero-location span:last-child {
+    width: 100%;
+    padding-left: 23px;
+  }
+  .art-top {
+    font-size: 8px;
+  }
+  .art-coordinate {
+    display: none;
+  }
+  .art-label {
+    font-size: 7px;
+    padding: 12px;
+  }
+  .section {
+    padding-block: 90px;
+  }
+  .about-section {
+    gap: 40px;
+  }
+  .about-art {
+    height: 530px;
+  }
+  .about-art .avatar-anchor {
+    height: 500px;
+  }
+  .about-copy h2 {
+    font-size: 41px;
+  }
+  .about-copy p {
+    font-size: 13px;
+  }
+  .about-art-note {
+    right: -5px;
+    padding: 15px;
+    font-size: 8px;
+  }
+  .about-facts {
+    gap: 10px;
+  }
+  .about-facts strong {
+    font-size: 32px;
+  }
+  .section-heading {
+    gap: 30px;
+    margin-bottom: 44px;
+  }
+  .section-heading > p {
+    font-size: 11px;
+    max-width: 230px;
+  }
+  .section-heading h2 {
+    font-size: 45px;
+  }
+  .skills-section {
+    padding-bottom: 0;
+  }
+  .skills-layout {
+    grid-template-columns: 0.55fr 1fr;
+    gap: 20px;
+  }
+  .skills-grid {
+    gap: 10px;
+  }
+  .skill-card {
+    padding: 18px 15px;
+    min-height: 246px;
+  }
+  .skill-tags {
+    gap: 7px;
+  }
+  .skill-tags span {
+    font-size: 8px;
+  }
+  .skills-art {
+    height: 370px;
+  }
+  .skills-art .avatar-anchor {
+    height: 360px;
+  }
+  .orbit-badge {
+    gap: 5px;
+  }
+  .orbit-badge svg {
+    width: 14px;
+  }
+  .badge-one {
+    top: 80px;
+  }
+  .badge-two {
+    top: 210px;
+  }
+  .badge-three {
+    bottom: 25px;
+    left: 0;
+  }
+  .marquee {
+    margin-top: 65px;
+  }
+  .marquee-group > span {
+    font-size: 21px;
+  }
+  .project-grid {
+    gap: 22px;
+  }
+  .project-card:first-child .project-visual {
+    height: 340px;
+  }
+  .project-title h3 {
+    font-size: 21px;
+  }
+  .project-info {
+    padding: 22px;
+  }
+  .project-info > p {
+    font-size: 11px;
+  }
+  .tags span {
+    font-size: 8px;
+    padding: 5px 8px;
+  }
+  .project-visual {
+    height: 235px;
+  }
+  .projects-heading {
+    padding-right: 110px;
+  }
+  .projects-heading > p {
+    max-width: 180px;
+  }
+  .section-avatar-anchor {
+    width: 95px;
+    height: 145px;
+  }
+  .experience-layout {
+    grid-template-columns: 1.35fr 0.65fr;
+    gap: 20px;
+  }
+  .experience-art .avatar-anchor {
+    height: 450px;
+  }
+  .experience-art {
+    height: 510px;
+  }
+  .experience-art .outline-word {
+    font-size: 30px;
+    left: -7px;
+  }
+  .experience-note {
+    left: 15px;
+    font-size: 7px;
+  }
+  .timeline h3 {
+    font-size: 21px;
+  }
+  .timeline-date {
+    font-size: 8px;
+  }
+  .contact-copy h2 {
+    font-size: 61px;
+    letter-spacing: -3px;
+  }
+  .contact-arrow {
+    width: 35px;
+    height: 35px;
+  }
+  .contact-art,
+  .contact-art .avatar-anchor {
+    height: 340px;
+  }
+  .contact-layout {
+    min-height: 360px;
+  }
+  .contact-bottom {
+    margin-top: 20px;
+  }
+  .footer {
+    padding-right: 160px;
+    flex-wrap: wrap;
+    font-size: 8px;
+  }
+  .footer > span:nth-child(2) {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  html {
+    scroll-padding-top: 85px;
+  }
+  .page-width {
+    width: calc(100% - 40px);
+  }
+  .header {
+    height: 76px;
+    padding-inline: 20px;
+  }
+  .brand {
+    font-size: 8px;
+    min-width: unset;
+    gap: 12px;
+  }
+  .brand-mark {
+    font-size: 39px;
+  }
+  .desktop-nav {
+    display: none;
+  }
+  .header-actions {
+    gap: 13px;
+  }
+  .menu-toggle {
+    display: grid;
+    border: 0;
+  }
+  .header .theme-toggle {
+    border: 0;
+  }
+  .mobile-nav {
+    top: 75px;
+  }
+  .hero {
+    height: auto;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding-top: 130px;
+    padding-bottom: 90px;
+  }
+  .hero-copy {
+    padding-top: 0;
+  }
+  .hero h1 {
+    font-size: clamp(53px, 10.8vw, 78px);
+    letter-spacing: -3px;
+    line-height: 1.02;
+    margin-top: 26px;
+    margin-bottom: 24px;
+  }
+  .hero .eyebrow {
+    font-size: 8px;
+    letter-spacing: 1.5px;
+    gap: 9px;
+  }
+  .hero-role {
+    font-size: 11px;
+  }
+  .hero-description {
+    font-size: 14px;
+    margin-top: 12px;
+  }
+  .hero-actions {
+    flex-direction: row;
+    align-items: center;
+    gap: 22px;
+    margin-top: 24px;
+  }
+  .button {
+    min-height: 49px;
+    padding: 13px 19px;
+    font-size: 11px;
+    gap: 12px;
+  }
+  .hero-actions .text-button {
+    font-size: 10px;
+    gap: 7px;
+  }
+  .hero-actions .text-button svg {
+    width: 15px;
+  }
+  .hero-location {
+    margin-top: 23px;
+    flex-wrap: nowrap;
+    font-size: 9px;
+  }
+  .hero-location .small-dot {
+    display: block;
+  }
+  .hero-location span:last-child {
+    padding-left: 0;
+    width: auto;
+  }
+  .hero-art {
+    height: 455px;
+    width: min(430px, 100%);
+    align-self: center;
+    margin-top: 23px;
+  }
+  .hero-art .avatar-anchor {
+    height: 435px;
+    bottom: 0;
+    width: 100%;
+  }
+  .hero-orbit {
+    top: 75px;
+    height: 310px;
+    width: 85%;
+  }
+  .art-top {
+    top: 10px;
+    right: 4px;
+    font-size: 7px;
+    letter-spacing: 1.3px;
+  }
+  .hero-glow {
+    inset: 15px 0;
+  }
+  .cross-a {
+    left: 6px;
+    top: 130px;
+  }
+  .cross-b {
+    right: 0;
+    bottom: 100px;
+  }
+  .art-label {
+    bottom: 0;
+  }
+  .hero-bottom {
+    bottom: 20px;
+    padding-top: 20px;
+    font-size: 7px;
+    letter-spacing: 1px;
+  }
+  .hero-index {
+    display: none;
+  }
+  .hero-bottom > span {
+    font-size: 7px;
+  }
+  .scroll-hint {
+    height: 29px;
+    width: 23px;
+  }
+  .section {
+    padding-block: 75px;
+  }
+  .section-heading {
+    display: block;
+    margin-bottom: 35px;
+  }
+  .section-heading h2 {
+    font-size: 42px;
+    letter-spacing: -2px;
+  }
+  .section-heading > p {
+    max-width: none;
+    font-size: 12px;
+    margin-top: 22px;
+  }
+  .eyebrow {
+    font-size: 9px;
+    letter-spacing: 1.7px;
+  }
+  h2 {
+    font-size: 42px;
+    letter-spacing: -2px;
+  }
+  .about-section {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+  .about-copy h2 {
+    font-size: 46px;
+    margin: 20px 0 25px;
+  }
+  .about-copy p {
+    font-size: 14px;
+  }
+  .about-facts {
+    grid-template-columns: 1fr 1.5fr;
+    gap: 20px;
+  }
+  .about-facts strong {
+    font-size: 36px;
+  }
+  .about-art {
+    width: 100%;
+    max-width: 390px;
+    height: 460px;
+  }
+  .about-art .avatar-anchor {
+    height: 420px;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+  }
+  .outline-word {
+    font-size: 51px;
+    top: 30px;
+  }
+  .about-orbit {
+    inset: 70px 5px 20px;
+  }
+  .about-art-note {
+    right: -5px;
+    bottom: 35px;
+  }
+  .skills-section {
+    padding-bottom: 0;
+  }
+  .skills-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  .skills-art {
+    height: 340px;
+    max-width: 320px;
+    width: 100%;
+  }
+  .skills-art .avatar-anchor {
+    height: 340px;
+  }
+  .skills-ring {
+    inset: 40px 0 10px;
+  }
+  .badge-one {
+    left: -6px;
+    top: 70px;
+  }
+  .badge-two {
+    right: 0;
+    top: 180px;
+  }
+  .badge-three {
+    left: 16px;
+    bottom: 30px;
+  }
+  .skills-grid {
+    width: 100%;
+    gap: 12px;
+  }
+  .skill-card {
+    min-height: 237px;
+    padding: 22px 18px;
+  }
+  .skill-top {
+    margin-bottom: 24px;
+  }
+  .skill-card h3 {
+    font-size: 17px;
+    line-height: 1.25;
+  }
+  .skill-card p {
+    font-size: 11px;
+    min-height: 55px;
+  }
+  .skill-tags {
+    gap: 8px 10px;
+  }
+  .skill-tags span {
+    font-size: 8px;
+  }
+  .marquee {
+    margin-top: 55px;
+    padding: 22px 0;
+  }
+  .marquee-group {
+    gap: 30px;
+    padding-right: 30px;
+  }
+  .marquee-group > span {
+    gap: 30px;
+    font-size: 21px;
+  }
+  .projects-heading {
+    padding-right: 0;
+  }
+  .section-avatar-anchor {
+    display: none;
+  }
+  .project-toolbar {
+    margin-bottom: 25px;
+    padding-bottom: 17px;
+    gap: 5px;
+  }
+  .filters {
+    gap: 2px;
+  }
+  .filters button {
+    font-size: 10px;
+    padding: 9px 11px;
+  }
+  .result-count {
+    font-size: 8px;
+  }
+  .project-grid {
+    display: block;
+  }
+  .project-card,
+  .project-card:first-child {
+    display: block;
+    margin-bottom: 25px;
+  }
+  .project-card:first-child .project-visual,
+  .project-visual {
+    height: 245px;
+  }
+  .project-card:first-child .project-info,
+  .project-info {
+    padding: 24px;
+  }
+  .project-title h3 {
+    font-size: 23px;
+  }
+  .project-info > p {
+    font-size: 12px;
+  }
+  .project-meta {
+    font-size: 8px;
+  }
+  .tags span {
+    font-size: 9px;
+  }
+  .visual-word {
+    font-size: 36px;
+  }
+  .visual-index {
+    font-size: 7px;
+  }
+  .section-footnote {
+    display: block;
+    padding-top: 7px;
+    font-size: 10px;
+  }
+  .section-footnote > a {
+    margin-top: 17px;
+  }
+  .experience-layout {
+    display: block;
+  }
+  .experience-art {
+    display: none;
+  }
+  .timeline {
+    padding-left: 25px;
+  }
+  .timeline-entry {
+    padding-left: 10px;
+    padding-bottom: 40px;
+  }
+  .timeline-dot {
+    left: -28px;
+  }
+  .timeline-date {
+    font-size: 8px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .timeline h3 {
+    font-size: 23px;
+  }
+  .timeline-entry > p:not(.organization) {
+    font-size: 13px;
+  }
+  .timeline ul {
+    font-size: 12px;
+  }
+  .contact-section {
+    padding-bottom: 28px;
+  }
+  .contact-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 5px;
+  }
+  .contact-copy h2 {
+    font-size: 56px;
+    letter-spacing: -3px;
+    margin-top: 26px;
+  }
+  .contact-arrow {
+    width: 36px;
+    height: 36px;
+    margin-left: 13px;
+  }
+  .contact-copy > p {
+    font-size: 12px;
+  }
+  .contact-copy > p br {
+    display: none;
+  }
+  .contact-art {
+    height: 320px;
+    width: 100%;
+    max-width: 340px;
+    align-self: center;
+  }
+  .contact-art .avatar-anchor {
+    height: 330px;
+  }
+  .contact-bottom {
+    font-size: 9px;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .social-links {
+    gap: 20px;
+  }
+  .footer {
+    padding-block: 26px 85px;
+    padding-right: 0;
+    font-size: 8px;
+  }
+  .guide {
+    bottom: 15px;
+    right: 15px;
+    gap: 10px;
+  }
+  .guide-trigger {
+    font-size: 10px;
+    padding: 12px 15px;
+  }
+  .guide-trigger svg {
+    width: 17px;
+  }
+  .guide-panel {
+    width: min(332px, calc(100vw - 30px));
+    padding: 21px;
+    max-height: calc(100svh - 150px);
+  }
+  .cursor-follower {
+    display: none;
+  }
+  .dialog-content {
+    padding: 27px 23px;
+  }
+  .dialog-content h2 {
+    font-size: 31px;
+    letter-spacing: -1px;
+  }
+  .dialog-content .eyebrow {
+    font-size: 8px;
+    flex-wrap: wrap;
+  }
+  .project-dialog .project-visual {
+    height: 210px;
+  }
+  .project-dialog .visual-word {
+    font-size: 31px;
+  }
+  .case-columns {
+    display: block;
+    padding-block: 22px;
+  }
+  .case-columns > div + div {
+    margin-top: 24px;
+  }
+  .learning {
+    padding: 18px;
+    gap: 12px;
+  }
+  .learning > svg {
+    width: 18px;
+  }
+  .case-footer {
+    flex-wrap: wrap;
+    font-size: 9px;
+  }
+  .avatar-stage {
+    display: none;
+  }
+}
+@media (max-width: 390px) {
+  .hero h1 {
+    font-size: 52px;
+  }
+  .hero-actions {
+    gap: 16px;
+  }
+  .hero-actions .text-button {
+    font-size: 9px;
+  }
+  .hero-actions .text-button svg {
+    width: 14px;
+  }
+  .hero-location {
+    font-size: 8px;
+  }
+  .skill-card {
+    padding: 20px 15px;
+  }
+  .skill-card h3 {
+    font-size: 16px;
+  }
+  .contact-copy h2 {
+    font-size: 52px;
+  }
+  .contact-arrow {
+    width: 29px;
+    height: 29px;
+    margin-left: 8px;
+  }
+  .about-facts strong {
+    font-size: 33px;
+  }
+  .project-title h3 {
+    font-size: 22px;
+  }
+}
+.motion-off *,
+.motion-off *:before,
+.motion-off *:after {
+  animation: none !important;
+  scroll-behavior: auto !important;
+  transition-duration: 0.01ms !important;
+}
+.motion-off .cursor-follower {
+  display: none;
+}
+.motion-off .project-card,
+.motion-off .magnetic {
+  transform: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *:before,
+  *:after {
+    animation: none !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+  .cursor-follower {
+    display: none;
+  }
+}

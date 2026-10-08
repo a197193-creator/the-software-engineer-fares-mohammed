@@ -1,0 +1,15 @@
+# Presentation version: remaining work in priority order
+
+The current version is intended to present the portfolio concept. It includes the responsive redesign, five project overviews, case-study dialogs, a six-stop guide, a scroll-reactive 2.5D avatar, light/dark themes, motion controls and social sharing artwork.
+
+1. **Contact details and CV — required before job applications.** Supply the preferred email, LinkedIn, optional WhatsApp and the approved CV PDF. The owner explicitly deferred these. Add verified values in `src/data.js`; no old CV or unapproved contact information is used.
+2. **Project evidence — highest content improvement.** Supply actual screenshots or short recordings, approved GitHub/demo links, exact personal responsibilities and verified project status/results. The five current cards use conceptual graphics, not screenshots. Keep sensitive internship work private unless approved for display.
+3. **Review final professional copy.** Confirm name spelling, internship dates/status, project descriptions, education details and the roles being targeted. No numerical skill ratings or invented results have been added.
+4. **Production performance and browser audit.** Run a formal Lighthouse/accessibility audit and test real Android/iOS devices, Safari and Firefox. Desktop Chromium viewport checks cover 375, 768, 1024 and 1440 pixels. No Lighthouse score, universal 60fps guarantee or cross-browser certification is claimed. Further reduce the optional Three.js payload and consider self-hosting fonts.
+5. **True 3D avatar.** The current avatar is six transparent images rendered in a 2.5D scene, not a reconstructed 3D mesh. Image-to-3D conversion was investigated, but the upload to the official Stable Fast 3D service on Hugging Face was rejected by automatic approval review. No image was uploaded and no GLB was generated. A future conversion requires approval for that specific service or a supplied model. Inspect the resulting mesh from every side, then retopologize/rig it as needed. Add a verified `modelUrl` in `src/App.jsx`; `AvatarScene.js` already supports ordinary GLB loading and animation clips. Draco/Meshopt decoder integration remains future work.
+6. **Character animation polish.** Real head/eye tracking, hand gestures, laptop opening/typing, a welcome wave and contact wave require a suitable rig and clips. The current scene uses pose crossfades, floating, pointer response and scroll movement; it does not pretend to animate individual body parts.
+7. **Optional presentation extras.** Consider a pinned horizontal project showcase, animated counters, nav text scramble, richer icon orbits, grain/aurora detailing, contact form delivery with spam protection, and a custom domain. These are deliberately deferred so the main presentation can ship. A contact form must have a real delivery service before showing a success state.
+
+## Quick presentation route
+
+Open the live site on a desktop, start **Take a guided tour**, move through the six sections, open **DiaCare**, and demonstrate project filters and the theme switch. Mobile intentionally uses static character images for lighter rendering.
