@@ -138,7 +138,13 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, #05090b60, transparent 50%),
+    linear-gradient(
+      90deg,
+      #05090bed 0%,
+      #05090bed 32%,
+      #05090b55 44%,
+      transparent 58%
+    ),
     linear-gradient(0deg, #05090b 0, transparent 20%);
 }
 .cinematic .hero-copy {
