@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Compass, X, ArrowRight, ChevronLeft, Pause, Play } from "lucide-react";
 import { guideSteps } from "../data";
+import { avatarScenes } from "./SectionAvatar";
 
 export default function Guide({ active, goTo, motion, setMotion, tourSignal }) {
   const [open, setOpen] = useState(false);
@@ -65,10 +66,18 @@ export default function Guide({ active, goTo, motion, setMotion, tourSignal }) {
           </div>
           <div className="guide-profile">
             <img
-              src={`/assets/avatar-${step.pose}.webp`}
+              src={avatarScenes[step.id].image}
               alt="Fares’ digital companion"
               width="64"
               height="96"
+              onError={(event) => {
+                if (
+                  !event.currentTarget.src.endsWith(
+                    avatarScenes[step.id].fallback,
+                  )
+                )
+                  event.currentTarget.src = avatarScenes[step.id].fallback;
+              }}
             />
             <div>
               <strong>A little character.</strong>

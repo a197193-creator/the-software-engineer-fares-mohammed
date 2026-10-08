@@ -24,18 +24,22 @@ import {
   Code2,
 } from "lucide-react";
 import { profile, projects } from "./data";
-import AvatarStage from "./components/AvatarStage";
+import SectionAvatar, {
+  avatarScenes,
+  ChapterRail,
+} from "./components/SectionAvatar";
 import Projects, { ProjectDialog } from "./components/Projects";
 import Guide from "./components/Guide";
-import { Cursor, Magnetic, Preloader } from "./components/Effects";
+import { Magnetic, Preloader } from "./components/Effects";
 import { useMotion, usePageTracking } from "./hooks/useMotion";
 
 const external = { target: "_blank", rel: "noopener noreferrer" };
 const navItems = [
+  ["home", "Home"],
+  ["projects", "Projects"],
   ["about", "About"],
-  ["skills", "Toolkit"],
-  ["projects", "Work"],
-  ["experience", "Journey"],
+  ["skills", "Skills"],
+  ["experience", "Experience"],
   ["contact", "Contact"],
 ];
 const toolkit = [
@@ -64,11 +68,6 @@ const toolkit = [
     tags: ["Groq AI", "AI-assisted apps", "OCR"],
   },
 ];
-const titles = [
-  "Software Engineering student",
-  "Mobile & web developer",
-  "Curious problem solver",
-];
 function stored(key, fallback) {
   try {
     return localStorage.getItem(key) || fallback;
@@ -77,25 +76,6 @@ function stored(key, fallback) {
   }
 }
 
-function AvatarAnchor({ section, pose, className = "" }) {
-  return (
-    <div
-      className={`avatar-anchor ${className}`}
-      data-avatar-anchor={section}
-      aria-hidden="true"
-    >
-      <img
-        className="avatar-fallback"
-        src={`/assets/avatar-${pose}.webp`}
-        alt=""
-        width="418"
-        height="627"
-        loading={section === "home" ? "eager" : "lazy"}
-        fetchPriority={section === "home" ? "high" : "auto"}
-      />
-    </div>
-  );
-}
 function Heading({ number, label, children }) {
   return (
     <>
@@ -118,18 +98,16 @@ export default function App() {
       !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
       stored("fares-motion", "on") !== "off",
   );
-  const [rendered, setRendered] = useState(false);
+  const [heroFailed, setHeroFailed] = useState(false);
   const [assetReady, setAssetReady] = useState(false);
   const [progress, setProgress] = useState(0);
   const [loading, setLoading] = useState(true);
   const [tourSignal, setTourSignal] = useState(0);
-  const [titleIndex, setTitleIndex] = useState(0);
   const [copied, setCopied] = useState(false);
   const menuButton = useRef(null);
   const menuRef = useRef(null);
   const dismissLoader = useCallback(() => setLoading(false), []);
-  const onAvatarReady = useCallback((info) => {
-    setRendered(info.rendered);
+  const onHeroReady = useCallback(() => {
     setAssetReady(true);
     setProgress(1);
   }, []);
@@ -140,7 +118,7 @@ export default function App() {
     document.documentElement.dataset.theme = theme;
     document
       .querySelector('meta[name="theme-color"]')
-      ?.setAttribute("content", theme === "dark" ? "#0d0e12" : "#f3f1ed");
+      ?.setAttribute("content", theme === "dark" ? "#05090b" : "#f3f1ed");
     try {
       localStorage.setItem("fares-theme", theme);
     } catch {
@@ -154,12 +132,6 @@ export default function App() {
     } catch {
       /* Storage is optional. */
     }
-    if (!motion) return;
-    const timer = setInterval(
-      () => setTitleIndex((i) => (i + 1) % titles.length),
-      3600,
-    );
-    return () => clearInterval(timer);
   }, [motion]);
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -204,12 +176,10 @@ export default function App() {
     setMenuOpen(false);
     setActive(id);
     setNavHidden(false);
-    document
-      .getElementById(id)
-      ?.scrollIntoView({
-        behavior: motion ? "smooth" : "instant",
-        block: "start",
-      });
+    document.getElementById(id)?.scrollIntoView({
+      behavior: motion ? "smooth" : "instant",
+      block: "start",
+    });
     history.replaceState(null, "", `#${id}`);
   }
   const jump = (id) => (e) => {
@@ -226,13 +196,13 @@ export default function App() {
     }
   }
   return (
-    <div className={rendered ? "site scene-ready" : "site"}>
+    <div className="site cinematic">
       <a className="skip-link" href="#about">
         Skip to content
       </a>
       <div className="scroll-progress" aria-hidden="true" />
       <header
-        className={`header ${navHidden && !menuOpen ? "nav-hidden" : ""}`}
+        className={`header ${active === "home" ? "on-hero" : ""} ${navHidden && !menuOpen ? "nav-hidden" : ""}`}
       >
         <a
           className="brand"
@@ -240,9 +210,7 @@ export default function App() {
           onClick={jump("home")}
           aria-label="Fares Mohammed home"
         >
-          <span className="brand-mark">
-            f<span>.</span>
-          </span>
+          <span className="brand-mark">F</span>
           <span>
             FARES
             <br />
@@ -263,6 +231,9 @@ export default function App() {
           ))}
         </nav>
         <div className="header-actions">
+          <span className="header-identity">
+            FARES MOHAMMED <i /> {avatarScenes[active].number} / 06
+          </span>
           <button
             className="icon-button theme-toggle"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -296,9 +267,9 @@ export default function App() {
           className="mobile-nav"
           aria-label="Mobile navigation"
         >
-          {navItems.map(([id, label], i) => (
+          {navItems.map(([id, label]) => (
             <a href={`#${id}`} key={id} onClick={jump(id)}>
-              <span>0{i + 2}</span>
+              <span>{avatarScenes[id].number}</span>
               {label}
               <ArrowUpRight />
             </a>
@@ -307,41 +278,41 @@ export default function App() {
         </nav>
       )}
 
-      <AvatarStage
-        motion={motion}
-        activeSection={active}
-        theme={theme}
-        modelUrl={null}
-        onProgress={setProgress}
-        onReady={onAvatarReady}
-      />
       <main>
-        <section id="home" className="hero page-width">
+        <section
+          id="home"
+          className={`hero page-width ${heroFailed ? "scene-missing" : ""}`}
+        >
+          <div className="hero-photo" aria-hidden="true">
+            <img
+              src="/assets/cinematic-hero.webp"
+              alt=""
+              width="1920"
+              height="1080"
+              fetchPriority="high"
+              onLoad={onHeroReady}
+              onError={() => {
+                setHeroFailed(true);
+                onHeroReady();
+              }}
+            />
+          </div>
           <div className="hero-copy">
-            <div className="eyebrow">
-              <span className="status-dot" /> SOFTWARE ENGINEER IN THE MAKING
-            </div>
+            <div className="eyebrow">FARES MOHAMMED / SOFTWARE ENGINEER</div>
             <h1>
               <span className="hero-line">
-                <span className="hero-word">Hi, I’m Fares.</span>
+                <span className="hero-word">I build ideas</span>
               </span>
               <span className="hero-line">
-                <span className="hero-word">Ideas into</span>
-              </span>
-              <span className="hero-line">
-                <span className="hero-word accent-text">
-                  real things<span className="period">.</span>
+                <span className="hero-word">
+                  into <span className="accent-text">reality.</span>
                 </span>
               </span>
             </h1>
-            <div className="hero-role">
-              <span className="role-line" />
-              <span key={titleIndex}>{titles[titleIndex]}</span>
-            </div>
             <p className="hero-description">
-              Building practical digital solutions
-              <br />
-              with mobile, web & AI.
+              Software Engineering student at UKM, focused on building useful
+              digital solutions, web & mobile applications, and AI-powered
+              tools.
             </p>
             <div className="hero-actions">
               <Magnetic
@@ -349,17 +320,49 @@ export default function App() {
                 onClick={jump("projects")}
                 className="primary"
               >
-                View my work <ArrowUpRight size={19} />
+                Explore my work <ArrowUpRight size={17} />
               </Magnetic>
-              <button
-                className="text-button"
-                onClick={() => {
-                  goTo("home");
-                  setTourSignal((v) => v + 1);
-                }}
+              {profile.cv ? (
+                <a className="button secondary" href={profile.cv} download>
+                  Download CV <Download size={16} />
+                </a>
+              ) : (
+                <button
+                  className="button secondary"
+                  onClick={() => {
+                    goTo("home");
+                    setTourSignal((v) => v + 1);
+                  }}
+                >
+                  Take a guided tour <Compass size={16} />
+                </button>
+              )}
+            </div>
+            <div className="hero-socials">
+              <a
+                href={profile.github}
+                {...external}
+                aria-label="Fares on GitHub"
               >
-                <Compass size={18} /> Take a guided tour
-              </button>
+                <GitFork size={18} />
+              </a>
+              {profile.linkedin && (
+                <a
+                  href={profile.linkedin}
+                  {...external}
+                  aria-label="Fares on LinkedIn"
+                >
+                  <Network size={18} />
+                </a>
+              )}
+              {profile.email && (
+                <a href={`mailto:${profile.email}`} aria-label="Email Fares">
+                  <Mail size={18} />
+                </a>
+              )}
+              <span>
+                UKM <span>·</span> MALAYSIA
+              </span>
             </div>
             <div className="hero-location">
               <MapPin size={14} />
@@ -369,22 +372,11 @@ export default function App() {
             </div>
           </div>
           <div className="hero-art">
-            <div className="hero-orbit" />
-            <div className="hero-glow" />
-            <span className="art-top">
-              A LITTLE CHARACTER.
-              <br />
-              <b>A LOT OF CURIOSITY.</b>
-            </span>
-            <span className="art-cross cross-a">+</span>
-            <span className="art-cross cross-b">+</span>
-            <AvatarAnchor section="home" pose={0} />
-            <div className="art-label">
-              <span className="status-dot" />
-              <span>BUILD. LEARN. ITERATE.</span>
-              <Code2 size={16} />
-            </div>
-            <span className="art-coordinate">MALAYSIA / UTC+08</span>
+            <SectionAvatar
+              section="home"
+              motion={motion}
+              imageHidden={!heroFailed}
+            />
           </div>
           <div className="hero-bottom">
             <a href="#about" onClick={jump("about")}>
@@ -398,13 +390,15 @@ export default function App() {
           </div>
         </section>
 
+        <ChapterRail goTo={goTo} active={active} />
+
         <section id="about" className="section page-width about-section">
           <div className="about-art">
             <span className="outline-word" aria-hidden="true">
               CURIOUS.
             </span>
             <div className="about-orbit" />
-            <AvatarAnchor section="about" pose={4} />
+            <SectionAvatar section="about" motion={motion} />
             <div className="about-art-note">
               <Sparkles size={20} />
               <span>
@@ -478,7 +472,7 @@ export default function App() {
             <div className="skills-layout">
               <div className="skills-art">
                 <div className="skills-ring" />
-                <AvatarAnchor section="skills" pose={1} />
+                <SectionAvatar section="skills" motion={motion} />
                 <span className="orbit-badge badge-one">
                   <Code2 size={18} /> Flutter
                 </span>
@@ -619,7 +613,7 @@ export default function App() {
               <span className="outline-word" aria-hidden="true">
                 EVOLVING.
               </span>
-              <AvatarAnchor section="experience" pose={3} />
+              <SectionAvatar section="experience" motion={motion} />
               <span className="experience-note">
                 EVERY PROJECT.
                 <br />
@@ -675,7 +669,7 @@ export default function App() {
               </div>
               <div className="contact-art">
                 <div className="contact-glow" />
-                <AvatarAnchor section="contact" pose={5} />
+                <SectionAvatar section="contact" motion={motion} />
               </div>
             </div>
             <div className="contact-bottom">
@@ -723,7 +717,6 @@ export default function App() {
       {selected && (
         <ProjectDialog project={selected} close={() => setSelected(null)} />
       )}
-      <Cursor enabled={motion && !loading} />
       {loading && (
         <Preloader
           progress={progress}

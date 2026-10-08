@@ -10,7 +10,26 @@ The transparent sheet was cropped into six WebP pose assets with Sharp, preservi
 
 The original sheet is preserved outside the public website in the local avatar-assets folder. The portfolio references only its packaged WebP assets.
 
-The Three.js presentation uses these transparent raster images as a 2.5D sprite scene. No true 3D character mesh, rig, or GLB conversion is bundled. The static fallback uses the same supplied character assets.
+The previous Three.js presentation used these transparent raster images as a 2.5D sprite scene. The current section figures retain them as image-failure fallbacks. No true 3D character mesh, rig, or GLB conversion is bundled.
+
+## Cinematic revision — October 2026
+
+Generated with the **built-in ImageGen tool**, using the owner's cinematic design board as the visual identity reference. The final website assets are `public/assets/cinematic-hero.webp` and `public/assets/cinematic-0.webp` through `cinematic-5.webp`.
+
+The hero source is 1672 × 941 pixels. The six-pose source is a 1536 × 1024 transparent atlas. Its actual alpha was verified; the dark backdrop visible in the generation preview is not baked into the character cutouts. Sharp cropped the equal cells, excluded the narrow row boundary, trimmed transparent margins and normalized each pose into a 600 × 850 transparent canvas without stretching. WebP exports preserve alpha. The hero is about 93 KB and individual poses are about 70–76 KB.
+
+Original ImageGen outputs remain untouched at:
+
+- `C:\Users\User\.codex\generated_images\01a11c42-0ddb-7b80-91d8-d173d78763d3\exec-46d24a74-5c0f-477a-95f9-64a37ada9a30.png` — hero.
+- `C:\Users\User\.codex\generated_images\01a11c42-0ddb-7b80-91d8-d173d78763d3\exec-27ed1d1e-929d-4f07-af31-14887b5c9ebb.png` — pose atlas.
+
+Hero generation specification:
+
+> Use case: ads-marketing. Asset type: photographic artwork for a cinematic software engineer portfolio hero. Use the attached design board only as a character, lighting and atmosphere reference. Generate a wide 16:9 image with no interface, labels, logos, text or bubbles. Place the realistic black-and-gold Arabian engineer around 64% of the width, with the head near the top and a closed unbranded dark laptop held at the waist. Preserve the black headwrap with fine gold embroidery, face covering, dark sunglasses and tactile black robes. Leave the left 38% nearly black for live HTML copy and the far-right 17% dark for a live speech bubble. Use softly blurred carved Arabian arches and restrained warm candle bokeh, cinematic gold rim light and natural fabric texture. Fade the top and bottom toward black. No cyberpunk, neon, additional characters or watermark.
+
+Pose atlas generation specification:
+
+> Use case: stylized-concept. Asset type: one production sprite atlas for the same portfolio character. Use the attached design board as the identity and style reference. Produce a consistent realistic black-and-gold Arabian engineer across a three-column, two-row sheet of equal cells, with a genuinely transparent background. Keep the same headwrap, fine gold embroidery, black face covering, dark sunglasses, proportions, camera and studio lighting. Each pose is full-body with margin, the same head/foot baseline and no clipping. Top row: standing with a closed laptop; thoughtful with one hand near the chin; working at an open laptop and looking toward it. Bottom row: confident with arms crossed; composed three-quarter side view looking forward; relaxed standing with an open laptop. Keep laptop branding and readable code absent. No labels, text, floor, environment, extra characters or watermark. Preserve clean silhouette edges for splitting into separate web assets.
 
 ## Social preview
 
@@ -31,4 +50,4 @@ Generation prompt:
 
 ## Other visuals
 
-Project graphics are conceptual layouts made from CSS and Lucide icons, not screenshots of the applications. Lucide supplies the interface icons. Syne and DM Sans are loaded from Google Fonts with system font fallbacks. The existing SVG favicon remains packaged locally.
+Project graphics are conceptual layouts made from CSS and Lucide icons, not screenshots of the applications. Lucide supplies the interface icons. Cormorant Garamond and DM Sans are loaded from Google Fonts with Georgia and system font fallbacks. The SVG favicon is a code-native gold F monogram.

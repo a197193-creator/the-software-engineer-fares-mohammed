@@ -1,6 +1,6 @@
 # Fares Mohammed — Software Engineering Portfolio
 
-A responsive portfolio for a Software Engineering student at Universiti Kebangsaan Malaysia, built with React and Vite. The presentation uses ink (`#0d0e12`), amber (`#ffd27a`) and lavender (`#aaa0ff`), with Syne headings and DM Sans body text.
+A responsive portfolio for a Software Engineering student at Universiti Kebangsaan Malaysia, built with React and Vite. The cinematic presentation uses near-black (`#05090b`), warm gold (`#efbc6d`), Cormorant Garamond headings and DM Sans body text. Its Arabian engineer character is based on the owner's supplied reference.
 
 ## Run
 
@@ -25,8 +25,10 @@ The production output is `dist/`. The portfolio is a static site with no require
 - `src/design.css`: color tokens, typography, navigation and primary page layout.
 - `src/details.css`: project cards, dialogs, guide and supporting interface styles.
 - `src/responsive.css`: responsive layout and reduced-motion overrides.
+- `src/cinematic.css`: the current art direction, chapter strip, section poses, speech bubbles and responsive refinements.
+- `src/components/SectionAvatar.jsx`: six section-owned character poses, quotes, visibility detection and chapter navigation.
 - `src/components/Projects.jsx`: project filters, conceptual artwork and accessible native detail dialogs.
-- `src/components/AvatarStage.jsx` and `AvatarScene.js`: progressively enhanced Three.js character scene and static fallbacks.
+- `src/components/AvatarStage.jsx` and `AvatarScene.js`: preserved earlier Three.js implementation for possible future model work; these files are not loaded by the current presentation.
 - `index.html`: title, search description, Google Fonts and Open Graph/Twitter metadata. Update the canonical, page and image URLs together when changing domains.
 
 Email, LinkedIn, WhatsApp and CV remain unset because the owner deferred supplying them. These controls appear only when their verified values are added to `profile`. Place a supplied CV in `public/` and set `profile.cv` to its root-relative path. The public GitHub profile is already connected.
@@ -35,9 +37,9 @@ Project repository links, demos and screenshots remain unset until real material
 
 ## Character and motion
 
-The supplied black-and-gold avatar is presented with six transparent raster poses. On suitable desktop devices, Three.js adds a **2.5D sprite scene** with depth, lighting effects and section-aware movement. No true 3D character mesh or rigged GLB is bundled. The scene accepts a future `modelUrl`, but a real model must be supplied before that path is used.
+The hero uses an optimized cinematic image. Six consistent transparent WebP poses belong to the Home, About, Skills, Projects, Experience and Contact chapters. Each section has its own figure and readable quote; the character never travels across content. Intersection Observer fades the figure in and pauses its subtle four-second CSS breathing cycle outside the viewport. Hover pauses the pose, and touch toggles its pause state. The guide uses the corresponding pose at each stop.
 
-Mobile, reduced-motion preferences, paused motion, limited devices and renderer failures use the static character fallback. The scene is loaded progressively; portfolio content remains usable without it. GSAP and Lenis support the enhanced desktop presentation, with motion controls available to visitors.
+Reduced-motion preferences and the guide's motion control provide static poses. Images below the fold load lazily and retain fixed layout dimensions. The previous avatar files remain as image-failure fallbacks. GSAP handles content reveals; Lenis smooth scrolling runs only on suitable desktop pointers. No Three.js renderer or character JavaScript animation loop is loaded. No real mesh, rigged GLB, articulated head movement or laptop animation is bundled.
 
 ## Publish and verify
 

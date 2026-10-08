@@ -8,7 +8,14 @@ gsap.registerPlugin(ScrollTrigger);
 
 export function useMotion(enabled, blocked, ready) {
   useEffect(() => {
-    if (!enabled || blocked) return;
+    if (
+      !enabled ||
+      blocked ||
+      !window.matchMedia(
+        "(min-width: 768px) and (hover: hover) and (pointer: fine)",
+      ).matches
+    )
+      return;
     const lenis = new Lenis({
       duration: 1.1,
       anchors: true,
@@ -56,17 +63,6 @@ export function useMotion(enabled, blocked, ready) {
           },
         },
       );
-      gsap.to(".hero-orbit", {
-        rotation: 24,
-        y: -40,
-        ease: "none",
-        scrollTrigger: {
-          trigger: "#home",
-          start: "top top",
-          end: "bottom top",
-          scrub: 1,
-        },
-      });
     });
     return () => context.revert();
   }, [enabled, ready]);

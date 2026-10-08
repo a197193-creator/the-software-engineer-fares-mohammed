@@ -70,9 +70,7 @@ export function Preloader({ progress, ready, dismiss }) {
   }, [ready, dismiss]);
   return (
     <div className="preloader" role="status" aria-label="Loading portfolio">
-      <span className="loader-monogram">
-        f<span>.</span>
-      </span>
+      <span className="loader-monogram">F</span>
       <span className="eyebrow">FARES MOHAMMED</span>
       <div className="loader-track">
         <div style={{ transform: `scaleX(${progress})` }} />

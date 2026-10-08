@@ -14,6 +14,7 @@ import {
   X,
 } from "lucide-react";
 import { profile, projects } from "../data";
+import SectionAvatar from "./SectionAvatar";
 
 const externalProps = { target: "_blank", rel: "noopener noreferrer" };
 const filters = ["All work", "Mobile", "Web", "AI"];
@@ -167,17 +168,13 @@ export default function Projects({ onOpen, motion = true }) {
           <h2 id="projects-heading">
             Ideas made <span className="serif">real.</span>
           </h2>
+          <p>
+            A few projects that reflect how I think,
+            <br />
+            build, and solve problems.
+          </p>
         </div>
-        <p data-reveal>
-          A few projects that reflect how I think,
-          <br />
-          build, and solve problems.
-        </p>
-        <div
-          className="section-avatar-anchor"
-          data-avatar-anchor="projects"
-          aria-hidden="true"
-        />
+        <SectionAvatar section="projects" motion={motion} compact />
       </div>
       <div className="project-toolbar">
         <div className="filters" role="group" aria-label="Filter projects">
