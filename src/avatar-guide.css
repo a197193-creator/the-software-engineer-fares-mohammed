@@ -1,0 +1,298 @@
+/* TASK 3: guide UI stays in avatar spaces, with no fixed panel. */
+.cinematic .section-avatar .avatar-guide-frame {
+  width: min(280px, 100%);
+  top: 0;
+  padding: 0;
+  color: #f4f5f7;
+  background: #080b10f2;
+  border: 1px solid #40dfff66;
+  border-radius: 17px;
+  box-shadow:
+    0 8px 26px #0003,
+    0 0 16px #40dfff09;
+  font-family: "DM Sans", "Noto Sans Arabic", sans-serif;
+  opacity: 1;
+  transition: none;
+}
+.cinematic .section-avatar .avatar-guide-frame:before {
+  background: #080b10;
+  border-color: #40dfff66;
+  width: 11px;
+  height: 11px;
+  left: -6px;
+  top: 42%;
+}
+.avatar-guide-surface {
+  padding: 12px 15px 15px;
+  animation: guide-speech-enter 0.28s ease both;
+}
+.avatar-guide-surface[data-departing="true"] {
+  animation: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+.avatar-guide-header {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  margin-block-end: 8px;
+}
+.avatar-guide-section {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #c0cad6;
+}
+.avatar-guide-section > svg {
+  color: #40dfff;
+  flex-shrink: 0;
+}
+.avatar-guide-section > b {
+  color: #f5c66a;
+  font-weight: 500;
+}
+.avatar-guide-header > button,
+.avatar-guide-previous {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  min-height: 44px;
+  border-radius: 8px;
+  color: #c0cad6;
+}
+.avatar-guide-header > button:hover,
+.avatar-guide-previous:hover {
+  color: #40dfff;
+  background: #40dfff0d;
+}
+.cinematic .avatar-guide-message {
+  display: block;
+  width: 100%;
+  min-height: 106px;
+  padding: 0;
+  text-align: start;
+  font-family: "DM Sans", "Noto Sans Arabic", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.65;
+  color: #f4f5f7;
+}
+.avatar-guide-word {
+  opacity: 0;
+  transition: opacity 0.16s ease;
+}
+.avatar-guide-word[data-shown="true"] {
+  opacity: 1;
+}
+.avatar-guide-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  margin-block: 5px 9px;
+  font-size: 12px;
+  line-height: 1.8;
+  color: #b8c3d0;
+}
+.avatar-guide-dots {
+  display: flex;
+  gap: 3px;
+  flex-shrink: 0;
+}
+.avatar-guide-dots i {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #40dfff;
+  animation: guide-dot 1.2s ease-in-out infinite;
+}
+.avatar-guide-dots i:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.avatar-guide-dots i:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.avatar-guide-navigation {
+  display: flex;
+  gap: 7px;
+  border-top: 1px solid #40dfff22;
+  padding-top: 10px;
+}
+.avatar-guide-next {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  padding: 7px 10px;
+  border: 1px solid #f5c66a55;
+  border-radius: 8px;
+  color: #f5c66a;
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: start;
+}
+.avatar-guide-next svg {
+  flex-shrink: 0;
+}
+.avatar-guide-next:hover {
+  background: #f5c66a0c;
+}
+.avatar-guide-frame button:focus-visible,
+.avatar-guide-collapsed button:focus-visible {
+  outline: 2px solid #40dfff;
+  outline-offset: 3px;
+}
+.avatar-guide-frame[dir="rtl"] .avatar-guide-next svg,
+.avatar-guide-frame[dir="rtl"] .avatar-guide-previous svg {
+  transform: scaleX(-1);
+}
+.avatar-guide-collapsed {
+  position: absolute;
+  top: 5px;
+  right: 0;
+}
+.avatar-guide-collapsed button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 13px;
+  border-radius: 10px;
+  border: 1px solid #40dfff55;
+  background: #080b10ed;
+  color: #dce7ef;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.avatar-guide-collapsed svg {
+  color: #40dfff;
+}
+.avatar-guide-collapsed.dismissed button {
+  border-color: #f5c66a44;
+}
+.cinematic .hero-art:has(.avatar-guide-frame) {
+  width: 280px;
+  height: 320px;
+}
+/* Reserve the full speech area so typing cannot move the project toolbar. */
+.cinematic .projects-heading .section-avatar {
+  min-height: 330px;
+}
+.avatar-guide-tools {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-block: 24px 32px;
+  border-top: 1px solid var(--line);
+}
+.avatar-guide-tools > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+  font-size: 14px;
+}
+.avatar-guide-tools > span svg {
+  color: var(--accent);
+}
+.avatar-guide-tools small {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+}
+.avatar-guide-tools > div {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.avatar-guide-tools button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 9px 13px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.avatar-guide-tools button:hover {
+  border-color: var(--accent);
+}
+@keyframes guide-speech-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes guide-dot {
+  0%,
+  70%,
+  100% {
+    opacity: 0.35;
+  }
+  35% {
+    opacity: 1;
+  }
+}
+@media (max-width: 767px) {
+  /* Keep the section's guide before long content, using the existing avatar area. */
+  .cinematic .about-section {
+    flex-direction: column;
+  }
+  .cinematic .experience-layout,
+  .cinematic .contact-layout {
+    flex-direction: column-reverse;
+  }
+  .avatar-skills .avatar-guide-frame,
+  .avatar-experience .avatar-guide-frame {
+    top: -22px;
+  }
+  .cinematic .hero-art:has(.avatar-guide-frame) {
+    top: 90px;
+    right: 23px;
+    width: calc(100% - 46px);
+    height: 310px;
+  }
+  .avatar-guide-tools > span {
+    flex-wrap: wrap;
+  }
+  .avatar-guide-tools > span small {
+    flex-basis: 100%;
+  }
+}
+.motion-off .avatar-guide-surface,
+.motion-off .avatar-guide-dots i {
+  animation: none;
+}
+.motion-off .avatar-guide-word {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .avatar-guide-surface,
+  .avatar-guide-dots i {
+    animation: none;
+  }
+  .avatar-guide-word,
+  .avatar-guide-surface[data-departing="true"] {
+    transition: none;
+  }
+}

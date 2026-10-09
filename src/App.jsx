@@ -28,6 +28,7 @@ import SectionAvatar, {
 } from "./components/SectionAvatar";
 import Projects, { ProjectDialog } from "./components/Projects";
 import Guide from "./components/Guide";
+import { AvatarGuideProvider } from "./components/AvatarGuideContext";
 import { Magnetic } from "./components/Effects";
 import WelcomeExperience from "./components/WelcomeExperience";
 import PortfolioHero from "./components/PortfolioHero";
@@ -109,7 +110,6 @@ export default function App() {
       !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
       stored("fares-motion", "on") !== "off",
   );
-  const [tourSignal] = useState(0);
   const [copied, setCopied] = useState(false);
   const menuButton = useRef(null);
   const menuRef = useRef(null);
@@ -210,7 +210,12 @@ export default function App() {
     }
   }
   return (
-    <>
+    <AvatarGuideProvider
+      ready={portfolioReady && !welcomeVisible}
+      blocked={menuOpen || !!selected}
+      motion={motion}
+      goTo={goTo}
+    >
       <div
         className="portfolio-content"
         data-ready={portfolioReady}
@@ -686,13 +691,7 @@ export default function App() {
               <ArrowUp size={15} />
             </button>
           </footer>
-          <Guide
-            active={active}
-            goTo={goTo}
-            motion={motion}
-            setMotion={setMotion}
-            tourSignal={tourSignal}
-          />
+          <Guide goTo={goTo} motion={motion} setMotion={setMotion} />
           {selected && (
             <ProjectDialog project={selected} close={() => setSelected(null)} />
           )}
@@ -711,6 +710,6 @@ export default function App() {
           }}
         />
       )}
-    </>
+    </AvatarGuideProvider>
   );
 }

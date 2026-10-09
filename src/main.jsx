@@ -10,6 +10,7 @@ import "./welcome.css";
 import "./intro.css";
 import "./readability.css";
 import "./typography.css";
+import "./avatar-guide.css";
 
 createRoot(document.getElementById("root")).render(
   <LanguageProvider>

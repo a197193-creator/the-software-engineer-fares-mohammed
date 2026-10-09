@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 import { arabic, heroCopy, welcomeCopy } from "./locales";
+import { guideCopy } from "./guideDialogue";
 const LanguageContext = createContext(null);
 function readLanguage() {
   try {
@@ -42,6 +43,7 @@ export function LanguageProvider({ children }) {
         tr,
         hero: heroCopy[language],
         welcome: welcomeCopy[language],
+        guide: guideCopy[language],
       }}
     >
       {children}

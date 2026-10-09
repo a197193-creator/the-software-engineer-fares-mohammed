@@ -1,5 +1,6 @@
 import { useLanguage } from "../LanguageContext";
 import { useEffect, useRef, useState } from "react";
+import AvatarGuide from "./AvatarGuide";
 
 export const avatarScenes = {
   home: {
@@ -93,15 +94,17 @@ export default function SectionAvatar({
           />
         </div>
       )}
-      <figcaption className="avatar-speech">
-        <span className="speech-mark" aria-hidden="true">
-          “
-        </span>
-        <p>{tr(scene.quote)}</p>
-        <span className="speech-signature">
-          FARES / {tr(scene.name).toUpperCase()}
-        </span>
-      </figcaption>
+      <AvatarGuide section={section} scene={scene}>
+        <figcaption className="avatar-speech">
+          <span className="speech-mark" aria-hidden="true">
+            “
+          </span>
+          <p>{tr(scene.quote)}</p>
+          <span className="speech-signature">
+            FARES / {tr(scene.name).toUpperCase()}
+          </span>
+        </figcaption>
+      </AvatarGuide>
     </figure>
   );
 }

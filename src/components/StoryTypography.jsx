@@ -126,6 +126,8 @@ function useStoryEntrance(root, text, delay, heading) {
         },
         delay,
       );
+      // Initialize before other triggers are created, including resume below the fold.
+      sequence.scrollTrigger.refresh();
     }, element);
     return () => {
       context.revert();
