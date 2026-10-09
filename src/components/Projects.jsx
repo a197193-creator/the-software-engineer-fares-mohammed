@@ -16,6 +16,8 @@ import {
 import { profile, projects } from "../data";
 import SectionAvatar from "./SectionAvatar";
 import { StoryHeading, StoryStatement } from "./StoryTypography";
+import { usePointerSurface } from "../hooks/usePointerSurface";
+import { useAvatarGuide } from "./AvatarGuideContext";
 
 const externalProps = { target: "_blank", rel: "noopener noreferrer" };
 const filters = ["All work", "Mobile", "Web", "AI"];
@@ -69,45 +71,15 @@ function ProjectVisual({ project }) {
   );
 }
 
-function resetPointer(element) {
-  if (!element) return;
-  element.style.setProperty("--rotate-x", "0deg");
-  element.style.setProperty("--rotate-y", "0deg");
-  element.style.setProperty("--pointer-active", "0");
-}
-
 function ProjectCard({ project, onOpen, motion }) {
   const { tr } = useLanguage();
   const cardRef = useRef(null);
   const titleId = useId();
-
-  useEffect(() => {
-    if (!motion) resetPointer(cardRef.current);
-  }, [motion]);
-
-  function trackPointer(event) {
-    if (
-      !motion ||
-      event.pointerType !== "mouse" ||
-      !window.matchMedia("(hover: hover) and (pointer: fine)").matches
-    )
-      return;
-    const card = event.currentTarget;
-    const bounds = card.getBoundingClientRect();
-    const x = Math.max(
-      0,
-      Math.min(1, (event.clientX - bounds.left) / bounds.width),
-    );
-    const y = Math.max(
-      0,
-      Math.min(1, (event.clientY - bounds.top) / bounds.height),
-    );
-    card.style.setProperty("--pointer-x", `${x * 100}%`);
-    card.style.setProperty("--pointer-y", `${y * 100}%`);
-    card.style.setProperty("--rotate-x", `${(0.5 - y) * 5}deg`);
-    card.style.setProperty("--rotate-y", `${(x - 0.5) * 5}deg`);
-    card.style.setProperty("--pointer-active", "1");
-  }
+  const guide = useAvatarGuide();
+  usePointerSurface(cardRef, {
+    enabled: motion && guide?.available,
+    kind: "card",
+  });
 
   return (
     <article
@@ -115,10 +87,6 @@ function ProjectCard({ project, onOpen, motion }) {
       className="project-card"
       data-project={project.id}
       style={{ "--project-accent": project.accent }}
-      onPointerMove={trackPointer}
-      onPointerLeave={(event) => resetPointer(event.currentTarget)}
-      onPointerCancel={(event) => resetPointer(event.currentTarget)}
-      onBlur={(event) => resetPointer(event.currentTarget)}
     >
       <ProjectVisual project={project} />
       <div className="project-info">

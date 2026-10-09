@@ -34,6 +34,7 @@ import { Magnetic } from "./components/Effects";
 import WelcomeExperience from "./components/WelcomeExperience";
 import PortfolioHero from "./components/PortfolioHero";
 import SandCursor from "./components/SandCursor";
+import CinematicCursor from "./components/CinematicCursor";
 import {
   StoryHeading,
   StoryStatement,
@@ -673,6 +674,15 @@ export default function App() {
             </section>
           </StoryMain>
           <AvatarController />
+          <CinematicCursor
+            enabled={
+              motion &&
+              portfolioReady &&
+              !welcomeVisible &&
+              !menuOpen &&
+              !selected
+            }
+          />
           <footer className="footer page-width">
             <span>
               © {new Date().getFullYear()} {tr("Fares Mohammed")}
@@ -699,7 +709,7 @@ export default function App() {
           )}
         </div>
       </div>
-      <SandCursor enabled={motion} />
+      <SandCursor enabled={motion && welcomeVisible} />
       {welcomeVisible && (
         <WelcomeExperience
           motion={motion}

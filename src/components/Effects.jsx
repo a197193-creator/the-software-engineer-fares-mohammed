@@ -1,4 +1,6 @@
 import { useEffect, useRef } from "react";
+import { useAvatarGuide } from "./AvatarGuideContext";
+import { usePointerSurface } from "../hooks/usePointerSurface";
 
 export function Cursor({ enabled }) {
   const ref = useRef(null);
@@ -27,32 +29,14 @@ export function Cursor({ enabled }) {
 }
 
 export function Magnetic({ children, className = "", ...props }) {
-  function move(e) {
-    if (
-      document.documentElement.classList.contains("motion-off") ||
-      e.pointerType !== "mouse"
-    )
-      return;
-    const r = e.currentTarget.getBoundingClientRect();
-    e.currentTarget.style.setProperty(
-      "--mx",
-      `${(e.clientX - r.left - r.width / 2) * 0.1}px`,
-    );
-    e.currentTarget.style.setProperty(
-      "--my",
-      `${(e.clientY - r.top - r.height / 2) * 0.15}px`,
-    );
-  }
+  const ref = useRef(null);
+  const guide = useAvatarGuide();
+  usePointerSurface(ref, {
+    enabled: guide?.available && guide.motion,
+    kind: "magnet",
+  });
   return (
-    <a
-      {...props}
-      className={`button magnetic ${className}`}
-      onPointerMove={move}
-      onPointerLeave={(e) => {
-        e.currentTarget.style.setProperty("--mx", "0px");
-        e.currentTarget.style.setProperty("--my", "0px");
-      }}
-    >
+    <a {...props} ref={ref} className={`button magnetic ${className}`}>
       {children}
     </a>
   );

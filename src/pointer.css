@@ -1,0 +1,262 @@
+/* Main portfolio only. The Welcome keeps its existing sand cursor. */
+.cinematic {
+  --pointer-cyan: #40dfff;
+  --pointer-gold: #f5c66a;
+  --pointer-ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.pointer-atmosphere,
+.pointer-hero-field {
+  pointer-events: none;
+  width: 320px;
+  height: 260px;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  background: radial-gradient(
+    ellipse,
+    #40dfff0e 0%,
+    #40dfff06 34%,
+    transparent 70%
+  );
+  margin-left: -160px;
+  margin-top: -130px;
+  transition: opacity 180ms ease;
+}
+.pointer-atmosphere {
+  position: fixed;
+  /* Inside the site's isolated stack, above its background and below content. */
+  z-index: -1;
+}
+.pointer-hero-field {
+  position: absolute;
+  /* The Hero photo's existing darkness mask stays above this glow. */
+}
+.pointer-atmosphere[data-visible],
+.pointer-hero-field[data-visible] {
+  opacity: 1;
+}
+.energy-cursor {
+  position: fixed;
+  inset: 0;
+  z-index: 2200;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 120ms ease;
+  --energy-color: var(--pointer-cyan);
+}
+.energy-cursor[data-visible] {
+  opacity: 1;
+}
+.energy-ring-position,
+.energy-grain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+.energy-ring {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--energy-color) 38%, transparent);
+  transform: translate(-50%, -50%);
+  transition:
+    transform 180ms var(--pointer-ease),
+    border-color 180ms ease;
+}
+.energy-cursor[data-hover="cyan"] .energy-ring,
+.energy-cursor[data-hover="gold"] .energy-ring {
+  transform: translate(-50%, -50%) scale(1.25);
+}
+.energy-cursor[data-hover="gold"] {
+  --energy-color: var(--pointer-gold);
+}
+.energy-cursor[data-pressed] .energy-ring {
+  transform: translate(-50%, -50%) scale(0.8);
+}
+.energy-grain {
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: var(--pointer-cyan);
+  opacity: 0;
+}
+.cinematic
+  :is(
+    .button,
+    .icon-button,
+    .project-open,
+    .filters button,
+    .language-toggle,
+    .replay-welcome
+  ) {
+  transition:
+    transform 260ms var(--pointer-ease),
+    scale 180ms var(--pointer-ease),
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    background 220ms ease,
+    color 220ms ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .cinematic .hero-phase-one .button:hover {
+    scale: 1.025;
+  }
+  .cinematic
+    :is(
+      .button,
+      .icon-button,
+      .project-open,
+      .filters button,
+      .language-toggle,
+      .replay-welcome
+    ):hover {
+    scale: 1.025;
+    border-color: color-mix(in srgb, var(--pointer-cyan) 42%, var(--line));
+    box-shadow: 0 0 18px #40dfff0b;
+  }
+  .cinematic .button.primary:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px #f5c66a1a;
+  }
+  .cinematic .project-card:hover {
+    scale: 1.008;
+    translate: 0 -2px;
+  }
+  .cinematic .project-card:hover .project-symbol {
+    scale: 1.025;
+  }
+}
+.cinematic
+  :is(
+    .button,
+    .icon-button,
+    .project-open,
+    .filters button,
+    .language-toggle,
+    .replay-welcome
+  ):active {
+  scale: 0.98;
+}
+.cinematic .project-card {
+  transition:
+    transform 240ms var(--pointer-ease),
+    border-color 220ms ease,
+    scale 260ms var(--pointer-ease),
+    translate 260ms var(--pointer-ease);
+}
+/* Keep the tracking light within the visual, away from the title/body/buttons. */
+.cinematic .project-card:after {
+  display: none;
+}
+.cinematic .project-visual:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    220px circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
+    #40dfff12,
+    transparent 70%
+  );
+  opacity: var(--pointer-active, 0);
+  transition: opacity 220ms ease;
+}
+.cinematic .desktop-nav a:after {
+  background: var(--pointer-cyan);
+  transform-origin: left;
+  transition:
+    transform 240ms var(--pointer-ease),
+    background 240ms ease;
+}
+.cinematic .desktop-nav a.current:after {
+  background: var(--accent);
+}
+.cinematic .desktop-nav a:focus-visible:after {
+  transform: scaleX(1);
+}
+html[lang="ar"] .cinematic .desktop-nav a:after {
+  transform-origin: right;
+}
+/* No new avatar transform: its existing controller remains the sole owner. */
+@media (hover: none), (pointer: coarse) {
+  .energy-cursor,
+  .pointer-atmosphere,
+  .pointer-hero-field {
+    display: none;
+  }
+  .cinematic .project-card:hover {
+    scale: 1;
+    translate: none;
+  }
+  .cinematic .project-card:hover .project-symbol {
+    scale: 1;
+  }
+  .cinematic .hero-phase-one .button:hover {
+    scale: 1;
+  }
+}
+.motion-off :is(.energy-cursor, .pointer-atmosphere, .pointer-hero-field) {
+  display: none;
+}
+.motion-off
+  .cinematic
+  :is(
+    .button,
+    .icon-button,
+    .project-open,
+    .filters button,
+    .language-toggle,
+    .replay-welcome,
+    .project-card
+  ),
+.motion-off .cinematic .project-card .project-symbol {
+  scale: 1;
+  translate: none;
+  transition: none;
+}
+.motion-off .cinematic .magnetic {
+  transform: none;
+}
+.motion-off .cinematic .hero-phase-one .button:is(:hover, :active),
+.motion-off .cinematic .icon-button:is(:hover, :active),
+.motion-off .cinematic .project-open:active {
+  scale: 1;
+}
+.motion-off .cinematic .desktop-nav a:after {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .energy-cursor,
+  .pointer-atmosphere,
+  .pointer-hero-field {
+    display: none;
+  }
+  .cinematic
+    :is(
+      .button,
+      .icon-button,
+      .project-open,
+      .filters button,
+      .language-toggle,
+      .replay-welcome,
+      .project-card
+    ),
+  .cinematic .project-card .project-symbol {
+    scale: 1;
+    translate: none;
+    transition: none;
+  }
+  .cinematic .magnetic {
+    transform: none;
+  }
+  .cinematic .hero-phase-one .button:is(:hover, :active),
+  .cinematic .icon-button:is(:hover, :active),
+  .cinematic .project-open:active {
+    scale: 1;
+  }
+  .cinematic .desktop-nav a:after {
+    transition: none;
+  }
+}

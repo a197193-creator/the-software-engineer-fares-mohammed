@@ -12,6 +12,7 @@ import "./readability.css";
 import "./typography.css";
 import "./avatar-guide.css";
 import "./avatar-motion.css";
+import "./pointer.css";
 
 createRoot(document.getElementById("root")).render(
   <LanguageProvider>
