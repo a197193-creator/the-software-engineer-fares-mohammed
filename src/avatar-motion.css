@@ -1,0 +1,146 @@
+/* TASK 4: three separate transform owners: spring, entrance, and uniform idle. */
+.cinematic .character-frame {
+  overflow: clip;
+}
+.cinematic .character-frame:has(.avatar-motion-dock) > .character-image {
+  visibility: hidden;
+}
+/* Leave the laptop silhouette beside the project's bubble, rather than behind it. */
+@media (min-width: 1100px) {
+  .cinematic .avatar-projects .character-frame {
+    right: 250px;
+  }
+  .cinematic .avatar-projects .avatar-guide-frame {
+    width: 244px;
+  }
+}
+.avatar-motion-dock,
+.avatar-motion-spring,
+.avatar-motion-entry,
+.avatar-motion-breath {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.avatar-motion-spring {
+  inset: 16px 14px;
+  transform-origin: 50% 85%;
+  will-change: transform;
+}
+.avatar-motion-entry {
+  animation: avatar-dock-settle 0.65s cubic-bezier(0.16, 0.75, 0.25, 1) both;
+}
+.avatar-motion-breath {
+  transform-origin: 50% 90%;
+  animation: avatar-idle-breath 7.5s ease-in-out infinite;
+  animation-play-state: paused;
+}
+.avatar-motion-spring[data-running="true"] .avatar-motion-breath {
+  animation-play-state: running;
+}
+.avatar-motion-dock img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  user-select: none;
+}
+.hero-portrait-motion,
+.hero-portrait-breath {
+  position: absolute;
+  inset: 0;
+  transform-origin: 60% 45%;
+  pointer-events: none;
+}
+.hero-portrait-breath {
+  animation: avatar-portrait-breath 9s ease-in-out infinite paused;
+}
+.hero-portrait-motion[data-running="true"] .hero-portrait-breath {
+  animation-play-state: running;
+}
+@keyframes avatar-dock-settle {
+  from {
+    transform: translate3d(0, 10px, 0) scale(0.985);
+  }
+  to {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+@keyframes avatar-idle-breath {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-2px) scale(1.003);
+  }
+}
+@keyframes avatar-portrait-breath {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.003);
+  }
+}
+@media (max-width: 767px) {
+  .avatar-motion-spring {
+    inset: 8px;
+  }
+  .avatar-motion-entry {
+    animation-duration: 0.4s;
+  }
+  .avatar-motion-breath {
+    animation: none;
+  }
+}
+/* In narrower art columns, stack a small full-body cutout above readable dialogue. */
+@media (max-width: 1099px) {
+  .cinematic .about-art,
+  .cinematic .skills-art,
+  .cinematic .experience-art,
+  .cinematic .contact-art {
+    min-height: 445px;
+  }
+  .cinematic .projects-heading .section-avatar {
+    min-height: 445px;
+  }
+  .cinematic .section-avatar:not(.avatar-home) .character-frame {
+    inset: 0 0 auto;
+    height: 140px;
+  }
+  .cinematic .section-avatar:not(.avatar-home) .avatar-speech,
+  .cinematic .section-avatar:not(.avatar-home) .avatar-guide-collapsed {
+    top: 150px;
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+  }
+  .cinematic .section-avatar:not(.avatar-home) .avatar-guide-frame:before {
+    top: -6px;
+    left: calc(50% - 6px);
+    transform: rotate(135deg);
+  }
+}
+.motion-off .avatar-motion-dock,
+.motion-off .avatar-motion-entry,
+.motion-off .avatar-motion-breath,
+.motion-off .hero-portrait-breath {
+  animation: none;
+}
+.motion-off .hero-portrait-motion {
+  transform: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .avatar-motion-dock,
+  .avatar-motion-entry,
+  .avatar-motion-breath,
+  .hero-portrait-breath {
+    animation: none;
+  }
+  .hero-portrait-motion,
+  .avatar-motion-spring {
+    transform: none !important;
+  }
+}

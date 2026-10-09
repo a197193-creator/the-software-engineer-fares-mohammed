@@ -2,12 +2,11 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
-import { guideSections } from "../guideDialogue";
+import { useActiveSection } from "../hooks/useActiveSection";
 
 const AvatarGuideContext = createContext(null);
 const visitKey = "fares-guide-visit";
@@ -29,50 +28,10 @@ export function AvatarGuideProvider({
   goTo,
   children,
 }) {
-  const [section, setSection] = useState("home");
-  const [candidate, setCandidate] = useState("home");
   const [mode, setMode] = useState(visitMode);
   const completed = useRef(new Set());
   const available = ready && !blocked;
-
-  // Only sections reaching the reading area can speak, including during navigation.
-  useEffect(() => {
-    if (!available) return;
-    const sections = guideSections
-      .map((id) => document.getElementById(id))
-      .filter(Boolean);
-    let observer;
-    const connect = () => {
-      observer?.disconnect();
-      const height = window.innerHeight;
-      const update = () => {
-        const current = [...sections].reverse().find((element) => {
-          const bounds = element.getBoundingClientRect();
-          return bounds.top <= height * 0.46 && bounds.bottom >= height * 0.4;
-        });
-        if (current) setCandidate(current.id);
-      };
-      observer = new IntersectionObserver(update, {
-        rootMargin: `-${height * 0.4}px 0px -${height * 0.54}px 0px`,
-        threshold: 0,
-      });
-      sections.forEach((element) => observer.observe(element));
-      update();
-    };
-    connect();
-    window.addEventListener("resize", connect);
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("resize", connect);
-    };
-  }, [available]);
-
-  // A settled section owns one message; small scrolling changes do not restart it.
-  useEffect(() => {
-    if (!available || section === candidate) return;
-    const timer = setTimeout(() => setSection(candidate), 350);
-    return () => clearTimeout(timer);
-  }, [available, candidate, section]);
+  const { section, candidate } = useActiveSection(available);
 
   const changeMode = useCallback((value) => {
     setMode(value);

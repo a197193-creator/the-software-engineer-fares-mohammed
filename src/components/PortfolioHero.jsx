@@ -14,12 +14,21 @@ import { Magnetic } from "./Effects";
 import SectionAvatar from "./SectionAvatar";
 import { StoryHeading } from "./StoryTypography";
 import HeroMessage from "./HeroMessage";
+import { useAvatarGuide } from "./AvatarGuideContext";
+import { useAvatarMotion } from "../hooks/useAvatarMotion";
 const external = { target: "_blank", rel: "noopener noreferrer" };
 export default function PortfolioHero({ motion, ready, goTo }) {
   const { language, hero, tr } = useLanguage();
   const [failed, setFailed] = useState(false);
   const [visible, setVisible] = useState(false);
   const root = useRef(null);
+  const portrait = useRef(null);
+  const guide = useAvatarGuide();
+  useAvatarMotion(portrait, {
+    section: "home",
+    enabled: motion && guide.available && guide.section === "home",
+    portrait: true,
+  });
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) =>
       setVisible(entry.isIntersecting),
@@ -55,14 +64,18 @@ export default function PortfolioHero({ motion, ready, goTo }) {
       className={`hero hero-phase-one page-width ${visible && ready ? "hero-visible" : ""} ${failed ? "scene-missing" : ""}`}
     >
       <div className="hero-photo" aria-hidden="true">
-        <img
-          src="/assets/cinematic-hero.webp"
-          alt=""
-          width="1672"
-          height="941"
-          fetchPriority="high"
-          onError={() => setFailed(true)}
-        />
+        <div className="hero-portrait-motion" ref={portrait}>
+          <div className="hero-portrait-breath">
+            <img
+              src="/assets/cinematic-hero.webp"
+              alt=""
+              width="1672"
+              height="941"
+              fetchPriority="high"
+              onError={() => setFailed(true)}
+            />
+          </div>
+        </div>
         <div className="hero-ambient-light" />
       </div>
       <div className="hero-copy" dir={language === "ar" ? "rtl" : "ltr"}>
@@ -134,7 +147,7 @@ export default function PortfolioHero({ motion, ready, goTo }) {
         </div>
       </div>
       <div className="hero-art">
-        <SectionAvatar section="home" motion={false} imageHidden={!failed} />
+        <SectionAvatar section="home" motion={motion} imageHidden={!failed} />
       </div>
       <div className="hero-bottom">
         <a href="#about" onClick={jump("about")}>

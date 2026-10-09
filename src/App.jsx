@@ -29,6 +29,7 @@ import SectionAvatar, {
 import Projects, { ProjectDialog } from "./components/Projects";
 import Guide from "./components/Guide";
 import { AvatarGuideProvider } from "./components/AvatarGuideContext";
+import AvatarController from "./components/AvatarController";
 import { Magnetic } from "./components/Effects";
 import WelcomeExperience from "./components/WelcomeExperience";
 import PortfolioHero from "./components/PortfolioHero";
@@ -671,6 +672,7 @@ export default function App() {
               </div>
             </section>
           </StoryMain>
+          <AvatarController />
           <footer className="footer page-width">
             <span>
               © {new Date().getFullYear()} {tr("Fares Mohammed")}
