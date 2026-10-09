@@ -2,10 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { Pause, Play } from "lucide-react";
 import { useLanguage } from "../LanguageContext";
 import { useStoryMotion } from "./StoryTypography";
+import { useAvatarGuide } from "./AvatarGuideContext";
 
 export default function HeroMessage({ heroVisible }) {
   const { hero } = useLanguage();
   const { motion, ready } = useStoryMotion();
+  const guide = useAvatarGuide();
   const root = useRef(null);
   const [index, setIndex] = useState(0);
   const [visible, setVisible] = useState(false);
@@ -30,6 +32,7 @@ export default function HeroMessage({ heroVisible }) {
   const running =
     motion &&
     ready &&
+    guide.available &&
     heroVisible &&
     visible &&
     pageVisible &&

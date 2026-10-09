@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useMotionSettings } from "../components/MotionSettings";
 
 // Presentation-only lifecycle: future audio can consume completion/phase separately.
 export function useGuideTyping({
@@ -9,6 +10,7 @@ export function useGuideTyping({
   wasCompleted,
   markCompleted,
 }) {
+  const { pageActive } = useMotionSettings();
   const words = useMemo(() => text.match(/\S+/gu) || [], [text]);
   const [count, setCount] = useState(() =>
     !motion || wasCompleted(messageKey) ? words.length : 0,
@@ -18,7 +20,7 @@ export function useGuideTyping({
     markCompleted(messageKey);
   };
   useEffect(() => {
-    if (!enabled) return;
+    if (!enabled || !pageActive) return;
     if (!motion || wasCompleted(messageKey)) {
       setCount(words.length);
       return;
@@ -36,7 +38,16 @@ export function useGuideTyping({
           (/[.!?؟،,]$/u.test(previous) ? 100 : 0);
     const timer = setTimeout(() => setCount((value) => value + 1), pause);
     return () => clearTimeout(timer);
-  }, [count, motion, enabled, words, messageKey, wasCompleted, markCompleted]);
+  }, [
+    count,
+    motion,
+    enabled,
+    pageActive,
+    words,
+    messageKey,
+    wasCompleted,
+    markCompleted,
+  ]);
   return {
     words,
     count: motion ? count : words.length,

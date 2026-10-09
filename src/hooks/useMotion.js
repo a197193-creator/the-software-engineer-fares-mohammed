@@ -3,10 +3,12 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 import "lenis/dist/lenis.css";
+import { useMotionSettings } from "../components/MotionSettings";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function useMotion(enabled, blocked, ready, layoutKey) {
+  const { config, pageActive } = useMotionSettings();
   useEffect(() => {
     let active = true;
     document.fonts.ready.then(() => {
@@ -17,27 +19,31 @@ export function useMotion(enabled, blocked, ready, layoutKey) {
     };
   }, [layoutKey]);
   useEffect(() => {
-    if (
-      !enabled ||
-      blocked ||
-      !window.matchMedia(
-        "(min-width: 768px) and (hover: hover) and (pointer: fine)",
-      ).matches
-    )
-      return;
-    const lenis = new Lenis({
-      duration: 1.1,
-      anchors: true,
-      smoothWheel: true,
-    });
-    lenis.on("scroll", ScrollTrigger.update);
-    const tick = (time) => lenis.raf(time * 1000);
-    gsap.ticker.add(tick);
-    return () => {
+    if (!enabled || config.level === "subtle" || !pageActive || blocked) return;
+    const media = window.matchMedia(
+      "(min-width: 768px) and (hover: hover) and (pointer: fine)",
+    );
+    let lenis;
+    const tick = (time) => lenis?.raf(time * 1000);
+    const stop = () => {
       gsap.ticker.remove(tick);
-      lenis.destroy();
+      lenis?.destroy();
+      lenis = undefined;
     };
-  }, [enabled, blocked]);
+    const sync = () => {
+      stop();
+      if (!media.matches) return;
+      lenis = new Lenis({ duration: 1.1, anchors: true, smoothWheel: true });
+      lenis.on("scroll", ScrollTrigger.update);
+      gsap.ticker.add(tick);
+    };
+    sync();
+    media.addEventListener("change", sync);
+    return () => {
+      media.removeEventListener("change", sync);
+      stop();
+    };
+  }, [enabled, blocked, config.level, pageActive]);
 
   useEffect(() => {
     if (!enabled || !ready) return;
@@ -46,10 +52,10 @@ export function useMotion(enabled, blocked, ready, layoutKey) {
         // Typography owns its words/statement; do not also move its ancestor.
         if (el.querySelector("[data-story-heading], [data-story-copy]")) return;
         gsap.from(el, {
-          y: 32,
+          y: config.revealDistance,
           opacity: 0,
-          duration: 0.85,
-          ease: "power3.out",
+          duration: config.reveal,
+          ease: config.ease,
           scrollTrigger: { trigger: el, start: "top 92%", once: true },
         });
       });
@@ -69,43 +75,45 @@ export function useMotion(enabled, blocked, ready, layoutKey) {
       );
     });
     return () => context.revert();
-  }, [enabled, ready]);
+  }, [enabled, ready, config]);
 }
 
 export function usePageTracking(setActive, setHidden) {
   useEffect(() => {
     let last = window.scrollY,
-      queued = false;
+      frame = 0;
+    const progressBar = document.querySelector(".scroll-progress");
+    const sections = [...document.querySelectorAll("main > section[id]")];
     const update = () => {
       const y = window.scrollY;
       const height = document.documentElement.scrollHeight - window.innerHeight;
-      document.documentElement.style.setProperty(
-        "--scroll-progress",
-        height > 0 ? y / height : 0,
-      );
+      // Localize the write: inherited root variables restyle the entire site.
+      if (progressBar)
+        progressBar.style.transform = `scaleX(${height > 0 ? y / height : 0})`;
       if (Math.abs(y - last) > 8) {
         setHidden(y > last && y > 180);
         last = y;
       }
-      const sections = [...document.querySelectorAll("main > section[id]")];
-      const active = [...sections]
-        .reverse()
-        .find(
-          (el) => el.getBoundingClientRect().top < window.innerHeight * 0.45,
-        );
+      const atEnd = y > 0 && height - y <= 2;
+      const active = atEnd
+        ? sections.at(-1)
+        : [...sections]
+            .reverse()
+            .find(
+              (el) =>
+                el.getBoundingClientRect().top < window.innerHeight * 0.46,
+            );
       setActive(active?.id || "home");
-      queued = false;
+      frame = 0;
     };
     const scroll = () => {
-      if (!queued) {
-        queued = true;
-        requestAnimationFrame(update);
-      }
+      if (!frame) frame = requestAnimationFrame(update);
     };
     window.addEventListener("scroll", scroll, { passive: true });
     window.addEventListener("resize", scroll);
     update();
     return () => {
+      cancelAnimationFrame(frame);
       window.removeEventListener("scroll", scroll);
       window.removeEventListener("resize", scroll);
     };

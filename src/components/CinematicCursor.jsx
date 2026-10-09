@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { desktopPointerQuery } from "../hooks/usePointerSurface";
+import { useMotionSettings } from "./MotionSettings";
 
 const particleCount = 6;
 const lifetime = 340;
@@ -8,6 +9,7 @@ const editable =
   "input,textarea,select,[contenteditable]:not([contenteditable='false'])";
 
 export default function CinematicCursor({ enabled }) {
+  const { config } = useMotionSettings();
   const overlay = useRef(null);
   const atmosphere = useRef(null);
   const heroField = useRef(null);
@@ -132,6 +134,7 @@ export default function CinematicCursor({ enabled }) {
         : "none";
       const now = performance.now();
       if (
+        config.particles > 0 &&
         now - seedTime > 42 &&
         Math.hypot(targetX - seedX, targetY - seedY) > 10
       ) {
@@ -141,7 +144,7 @@ export default function CinematicCursor({ enabled }) {
           y: targetY,
           dx: index % 2 ? 4 : -4,
         });
-        index = (index + 1) % particleCount;
+        index = (index + 1) % config.particles;
         seedX = targetX;
         seedY = targetY;
         seedTime = now;
@@ -185,7 +188,7 @@ export default function CinematicCursor({ enabled }) {
       heroResize.disconnect();
       hide();
     };
-  }, [enabled, heroHost]);
+  }, [enabled, heroHost, config]);
 
   return (
     <>

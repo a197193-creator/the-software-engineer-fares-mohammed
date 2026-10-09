@@ -1,0 +1,184 @@
+/* Shared main-portfolio tokens. Welcome animation values/timeline are untouched. */
+.cinematic {
+  --pointer-ease: var(--motion-ease);
+}
+.motion-setting {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.motion-setting select {
+  font: inherit;
+  min-height: 44px;
+  padding: 8px 28px 8px 11px;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.motion-setting option {
+  color: var(--text);
+  background: var(--surface);
+}
+.motion-note {
+  color: var(--muted);
+  font-size: 12px;
+}
+.cinematic .projects-section .filters button {
+  min-height: 44px;
+  font-size: 14px;
+}
+.cinematic .projects-section .result-count {
+  font-size: 12px;
+}
+.avatar-guide-tools {
+  flex-wrap: wrap;
+}
+.avatar-guide-tools > div {
+  flex-wrap: wrap;
+}
+.cinematic .avatar-guide-surface {
+  animation-duration: var(--motion-interaction);
+}
+.cinematic .hero-message-item {
+  transition:
+    opacity var(--motion-interaction) ease,
+    transform var(--motion-interaction) var(--motion-ease);
+}
+.cinematic .hero-ambient-light {
+  animation-duration: var(--motion-cycle);
+}
+.cinematic .avatar-motion-entry {
+  animation-duration: var(--motion-reveal);
+  animation-timing-function: var(--motion-ease);
+}
+.cinematic .avatar-motion-breath {
+  animation-duration: var(--motion-cycle);
+}
+@keyframes avatar-idle-breath {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(calc(var(--motion-float) * -1))
+      scale(calc(1 + var(--motion-breath-scale)));
+  }
+}
+@keyframes avatar-portrait-breath {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(calc(1 + var(--motion-breath-scale)));
+  }
+}
+.cinematic .avatar-motion-spring {
+  will-change: auto;
+}
+.cinematic .avatar-motion-spring[data-running="true"] {
+  will-change: transform;
+}
+.cinematic .pointer-atmosphere[data-visible],
+.cinematic .pointer-hero-field[data-visible] {
+  opacity: var(--motion-glow);
+}
+.cinematic .project-panel[data-floating="true"] .project-float {
+  animation-duration: var(--motion-cycle);
+}
+@keyframes project-float {
+  50% {
+    transform: translateY(calc(var(--motion-float) * -1));
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .cinematic
+    :is(
+      .button,
+      .icon-button,
+      .filters button,
+      .language-toggle,
+      .replay-welcome
+    ):hover,
+  .cinematic .hero-phase-one .button:hover {
+    scale: var(--motion-hover-scale);
+  }
+  .cinematic .project-workspace .project-card:is(:hover, :focus-within) {
+    scale: var(--motion-card-scale);
+    translate: 0 calc(var(--motion-float) * -1);
+  }
+}
+.cinematic[data-motion-level="subtle"]
+  :is(
+    .project-float,
+    .avatar-motion-entry,
+    .avatar-motion-breath,
+    .hero-portrait-breath,
+    .hero-ambient-light,
+    .marquee-group,
+    .scroll-hint
+  ) {
+  animation: none;
+}
+.cinematic[data-page-active="false"] *,
+.cinematic[data-motion-blocked="true"] * {
+  animation-play-state: paused !important;
+}
+.cinematic[data-motion-level="subtle"] .avatar-motion-spring {
+  transform: none !important;
+}
+.cinematic .project-workspace .project-symbol {
+  transform: none;
+}
+.motion-off .cinematic .hero-message-item {
+  transition: none;
+}
+.motion-off .cinematic .hero-phase-one .button:is(:hover, :active),
+.motion-off
+  .cinematic
+  :is(
+    .button,
+    .icon-button,
+    .project-card,
+    .project-open,
+    .filters button,
+    .language-toggle,
+    .replay-welcome
+  ):is(:hover, :active, :focus-within) {
+  scale: 1;
+  translate: none;
+}
+@media (hover: none), (pointer: coarse), (max-width: 767px) {
+  .cinematic .project-workspace .project-card:is(:hover, :focus-within) {
+    scale: 1;
+    translate: none;
+  }
+  .cinematic .hero-phase-one .button:hover {
+    scale: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cinematic *,
+  .cinematic *:before,
+  .cinematic *:after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .cinematic .hero-phase-one .button:is(:hover, :active),
+  .cinematic
+    :is(
+      .button,
+      .icon-button,
+      .project-card,
+      .project-open,
+      .filters button,
+      .language-toggle,
+      .replay-welcome
+    ):is(:hover, :active, :focus-within) {
+    scale: 1;
+    translate: none;
+  }
+}

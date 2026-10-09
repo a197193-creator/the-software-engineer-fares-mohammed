@@ -5,8 +5,10 @@ import { avatarScenes, loadAvatarPose } from "../avatarPoseRegistry";
 import { guideSections } from "../guideDialogue";
 import { useAvatarGuide } from "./AvatarGuideContext";
 import { useAvatarMotion } from "../hooks/useAvatarMotion";
+import { useMotionSettings } from "./MotionSettings";
 
 function DockedPose({ pose, departing, motion }) {
+  const { config } = useMotionSettings();
   const ref = useRef(null);
   const layer = useRef(null);
   const scene = avatarScenes[pose.section];
@@ -15,12 +17,12 @@ function DockedPose({ pose, departing, motion }) {
     // Reversing an in-flight dissolve starts from its current opacity.
     const tween = gsap.to(layer.current, {
       opacity: departing ? 0 : 1,
-      duration: departing ? 0.38 : 0.55,
+      duration: departing ? config.poseExit : config.poseEnter,
       ease: "power2.out",
       overwrite: true,
     });
     return () => tween.kill();
-  }, [departing]);
+  }, [departing, config]);
   return createPortal(
     <div
       ref={layer}

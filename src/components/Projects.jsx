@@ -2,14 +2,9 @@ import { useLanguage } from "../LanguageContext";
 import { useEffect, useId, useRef, useState } from "react";
 import {
   ArrowUpRight,
-  BookOpen,
-  CalendarDays,
   Check,
-  Code2,
   ExternalLink,
   GitFork,
-  HeartPulse,
-  Smartphone,
   Sparkles,
   X,
 } from "lucide-react";
@@ -18,6 +13,8 @@ import SectionAvatar from "./SectionAvatar";
 import { StoryHeading, StoryStatement } from "./StoryTypography";
 import { usePointerSurface } from "../hooks/usePointerSurface";
 import { useAvatarGuide } from "./AvatarGuideContext";
+import ProjectPreview from "./ProjectPreview";
+import { useProjectEntrance } from "../hooks/useProjectEntrance";
 
 const externalProps = { target: "_blank", rel: "noopener noreferrer" };
 const filters = ["All work", "Mobile", "Web", "AI"];
@@ -26,54 +23,11 @@ const filterTypes = {
   Web: ["research", "booking"],
   AI: ["health"],
 };
-const projectIcons = {
-  mobile: Smartphone,
-  health: HeartPulse,
-  research: BookOpen,
-  booking: CalendarDays,
-};
-
-function ProjectVisual({ project }) {
-  const { tr } = useLanguage();
-  const Icon = projectIcons[project.type] || Code2;
-  const word =
-    project.id === "tmc-web"
-      ? "TMC"
-      : project.id === "uwc"
-        ? "UWC"
-        : project.name;
-
-  return (
-    <div
-      className={`project-visual ${project.type}`}
-      style={{ "--project-accent": project.accent }}
-      aria-hidden="true"
-    >
-      <div className="visual-grid" />
-      <div className="visual-orbit" />
-      <div className="visual-orbit visual-orbit-two" />
-      <div className="visual-nodes">
-        {[0, 1, 2].map((index) => (
-          <span
-            key={index}
-            className={`visual-node visual-node-${index + 1}`}
-          />
-        ))}
-      </div>
-      <span className="visual-index">{project.number} / SELECTED WORK</span>
-      <Code2 className="visual-code" size={18} strokeWidth={1.3} />
-      <div className="project-symbol">
-        <Icon strokeWidth={1.15} />
-      </div>
-      <span className="visual-word">{word}</span>
-      <span className="visual-caption">{tr(project.tagline)}</span>
-    </div>
-  );
-}
-
-function ProjectCard({ project, onOpen, motion }) {
+function ProjectCard({ project, onOpen, motion, featured }) {
   const { tr } = useLanguage();
   const cardRef = useRef(null);
+  const panelRef = useRef(null);
+  useProjectEntrance(panelRef, project.id);
   const titleId = useId();
   const guide = useAvatarGuide();
   usePointerSurface(cardRef, {
@@ -82,48 +36,87 @@ function ProjectCard({ project, onOpen, motion }) {
   });
 
   return (
-    <article
-      ref={cardRef}
-      className="project-card"
-      data-project={project.id}
-      style={{ "--project-accent": project.accent }}
+    <div
+      ref={panelRef}
+      className="project-panel"
+      data-featured={featured}
+      style={{ "--panel-order": Number(project.number) }}
     >
-      <ProjectVisual project={project} />
-      <div className="project-info">
-        <div className="project-meta">
-          <span>{tr(project.category)}</span>
-          <span>{project.number}</span>
-        </div>
-        <div className="project-title">
-          <h3 id={titleId}>{tr(project.name)}</h3>
-          <button
-            className="project-open"
-            type="button"
-            onClick={() => onOpen(project)}
-            aria-label={`${tr("Explore")} ${project.name}`}
-            aria-haspopup="dialog"
-          >
-            <ArrowUpRight size={21} aria-hidden="true" />
-          </button>
-        </div>
-        <p>{tr(project.description)}</p>
-        <div className="tags">
-          {project.tags.map((tag) => (
-            <span key={tag}>{tr(tag)}</span>
-          ))}
-        </div>
+      <div className="project-float">
+        <article
+          ref={cardRef}
+          className="project-card"
+          data-project={project.id}
+          style={{ "--project-accent": project.accent }}
+        >
+          <ProjectPreview project={project} />
+          <div className="project-info">
+            <div className="project-meta">
+              <span>{tr(project.category)}</span>
+              <span>{featured ? tr("Featured project") : project.number}</span>
+            </div>
+            <div className="project-title">
+              <h3 id={titleId}>{tr(project.name)}</h3>
+            </div>
+            <p>{tr(project.description)}</p>
+            <div className="tags">
+              {project.tags.map((tag) => (
+                <span key={tag}>{tr(tag)}</span>
+              ))}
+            </div>
+            <details className="project-contribution">
+              <summary>{tr("My contribution")}</summary>
+              <p>{tr(project.solution)}</p>
+            </details>
+            <div className="project-card-actions">
+              <button
+                className="project-open project-detail-button"
+                type="button"
+                onClick={() => onOpen(project)}
+                aria-label={`${tr("Explore")} ${project.name}`}
+                aria-haspopup="dialog"
+              >
+                {tr("View project details")}
+                <ArrowUpRight size={18} aria-hidden="true" />
+              </button>
+              {project.github && (
+                <a
+                  href={project.github}
+                  {...externalProps}
+                  aria-label={`${tr("GitHub")} — ${project.name}`}
+                >
+                  <GitFork size={17} aria-hidden="true" />
+                  {tr("GitHub")}
+                </a>
+              )}
+              {project.demo && (
+                <a
+                  href={project.demo}
+                  {...externalProps}
+                  aria-label={`${tr("Live demo")} — ${project.name}`}
+                >
+                  <ExternalLink size={17} aria-hidden="true" />
+                  {tr("Live demo")}
+                </a>
+              )}
+            </div>
+            <span className="project-context">{tr(project.context)}</span>
+          </div>
+        </article>
       </div>
-    </article>
+    </div>
   );
 }
 
 export default function Projects({ onOpen, motion = true }) {
   const { tr } = useLanguage();
   const [filter, setFilter] = useState("All work");
-  const visibleProjects = projects.filter(
-    (project) =>
-      filter === "All work" || filterTypes[filter].includes(project.type),
-  );
+  const visibleProjects = [...projects]
+    .sort((a, b) => Number(b.id === "diacare") - Number(a.id === "diacare"))
+    .filter(
+      (project) =>
+        filter === "All work" || filterTypes[filter].includes(project.type),
+    );
   return (
     <section
       id="projects"
@@ -175,15 +168,26 @@ export default function Projects({ onOpen, motion = true }) {
           {String(visibleProjects.length).padStart(2, "0")} {tr("PROJECTS")}
         </span>
       </div>
-      <div id="project-grid" className="project-grid">
-        {visibleProjects.map((project) => (
-          <ProjectCard
-            key={project.id}
-            project={project}
-            onOpen={onOpen}
-            motion={motion}
-          />
-        ))}
+      <div className="project-workspace">
+        <div className="workspace-architecture" aria-hidden="true" />
+        <div className="workspace-heading">
+          <span>
+            <span className="workspace-status" aria-hidden="true" />
+            {tr("Digital workspace")}
+          </span>
+          <span>{tr("Select a project to explore")}</span>
+        </div>
+        <div id="project-grid" className="project-grid">
+          {visibleProjects.map((project, index) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              onOpen={onOpen}
+              motion={motion}
+              featured={index === 0}
+            />
+          ))}
+        </div>
       </div>
       <div className="section-footnote">
         <span>{tr("Every project is another step forward.")}</span>
@@ -256,7 +260,7 @@ export function ProjectDialog({ project, close }) {
       >
         <X aria-hidden="true" />
       </button>
-      <ProjectVisual project={project} />
+      <ProjectPreview project={project} />
       <div className="dialog-content">
         <div className="eyebrow">
           {tr(project.category)}
@@ -301,7 +305,7 @@ export function ProjectDialog({ project, close }) {
           <img
             className="case-screenshot"
             src={project.screenshot}
-            alt={`${tr(project.name)} application screenshot`}
+            alt={`${tr(project.name)} — ${tr("Application preview")}`}
             loading="lazy"
           />
         )}

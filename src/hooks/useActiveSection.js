@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { guideSections } from "../guideDialogue";
+import { subscribeMotionEnvironment } from "../motionEnvironment";
 
 // Dialogue and poses share this one detector and settling interval.
 export function useActiveSection(available) {
@@ -11,14 +12,23 @@ export function useActiveSection(available) {
       .map((id) => document.getElementById(id))
       .filter(Boolean);
     let observer;
+    let update;
     const connect = () => {
       observer?.disconnect();
       const height = window.innerHeight;
-      const update = () => {
-        const current = [...sections].reverse().find((element) => {
-          const bounds = element.getBoundingClientRect();
-          return bounds.top <= height * 0.46 && bounds.bottom >= height * 0.4;
-        });
+      update = () => {
+        // Short final sections may never reach the activation band on mobile.
+        const atEnd =
+          window.scrollY > 0 &&
+          document.documentElement.scrollHeight - window.scrollY - height <= 2;
+        const current = atEnd
+          ? sections.at(-1)
+          : [...sections].reverse().find((element) => {
+              const bounds = element.getBoundingClientRect();
+              return (
+                bounds.top <= height * 0.46 && bounds.bottom >= height * 0.4
+              );
+            });
         if (current) setCandidate(current.id);
       };
       observer = new IntersectionObserver(update, {
@@ -29,9 +39,20 @@ export function useActiveSection(available) {
       update();
     };
     connect();
+    const unsubscribe = subscribeMotionEnvironment((event) => {
+      if (
+        event === "scroll" &&
+        document.documentElement.scrollHeight -
+          window.scrollY -
+          window.innerHeight <=
+          2
+      )
+        update();
+    });
     window.addEventListener("resize", connect);
     return () => {
       observer.disconnect();
+      unsubscribe();
       window.removeEventListener("resize", connect);
     };
   }, [available]);

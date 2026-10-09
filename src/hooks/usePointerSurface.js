@@ -1,10 +1,13 @@
 import { useEffect } from "react";
+import { useMotionSettings } from "../components/MotionSettings";
+import { subscribeMotionEnvironment } from "../motionEnvironment";
 
 export const desktopPointerQuery = "(hover: hover) and (pointer: fine)";
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
 // Pointer values are transient DOM styles, never React state or GSAP transforms.
 export function usePointerSurface(ref, { enabled, kind }) {
+  const { config } = useMotionSettings();
   useEffect(() => {
     const element = ref.current;
     if (!element) return;
@@ -40,18 +43,24 @@ export function usePointerSurface(ref, { enabled, kind }) {
       frame = 0;
       element.dataset.pointerActive = "true";
       if (kind === "magnet") {
-        element.style.setProperty("--mx", `${((x - 0.5) * 8).toFixed(2)}px`);
-        element.style.setProperty("--my", `${((y - 0.5) * 6).toFixed(2)}px`);
+        element.style.setProperty(
+          "--mx",
+          `${((x - 0.5) * 8 * (config.level === "subtle" ? 0 : config.avatarFactor)).toFixed(2)}px`,
+        );
+        element.style.setProperty(
+          "--my",
+          `${((y - 0.5) * 6 * (config.level === "subtle" ? 0 : config.avatarFactor)).toFixed(2)}px`,
+        );
       } else {
         element.style.setProperty("--pointer-x", `${(x * 100).toFixed(2)}%`);
         element.style.setProperty("--pointer-y", `${(y * 100).toFixed(2)}%`);
         element.style.setProperty(
           "--rotate-x",
-          `${((0.5 - y) * 3).toFixed(2)}deg`,
+          `${((0.5 - y) * 3 * config.avatarFactor).toFixed(2)}deg`,
         );
         element.style.setProperty(
           "--rotate-y",
-          `${((x - 0.5) * 3).toFixed(2)}deg`,
+          `${((x - 0.5) * 3 * config.avatarFactor).toFixed(2)}deg`,
         );
         element.style.setProperty("--pointer-active", "1");
       }
@@ -81,23 +90,24 @@ export function usePointerSurface(ref, { enabled, kind }) {
       [element, "pointercancel", reset],
       [element, "pointerdown", press],
       [element, "focusin", reset],
-      [window, "scroll", geometry],
-      [window, "resize", geometry],
-      [window, "blur", reset],
-      [document, "visibilitychange", reset],
     ];
     events.forEach(([target, event, handler]) =>
       target.addEventListener(event, handler, { passive: true }),
     );
     pointer.addEventListener("change", reset);
     reduced.addEventListener("change", reset);
+    const unsubscribe = subscribeMotionEnvironment((event) => {
+      if (event === "scroll" || event === "resize") geometry();
+      else reset();
+    });
     return () => {
       events.forEach(([target, event, handler]) =>
         target.removeEventListener(event, handler),
       );
       pointer.removeEventListener("change", reset);
       reduced.removeEventListener("change", reset);
+      unsubscribe();
       reset();
     };
-  }, [ref, enabled, kind]);
+  }, [ref, enabled, kind, config]);
 }

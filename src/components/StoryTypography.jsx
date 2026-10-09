@@ -12,6 +12,7 @@ import {
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "../LanguageContext";
+import { useMotionSettings } from "./MotionSettings";
 
 gsap.registerPlugin(ScrollTrigger);
 const StoryMotion = createContext({ motion: false, ready: false });
@@ -88,6 +89,7 @@ function wordsOf(children, highlighted = false) {
 function useStoryEntrance(root, text, delay, heading) {
   const { motion, ready } = useStoryMotion();
   const { language } = useLanguage();
+  const { config } = useMotionSettings();
   useLayoutEffect(() => {
     if (!motion || !ready) return;
     const element = root.current;
@@ -108,8 +110,8 @@ function useStoryEntrance(root, text, delay, heading) {
       sequence.fromTo(
         targets,
         {
-          yPercent: heading ? 105 : 0,
-          y: heading ? 0 : 10,
+          yPercent: heading ? config.wordRise : 0,
+          y: heading ? 0 : config.revealDistance * 0.5,
           opacity: 0,
           scale: (index, node) => (node.dataset.storyHighlight ? 0.97 : 1),
         },
@@ -118,10 +120,10 @@ function useStoryEntrance(root, text, delay, heading) {
           y: 0,
           opacity: 1,
           scale: 1,
-          duration: heading ? 0.7 : 0.65,
-          ease: "power3.out",
+          duration: config.reveal,
+          ease: config.ease,
           stagger: heading
-            ? { amount: Math.min(0.36, targets.length * 0.045) }
+            ? { amount: Math.min(0.36, targets.length * config.stagger) }
             : 0,
         },
         delay,
@@ -133,7 +135,7 @@ function useStoryEntrance(root, text, delay, heading) {
       context.revert();
       element.classList.remove("story-running");
     };
-  }, [motion, ready, language, text, delay, heading, root]);
+  }, [motion, ready, language, text, delay, heading, root, config]);
 }
 
 export function StoryHeading({

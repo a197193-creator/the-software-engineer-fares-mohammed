@@ -16,6 +16,7 @@ import { StoryHeading } from "./StoryTypography";
 import HeroMessage from "./HeroMessage";
 import { useAvatarGuide } from "./AvatarGuideContext";
 import { useAvatarMotion } from "../hooks/useAvatarMotion";
+import { useMotionSettings } from "./MotionSettings";
 const external = { target: "_blank", rel: "noopener noreferrer" };
 export default function PortfolioHero({ motion, ready, goTo }) {
   const { language, hero, tr } = useLanguage();
@@ -24,6 +25,7 @@ export default function PortfolioHero({ motion, ready, goTo }) {
   const root = useRef(null);
   const portrait = useRef(null);
   const guide = useAvatarGuide();
+  const { config } = useMotionSettings();
   useAvatarMotion(portrait, {
     section: "home",
     enabled: motion && guide.available && guide.section === "home",
@@ -40,19 +42,28 @@ export default function PortfolioHero({ motion, ready, goTo }) {
     if (!ready || !motion) return;
     const context = gsap.context(() => {
       const sequence = gsap.timeline({
-        defaults: { ease: "power3.out" },
-        delay: 0.85,
+        defaults: { ease: config.ease },
+        delay: 0.16,
       });
       sequence
-        .from(".hero-description", { opacity: 0, y: 16, duration: 0.65 })
+        .from(".hero-description", {
+          opacity: 0,
+          y: config.revealDistance,
+          duration: config.reveal,
+        })
         .from(
           ".hero-action-reveal",
-          { opacity: 0, y: 12, stagger: 0.1, duration: 0.55 },
+          {
+            opacity: 0,
+            y: config.revealDistance * 0.65,
+            stagger: config.stagger * 2,
+            duration: config.reveal,
+          },
           "-=.3",
         );
     }, root);
     return () => context.revert();
-  }, [ready, motion, language]);
+  }, [ready, motion, language, config]);
   const jump = (id) => (event) => {
     event.preventDefault();
     goTo(id);

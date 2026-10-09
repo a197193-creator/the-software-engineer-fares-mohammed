@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { avatarScenes } from "../avatarPoseRegistry";
+import { useMotionSettings } from "../components/MotionSettings";
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
@@ -9,10 +10,12 @@ export function useAvatarMotion(
   ref,
   { section, enabled, departing = false, portrait = false },
 ) {
+  const { config } = useMotionSettings();
   useEffect(() => {
     const element = ref.current;
     const owner = document.getElementById(section);
-    if (!element || !owner || !enabled || departing) return;
+    if (!element || !owner || !enabled || departing || !config.avatarFactor)
+      return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
     const figure = element.closest(".section-avatar");
@@ -44,8 +47,8 @@ export function useAvatarMotion(
     let paused = false;
     const canRun = () =>
       visible && !paused && !document.hidden && !reduced.matches;
-    const wake = () => {
-      dirty = true;
+    const wake = (needsLayout = true) => {
+      dirty ||= needsLayout !== false;
       paused =
         figure?.dataset.avatarPaused === "true" ||
         !!figure?.contains(document.activeElement);
@@ -74,11 +77,10 @@ export function useAvatarMotion(
         );
         width = window.innerWidth;
         dirty = false;
-        element.style.setProperty("--avatar-progress", progress.toFixed(4));
       }
       const mobile = width < 768;
       const stacked = width < 1100;
-      const range = mobile ? 0.22 : stacked ? 0.55 : 1;
+      const range = (mobile ? 0.22 : stacked ? 0.55 : 1) * config.avatarFactor;
       const scroll = (progress - 0.5) * 2;
       const pointer = mobile || !finePointer.matches ? 0 : range;
       const target = {
@@ -89,7 +91,9 @@ export function useAvatarMotion(
         r: portrait
           ? 0
           : (pose.tilt + scroll * 0.4 + pointerX * pointer * 0.3) * range,
-        s: portrait ? 1.025 : 1 + progress * range * 0.006,
+        s: portrait
+          ? 1 + config.avatarFactor * 0.025
+          : 1 + progress * range * 0.006,
       };
       for (const key of Object.keys(target)) {
         // Near-critical damping: mass 1, stiffness 170, damping 26.
@@ -127,7 +131,7 @@ export function useAvatarMotion(
         return;
       pointerX = clamp((event.clientX / window.innerWidth) * 2 - 1, -1, 1);
       pointerY = clamp((event.clientY / window.innerHeight) * 2 - 1, -1, 1);
-      wake();
+      wake(false);
     };
     const resetPointer = () => {
       pointerX = 0;
@@ -169,14 +173,14 @@ export function useAvatarMotion(
       reduced.removeEventListener("change", preference);
       finePointer.removeEventListener("change", resetPointer);
     };
-  }, [ref, section, enabled, departing, portrait]);
+  }, [ref, section, enabled, departing, portrait, config]);
 
   useEffect(() => {
     const element = ref.current;
-    if (!enabled && element) {
+    if ((!enabled || !config.avatarFactor) && element) {
       element.style.removeProperty("transform");
       element.style.removeProperty("--avatar-progress");
       element.dataset.running = "false";
     }
-  }, [ref, enabled]);
+  }, [ref, enabled, config.avatarFactor]);
 }

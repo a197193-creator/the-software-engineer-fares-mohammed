@@ -1,6 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
+import { MotionSettingsProvider } from "./components/MotionSettings";
 import { LanguageProvider } from "./LanguageContext";
 import "./design.css";
 import "./details.css";
@@ -13,9 +14,13 @@ import "./typography.css";
 import "./avatar-guide.css";
 import "./avatar-motion.css";
 import "./pointer.css";
+import "./project-showcase.css";
+import "./motion.css";
 
 createRoot(document.getElementById("root")).render(
   <LanguageProvider>
-    <App />
+    <MotionSettingsProvider>
+      <App />
+    </MotionSettingsProvider>
   </LanguageProvider>,
 );

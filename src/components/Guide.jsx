@@ -1,11 +1,13 @@
 import { Compass, Pause, Play } from "lucide-react";
 import { useLanguage } from "../LanguageContext";
 import { useAvatarGuide } from "./AvatarGuideContext";
+import { useMotionSettings } from "./MotionSettings";
 
 // Visit-wide controls stay in normal document flow; section bubbles live by avatars.
 export default function Guide({ goTo, motion, setMotion }) {
   const { guide, tr } = useLanguage();
   const { mode, section, changeMode } = useAvatarGuide();
+  const settings = useMotionSettings();
   return (
     <aside
       className="avatar-guide-tools page-width"
@@ -23,6 +25,18 @@ export default function Guide({ goTo, motion, setMotion }) {
         </small>
       </span>
       <div>
+        <label className="motion-setting">
+          <span>{tr("Motion intensity")}</span>
+          <select
+            aria-label={tr("Motion intensity")}
+            value={settings.intensity}
+            onChange={(event) => settings.setIntensity(event.target.value)}
+          >
+            <option value="subtle">{tr("Subtle")}</option>
+            <option value="balanced">{tr("Balanced")}</option>
+            <option value="cinematic">{tr("Cinematic")}</option>
+          </select>
+        </label>
         <button
           type="button"
           onClick={() => {
@@ -44,12 +58,18 @@ export default function Guide({ goTo, motion, setMotion }) {
         <button
           type="button"
           aria-pressed={!motion}
+          disabled={settings.reduced}
           onClick={() => setMotion(!motion)}
         >
           {motion ? <Pause size={14} /> : <Play size={14} />}
           {tr(motion ? "Pause motion" : "Enable motion")}
         </button>
       </div>
+      {settings.reduced && (
+        <small className="motion-note">
+          {tr("Reduced motion is active on your device.")}
+        </small>
+      )}
     </aside>
   );
 }

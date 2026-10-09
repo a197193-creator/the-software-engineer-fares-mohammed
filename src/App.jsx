@@ -42,6 +42,8 @@ import {
 } from "./components/StoryTypography";
 import { useLanguage } from "./LanguageContext";
 import { useMotion, usePageTracking } from "./hooks/useMotion";
+import { useMotionSettings } from "./components/MotionSettings";
+import { motionVariables } from "./motionConfig";
 
 const external = { target: "_blank", rel: "noopener noreferrer" };
 const navItems = [
@@ -108,18 +110,21 @@ export default function App() {
   const [selected, setSelected] = useState(null);
   const [theme, setTheme] = useState(() => stored("fares-theme", "dark"));
   const [motion, setMotion] = useState(
-    () =>
-      !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
-      stored("fares-motion", "on") !== "off",
+    () => stored("fares-motion", "on") !== "off",
   );
   const [copied, setCopied] = useState(false);
+  const settings = useMotionSettings();
+  const mainMotion = motion && !settings.reduced;
+  const mainReady = portfolioReady && !welcomeVisible;
   const menuButton = useRef(null);
   const menuRef = useRef(null);
+  const navigationFrame = useRef(0);
+  useEffect(() => () => cancelAnimationFrame(navigationFrame.current), []);
   usePageTracking(setActive, setNavHidden);
   useMotion(
-    motion,
+    mainMotion,
     menuOpen || !!selected || welcomeVisible,
-    portfolioReady,
+    mainReady,
     language,
   );
   useEffect(() => {
@@ -142,21 +147,13 @@ export default function App() {
     }
   }, [theme]);
   useEffect(() => {
-    document.documentElement.classList.toggle("motion-off", !motion);
+    document.documentElement.classList.toggle("motion-off", !mainMotion);
     try {
       localStorage.setItem("fares-motion", motion ? "on" : "off");
     } catch {
       /* Storage is optional. */
     }
-  }, [motion]);
-  useEffect(() => {
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const change = (e) => {
-      if (e.matches) setMotion(false);
-    };
-    query.addEventListener("change", change);
-    return () => query.removeEventListener("change", change);
-  }, []);
+  }, [motion, mainMotion]);
   useEffect(() => {
     if (!menuOpen) return;
     const before = document.body.style.overflow;
@@ -192,10 +189,16 @@ export default function App() {
     setMenuOpen(false);
     setActive(id);
     setNavHidden(false);
-    document.getElementById(id)?.scrollIntoView({
-      behavior: motion ? "smooth" : "instant",
-      block: "start",
-    });
+    cancelAnimationFrame(navigationFrame.current);
+    const navigate = () => {
+      document.getElementById(id)?.scrollIntoView({
+        behavior: mainMotion ? "smooth" : "instant",
+        block: "start",
+      });
+    };
+    // Let the mobile menu release its scroll lock before measuring the target.
+    if (menuOpen) navigationFrame.current = requestAnimationFrame(navigate);
+    else navigate();
     history.replaceState(null, "", `#${id}`);
   }
   const jump = (id) => (e) => {
@@ -215,7 +218,7 @@ export default function App() {
     <AvatarGuideProvider
       ready={portfolioReady && !welcomeVisible}
       blocked={menuOpen || !!selected}
-      motion={motion}
+      motion={mainMotion}
       goTo={goTo}
     >
       <div
@@ -224,7 +227,13 @@ export default function App() {
         inert={welcomeVisible ? true : undefined}
         aria-hidden={welcomeVisible ? true : undefined}
       >
-        <div className="site cinematic">
+        <div
+          className="site cinematic"
+          data-motion-level={settings.config.level}
+          data-page-active={settings.pageActive}
+          data-motion-blocked={menuOpen || !!selected || !mainReady}
+          style={motionVariables(settings.config)}
+        >
           <a className="skip-link" href="#about">
             {tr("Skip to content")}
           </a>
@@ -323,8 +332,11 @@ export default function App() {
             </nav>
           )}
 
-          <StoryMain motion={motion} ready={portfolioReady && !welcomeVisible}>
-            <PortfolioHero motion={motion} ready={portfolioReady} goTo={goTo} />
+          <StoryMain
+            motion={mainMotion}
+            ready={portfolioReady && !welcomeVisible}
+          >
+            <PortfolioHero motion={mainMotion} ready={mainReady} goTo={goTo} />
 
             <ChapterRail goTo={goTo} active={active} />
 
@@ -334,7 +346,7 @@ export default function App() {
                   {tr("CURIOUS.")}
                 </span>
                 <div className="about-orbit" />
-                <SectionAvatar section="about" motion={motion} />
+                <SectionAvatar section="about" motion={mainMotion} />
                 <div className="about-art-note">
                   <Sparkles size={20} />
                   <span>
@@ -415,7 +427,7 @@ export default function App() {
                 <div className="skills-layout">
                   <div className="skills-art">
                     <div className="skills-ring" />
-                    <SectionAvatar section="skills" motion={motion} />
+                    <SectionAvatar section="skills" motion={mainMotion} />
                     <span className="orbit-badge badge-one">
                       <Code2 size={18} />
                       {tr("Flutter")}
@@ -478,7 +490,7 @@ export default function App() {
               </div>
             </section>
 
-            <Projects onOpen={setSelected} motion={motion} />
+            <Projects onOpen={setSelected} motion={mainMotion} />
 
             <section
               id="experience"
@@ -575,7 +587,7 @@ export default function App() {
                   <span className="outline-word" aria-hidden="true">
                     {tr("EVOLVING.")}
                   </span>
-                  <SectionAvatar section="experience" motion={motion} />
+                  <SectionAvatar section="experience" motion={mainMotion} />
                   <span className="experience-note">
                     {tr("EVERY PROJECT.")}
                     <br />
@@ -637,7 +649,7 @@ export default function App() {
                   </div>
                   <div className="contact-art">
                     <div className="contact-glow" />
-                    <SectionAvatar section="contact" motion={motion} />
+                    <SectionAvatar section="contact" motion={mainMotion} />
                   </div>
                 </div>
                 <div className="contact-bottom">
@@ -676,7 +688,7 @@ export default function App() {
           <AvatarController />
           <CinematicCursor
             enabled={
-              motion &&
+              mainMotion &&
               portfolioReady &&
               !welcomeVisible &&
               !menuOpen &&
@@ -703,16 +715,16 @@ export default function App() {
               <ArrowUp size={15} />
             </button>
           </footer>
-          <Guide goTo={goTo} motion={motion} setMotion={setMotion} />
+          <Guide goTo={goTo} motion={mainMotion} setMotion={setMotion} />
           {selected && (
             <ProjectDialog project={selected} close={() => setSelected(null)} />
           )}
         </div>
       </div>
-      <SandCursor enabled={motion && welcomeVisible} />
+      <SandCursor enabled={mainMotion && welcomeVisible} />
       {welcomeVisible && (
         <WelcomeExperience
-          motion={motion}
+          motion={mainMotion}
           onReveal={() => {
             setPortfolioReady(true);
             goTo("home");
