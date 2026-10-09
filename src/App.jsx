@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowUpRight,
-  ArrowDown,
   ArrowUp,
   Sun,
   Moon,
@@ -12,7 +11,6 @@ import {
   Database,
   Sparkles,
   MapPin,
-  Compass,
   Download,
   GitFork,
   Mail,
@@ -30,7 +28,10 @@ import SectionAvatar, {
 } from "./components/SectionAvatar";
 import Projects, { ProjectDialog } from "./components/Projects";
 import Guide from "./components/Guide";
-import { Magnetic, Preloader } from "./components/Effects";
+import { Magnetic } from "./components/Effects";
+import WelcomeExperience from "./components/WelcomeExperience";
+import PortfolioHero from "./components/PortfolioHero";
+import { useLanguage } from "./LanguageContext";
 import { useMotion, usePageTracking } from "./hooks/useMotion";
 
 const external = { target: "_blank", rel: "noopener noreferrer" };
@@ -77,10 +78,11 @@ function stored(key, fallback) {
 }
 
 function Heading({ number, label, children }) {
+  const { tr } = useLanguage();
   return (
     <>
       <div className="eyebrow">
-        <span>{number} /</span> {label}
+        <span>{number} /</span> {tr(label)}
       </div>
       <h2>{children}</h2>
     </>
@@ -88,6 +90,9 @@ function Heading({ number, label, children }) {
 }
 
 export default function App() {
+  const { language, setLanguage, hasPreference, tr } = useLanguage();
+  const [welcomeVisible, setWelcomeVisible] = useState(!hasPreference);
+  const [portfolioReady, setPortfolioReady] = useState(hasPreference);
   const [active, setActive] = useState("home");
   const [navHidden, setNavHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -98,21 +103,24 @@ export default function App() {
       !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
       stored("fares-motion", "on") !== "off",
   );
-  const [heroFailed, setHeroFailed] = useState(false);
-  const [assetReady, setAssetReady] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [tourSignal, setTourSignal] = useState(0);
+  const [tourSignal] = useState(0);
   const [copied, setCopied] = useState(false);
   const menuButton = useRef(null);
   const menuRef = useRef(null);
-  const dismissLoader = useCallback(() => setLoading(false), []);
-  const onHeroReady = useCallback(() => {
-    setAssetReady(true);
-    setProgress(1);
-  }, []);
   usePageTracking(setActive, setNavHidden);
-  useMotion(motion, menuOpen || !!selected || loading, !loading);
+  useMotion(
+    motion,
+    menuOpen || !!selected || welcomeVisible,
+    portfolioReady,
+    language,
+  );
+  useEffect(() => {
+    if (welcomeVisible || !portfolioReady) return;
+    const frame = requestAnimationFrame(() => {
+      document.getElementById("hero-title")?.focus({ preventScroll: true });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [welcomeVisible, portfolioReady]);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -196,534 +204,506 @@ export default function App() {
     }
   }
   return (
-    <div className="site cinematic">
-      <a className="skip-link" href="#about">
-        Skip to content
-      </a>
-      <div className="scroll-progress" aria-hidden="true" />
-      <header
-        className={`header ${active === "home" ? "on-hero" : ""} ${navHidden && !menuOpen ? "nav-hidden" : ""}`}
+    <>
+      <div
+        className="portfolio-content"
+        data-ready={portfolioReady}
+        inert={welcomeVisible ? true : undefined}
+        aria-hidden={welcomeVisible ? true : undefined}
       >
-        <a
-          className="brand"
-          href="#home"
-          onClick={jump("home")}
-          aria-label="Fares Mohammed home"
-        >
-          <span className="brand-mark">F</span>
-          <span>
-            FARES
-            <br />
-            <strong>MOHAMMED</strong>
-          </span>
-        </a>
-        <nav className="desktop-nav" aria-label="Main navigation">
-          {navItems.map(([id, label]) => (
-            <a
-              href={`#${id}`}
-              onClick={jump(id)}
-              key={id}
-              className={active === id ? "current" : ""}
-              aria-current={active === id ? "location" : undefined}
-            >
-              {label}
-            </a>
-          ))}
-        </nav>
-        <div className="header-actions">
-          <span className="header-identity">
-            FARES MOHAMMED <i /> {avatarScenes[active].number} / 06
-          </span>
-          <button
-            className="icon-button theme-toggle"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
-          >
-            {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
-          <a
-            className="header-connect"
-            href="#contact"
-            onClick={jump("contact")}
-          >
-            Let’s connect <ArrowUpRight size={16} />
+        <div className="site cinematic">
+          <a className="skip-link" href="#about">
+            {tr("Skip to content")}
           </a>
-          <button
-            ref={menuButton}
-            className="icon-button menu-toggle"
-            aria-expanded={menuOpen}
-            aria-controls="mobile-navigation"
-            aria-label={menuOpen ? "Close navigation" : "Open navigation"}
-            onClick={() => setMenuOpen(!menuOpen)}
+          <div className="scroll-progress" aria-hidden="true" />
+          <header
+            className={`header ${active === "home" ? "on-hero" : ""} ${navHidden && !menuOpen ? "nav-hidden" : ""}`}
           >
-            {menuOpen ? <X /> : <Menu />}
-          </button>
-        </div>
-      </header>
-      {menuOpen && (
-        <nav
-          ref={menuRef}
-          id="mobile-navigation"
-          className="mobile-nav"
-          aria-label="Mobile navigation"
-        >
-          {navItems.map(([id, label]) => (
-            <a href={`#${id}`} key={id} onClick={jump(id)}>
-              <span>{avatarScenes[id].number}</span>
-              {label}
-              <ArrowUpRight />
+            <a
+              className="brand"
+              href="#home"
+              onClick={jump("home")}
+              aria-label={tr("Fares Mohammed home")}
+            >
+              <span className="brand-mark">F</span>
+              <span>
+                {tr("FARES")}
+                <br />
+                <strong>{tr("MOHAMMED")}</strong>
+              </span>
             </a>
-          ))}
-          <p>FARES MOHAMMED · MALAYSIA</p>
-        </nav>
-      )}
-
-      <main>
-        <section
-          id="home"
-          className={`hero page-width ${heroFailed ? "scene-missing" : ""}`}
-        >
-          <div className="hero-photo" aria-hidden="true">
-            <img
-              src="/assets/cinematic-hero.webp"
-              alt=""
-              width="1920"
-              height="1080"
-              fetchPriority="high"
-              onLoad={onHeroReady}
-              onError={() => {
-                setHeroFailed(true);
-                onHeroReady();
-              }}
-            />
-          </div>
-          <div className="hero-copy">
-            <div className="eyebrow">FARES MOHAMMED / SOFTWARE ENGINEER</div>
-            <h1>
-              <span className="hero-line">
-                <span className="hero-word">I build ideas</span>
-              </span>
-              <span className="hero-line">
-                <span className="hero-word">
-                  into <span className="accent-text">reality.</span>
-                </span>
-              </span>
-            </h1>
-            <p className="hero-description">
-              Software Engineering student at UKM, focused on building useful
-              digital solutions, web & mobile applications, and AI-powered
-              tools.
-            </p>
-            <div className="hero-actions">
-              <Magnetic
-                href="#projects"
-                onClick={jump("projects")}
-                className="primary"
-              >
-                Explore my work <ArrowUpRight size={17} />
-              </Magnetic>
-              {profile.cv ? (
-                <a className="button secondary" href={profile.cv} download>
-                  Download CV <Download size={16} />
-                </a>
-              ) : (
-                <button
-                  className="button secondary"
-                  onClick={() => {
-                    goTo("home");
-                    setTourSignal((v) => v + 1);
-                  }}
-                >
-                  Take a guided tour <Compass size={16} />
-                </button>
-              )}
-            </div>
-            <div className="hero-socials">
-              <a
-                href={profile.github}
-                {...external}
-                aria-label="Fares on GitHub"
-              >
-                <GitFork size={18} />
-              </a>
-              {profile.linkedin && (
+            <nav className="desktop-nav" aria-label={tr("Main navigation")}>
+              {navItems.map(([id, label]) => (
                 <a
-                  href={profile.linkedin}
-                  {...external}
-                  aria-label="Fares on LinkedIn"
+                  href={`#${id}`}
+                  onClick={jump(id)}
+                  key={id}
+                  className={active === id ? "current" : ""}
+                  aria-current={active === id ? "location" : undefined}
                 >
-                  <Network size={18} />
+                  {tr(label)}
                 </a>
-              )}
-              {profile.email && (
-                <a href={`mailto:${profile.email}`} aria-label="Email Fares">
-                  <Mail size={18} />
-                </a>
-              )}
-              <span>
-                UKM <span>·</span> MALAYSIA
+              ))}
+            </nav>
+            <div className="header-actions">
+              <span className="header-identity" dir="ltr">
+                {tr("FARES MOHAMMED")}
+                <i /> {avatarScenes[active].number} / 06
               </span>
-            </div>
-            <div className="hero-location">
-              <MapPin size={14} />
-              <span>Based in Malaysia</span>
-              <span className="small-dot" />
-              <span>Studying at UKM</span>
-            </div>
-          </div>
-          <div className="hero-art">
-            <SectionAvatar
-              section="home"
-              motion={motion}
-              imageHidden={!heroFailed}
-            />
-          </div>
-          <div className="hero-bottom">
-            <a href="#about" onClick={jump("about")}>
-              <span className="scroll-hint">
-                <ArrowDown size={15} />
-              </span>{" "}
-              SCROLL TO DISCOVER
-            </a>
-            <span>PORTFOLIO — 2026</span>
-            <span className="hero-index">01 / 06</span>
-          </div>
-        </section>
-
-        <ChapterRail goTo={goTo} active={active} />
-
-        <section id="about" className="section page-width about-section">
-          <div className="about-art">
-            <span className="outline-word" aria-hidden="true">
-              CURIOUS.
-            </span>
-            <div className="about-orbit" />
-            <SectionAvatar section="about" motion={motion} />
-            <div className="about-art-note">
-              <Sparkles size={20} />
-              <span>
-                THE PERSON
-                <br />
-                <strong>BEHIND THE CODE.</strong>
-              </span>
-            </div>
-          </div>
-          <div className="about-copy" data-reveal>
-            <Heading number="02" label="A LITTLE ABOUT ME">
-              A builder.
-              <br />A problem solver.
-              <br />
-              <span className="muted-text">Still curious.</span>
-            </Heading>
-            <p>
-              I’m a Software Engineering student at Universiti Kebangsaan
-              Malaysia (UKM), interested in building practical software that
-              solves real problems.
-            </p>
-            <p>
-              My work spans mobile and web development, with a particular
-              interest in Flutter, AI-powered applications, databases and
-              digital solutions.
-            </p>
-            <p>
-              I enjoy taking an idea from a simple concept and turning it into
-              something people can actually use.
-            </p>
-            <div className="about-facts">
-              <div>
-                <strong>{String(projects.length).padStart(2, "0")}</strong>
-                <span>Selected projects</span>
-              </div>
-              <div>
-                <strong>
-                  UKM<span> ↗</span>
-                </strong>
-                <span>Software Engineering</span>
-              </div>
-            </div>
-            {profile.cv ? (
-              <a className="text-link" href={profile.cv} download>
-                <Download size={16} /> Download my CV
+              <button
+                className="language-toggle"
+                type="button"
+                lang={language === "en" ? "ar" : "en"}
+                aria-label={tr("Change language")}
+                onClick={() => setLanguage(language === "en" ? "ar" : "en")}
+              >
+                {language === "en" ? "العربية" : "English"}
+              </button>
+              <button
+                className="icon-button theme-toggle"
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                aria-label={tr(
+                  theme === "dark"
+                    ? "Switch to light theme"
+                    : "Switch to dark theme",
+                )}
+              >
+                {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+              </button>
+              <a
+                className="header-connect"
+                href="#contact"
+                onClick={jump("contact")}
+              >
+                {tr("Let’s connect")}
+                <ArrowUpRight size={16} />
               </a>
-            ) : (
-              <span className="cv-note">
-                <Download size={15} /> Updated CV coming soon
-              </span>
-            )}
-          </div>
-        </section>
-
-        <section id="skills" className="section skills-section">
-          <div className="page-width">
-            <div className="section-heading" data-reveal>
-              <div>
-                <Heading number="03" label="MY TOOLKIT">
-                  Good tools.
-                  <br />
-                  <span className="muted-text">Better possibilities.</span>
-                </Heading>
-              </div>
-              <p>
-                I choose the technology that fits the problem.
-                <br />
-                And keep learning along the way.
-              </p>
+              <button
+                ref={menuButton}
+                className="icon-button menu-toggle"
+                aria-expanded={menuOpen}
+                aria-controls="mobile-navigation"
+                aria-label={tr(
+                  menuOpen ? "Close navigation" : "Open navigation",
+                )}
+                onClick={() => setMenuOpen(!menuOpen)}
+              >
+                {menuOpen ? <X /> : <Menu />}
+              </button>
             </div>
-            <div className="skills-layout">
-              <div className="skills-art">
-                <div className="skills-ring" />
-                <SectionAvatar section="skills" motion={motion} />
-                <span className="orbit-badge badge-one">
-                  <Code2 size={18} /> Flutter
+          </header>
+          {menuOpen && (
+            <nav
+              ref={menuRef}
+              id="mobile-navigation"
+              className="mobile-nav"
+              aria-label={tr("Mobile navigation")}
+            >
+              {navItems.map(([id, label]) => (
+                <a href={`#${id}`} key={id} onClick={jump(id)}>
+                  <span>{avatarScenes[id].number}</span>
+                  {tr(label)}
+                  <ArrowUpRight />
+                </a>
+              ))}
+              <p>{tr("FARES MOHAMMED · MALAYSIA")}</p>
+            </nav>
+          )}
+
+          <main>
+            <PortfolioHero motion={motion} ready={portfolioReady} goTo={goTo} />
+
+            <ChapterRail goTo={goTo} active={active} />
+
+            <section id="about" className="section page-width about-section">
+              <div className="about-art">
+                <span className="outline-word" aria-hidden="true">
+                  {tr("CURIOUS.")}
                 </span>
-                <span className="orbit-badge badge-two">
-                  <Sparkles size={18} /> AI
-                </span>
-                <span className="orbit-badge badge-three">
-                  <Database size={18} /> Data
-                </span>
+                <div className="about-orbit" />
+                <SectionAvatar section="about" motion={motion} />
+                <div className="about-art-note">
+                  <Sparkles size={20} />
+                  <span>
+                    {tr("THE PERSON")}
+                    <br />
+                    <strong>{tr("BEHIND THE CODE.")}</strong>
+                  </span>
+                </div>
               </div>
-              <div className="skills-grid">
-                {toolkit.map(({ Icon, title, desc, tags }, i) => (
-                  <article className="skill-card" key={title} data-reveal>
-                    <div className="skill-top">
-                      <Icon size={24} strokeWidth={1.4} />
-                      <span>0{i + 1}</span>
-                    </div>
-                    <h3>{title}</h3>
-                    <p>{desc}</p>
-                    <div className="skill-tags">
-                      {tags.map((t) => (
-                        <span key={t}>{t}</span>
+              <div className="about-copy" data-reveal>
+                <Heading number="02" label="A LITTLE ABOUT ME">
+                  {tr("A builder.")}
+                  <br />
+                  {tr("A problem solver.")}
+                  <br />
+                  <span className="muted-text">{tr("Still curious.")}</span>
+                </Heading>
+                <p>
+                  {tr(
+                    "I’m a Software Engineering student at Universiti Kebangsaan Malaysia (UKM), interested in building practical software that solves real problems.",
+                  )}
+                </p>
+                <p>
+                  {tr(
+                    "My work spans mobile and web development, with a particular interest in Flutter, AI-powered applications, databases and digital solutions.",
+                  )}
+                </p>
+                <p>
+                  {tr(
+                    "I enjoy taking an idea from a simple concept and turning it into something people can actually use.",
+                  )}
+                </p>
+                <div className="about-facts">
+                  <div>
+                    <strong>{String(projects.length).padStart(2, "0")}</strong>
+                    <span>{tr("Selected projects")}</span>
+                  </div>
+                  <div>
+                    <strong>
+                      {tr("UKM")}
+                      <span> ↗</span>
+                    </strong>
+                    <span>{tr("Software Engineering")}</span>
+                  </div>
+                </div>
+                {profile.cv ? (
+                  <a className="text-link" href={profile.cv} download>
+                    <Download size={16} />
+                    {tr("Download my CV")}
+                  </a>
+                ) : (
+                  <span className="cv-note">
+                    <Download size={15} />
+                    {tr("Updated CV coming soon")}
+                  </span>
+                )}
+              </div>
+            </section>
+
+            <section id="skills" className="section skills-section">
+              <div className="page-width">
+                <div className="section-heading" data-reveal>
+                  <div>
+                    <Heading number="03" label="MY TOOLKIT">
+                      {tr("Good tools.")}
+                      <br />
+                      <span className="muted-text">
+                        {tr("Better possibilities.")}
+                      </span>
+                    </Heading>
+                  </div>
+                  <p>
+                    {tr("I choose the technology that fits the problem.")}
+                    <br />
+                    {tr("And keep learning along the way.")}
+                  </p>
+                </div>
+                <div className="skills-layout">
+                  <div className="skills-art">
+                    <div className="skills-ring" />
+                    <SectionAvatar section="skills" motion={motion} />
+                    <span className="orbit-badge badge-one">
+                      <Code2 size={18} />
+                      {tr("Flutter")}
+                    </span>
+                    <span className="orbit-badge badge-two">
+                      <Sparkles size={18} />
+                      {tr("AI")}
+                    </span>
+                    <span className="orbit-badge badge-three">
+                      <Database size={18} />
+                      {tr("Data")}
+                    </span>
+                  </div>
+                  <div className="skills-grid">
+                    {toolkit.map(({ Icon, title, desc, tags }, i) => (
+                      <article className="skill-card" key={title} data-reveal>
+                        <div className="skill-top">
+                          <Icon size={24} strokeWidth={1.4} />
+                          <span>0{i + 1}</span>
+                        </div>
+                        <h3>{tr(title)}</h3>
+                        <p>{tr(desc)}</p>
+                        <div className="skill-tags">
+                          {tags.map((t) => (
+                            <span key={t}>{tr(t)}</span>
+                          ))}
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div
+                className="marquee"
+                aria-label={tr(
+                  "Flutter, Dart, JavaScript, Supabase, Firebase, Groq AI, WordPress, SQLite",
+                )}
+              >
+                <div className="marquee-track" aria-hidden="true">
+                  {[0, 1].map((copy) => (
+                    <div className="marquee-group" key={copy}>
+                      {[
+                        "Flutter",
+                        "Dart",
+                        "JavaScript",
+                        "Supabase",
+                        "Firebase",
+                        "Groq AI",
+                        "WordPress",
+                        "SQLite",
+                      ].map((t) => (
+                        <span key={t}>
+                          <span>✳</span>
+                          {tr(t)}
+                        </span>
                       ))}
                     </div>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div
-            className="marquee"
-            aria-label="Flutter, Dart, JavaScript, Supabase, Firebase, Groq AI, WordPress, SQLite"
-          >
-            <div className="marquee-track" aria-hidden="true">
-              {[0, 1].map((copy) => (
-                <div className="marquee-group" key={copy}>
-                  {[
-                    "Flutter",
-                    "Dart",
-                    "JavaScript",
-                    "Supabase",
-                    "Firebase",
-                    "Groq AI",
-                    "WordPress",
-                    "SQLite",
-                  ].map((t) => (
-                    <span key={t}>
-                      <span>✳</span>
-                      {t}
-                    </span>
                   ))}
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <Projects onOpen={setSelected} motion={motion} />
-
-        <section
-          id="experience"
-          className="section page-width experience-section"
-        >
-          <div className="section-heading" data-reveal>
-            <div>
-              <Heading number="05" label="THE JOURNEY">
-                Code meets
-                <br />
-                <span className="muted-text">context.</span>
-              </Heading>
-            </div>
-            <p>
-              Real teams. Real needs.
-              <br />A broader perspective on building software.
-            </p>
-          </div>
-          <div className="experience-layout">
-            <div className="timeline">
-              <div className="timeline-track">
-                <div className="timeline-fill" />
               </div>
-              <article className="timeline-entry" data-reveal>
-                <div className="timeline-dot" />
-                <div className="timeline-date">
-                  SEP 2026 — JAN 2027{" "}
-                  <span className="in-progress">In progress</span>
-                </div>
-                <h3>Software Engineering Intern</h3>
-                <p className="organization">
-                  UMBI / The Malaysian Cohort (TMC)
-                </p>
-                <p>
-                  Contributing to mobile and web development in a research
-                  environment at Universiti Kebangsaan Malaysia.
-                </p>
-                <ul>
-                  <li>
-                    Mobile application development for the MyCohort application.
-                  </li>
-                  <li>
-                    Website development and improvements for research and
-                    publication management.
-                  </li>
-                  <li>
-                    Translating practical research needs into usable digital
-                    solutions.
-                  </li>
-                </ul>
-                <div className="tags">
-                  <span>Mobile & web</span>
-                  <span>Research systems</span>
-                  <span>UKM</span>
-                </div>
-              </article>
-              <article className="timeline-entry" data-reveal>
-                <div className="timeline-dot" />
-                <div className="timeline-date">UKM COURSEWORK</div>
-                <h3>Project Team Leader</h3>
-                <p className="organization">
-                  University software & group projects
-                </p>
-                <p>
-                  Coordinating student teams, organizing responsibilities and
-                  helping ideas move from planning to delivery.
-                </p>
-              </article>
-              <article className="timeline-entry" data-reveal>
-                <div className="timeline-dot" />
-                <div className="timeline-date">
-                  <GraduationCap size={16} /> EDUCATION
-                </div>
-                <h3>Software Engineering</h3>
-                <p className="organization">Universiti Kebangsaan Malaysia</p>
-                <p>Learning by building, questioning and connecting ideas.</p>
-              </article>
-            </div>
-            <div className="experience-art">
-              <span className="outline-word" aria-hidden="true">
-                EVOLVING.
-              </span>
-              <SectionAvatar section="experience" motion={motion} />
-              <span className="experience-note">
-                EVERY PROJECT.
-                <br />
-                ANOTHER STEP FORWARD.
-              </span>
-            </div>
-          </div>
-        </section>
+            </section>
 
-        <section id="contact" className="section contact-section">
-          <div className="page-width">
-            <div className="eyebrow" data-reveal>
-              <span>06 /</span> WHAT’S NEXT?
-            </div>
-            <div className="contact-layout">
-              <div className="contact-copy" data-reveal>
-                <h2>
-                  Have something
-                  <br />
-                  in <span className="accent-text">mind?</span>
-                  <ArrowUpRight className="contact-arrow" strokeWidth={1} />
-                </h2>
+            <Projects onOpen={setSelected} motion={motion} />
+
+            <section
+              id="experience"
+              className="section page-width experience-section"
+            >
+              <div className="section-heading" data-reveal>
+                <div>
+                  <Heading number="05" label="THE JOURNEY">
+                    {tr("Code meets")}
+                    <br />
+                    <span className="muted-text">{tr("context.")}</span>
+                  </Heading>
+                </div>
                 <p>
-                  A project, an opportunity, or just a good conversation.
+                  {tr("Real teams. Real needs.")}
                   <br />
-                  I’d love to hear from you.
+                  {tr("A broader perspective on building software.")}
                 </p>
-                {profile.email ? (
-                  <div className="email-row">
-                    <a href={`mailto:${profile.email}`}>{profile.email}</a>
-                    <button
-                      className="icon-button"
-                      aria-label={copied ? "Email copied" : "Copy email"}
-                      onClick={copyEmail}
-                    >
-                      {copied ? <Check size={18} /> : <Copy size={18} />}
-                    </button>
-                    <span role="status">{copied ? "Copied!" : ""}</span>
+              </div>
+              <div className="experience-layout">
+                <div className="timeline">
+                  <div className="timeline-track">
+                    <div className="timeline-fill" />
                   </div>
-                ) : (
-                  <Magnetic
-                    className="primary"
-                    href={profile.github}
-                    {...external}
-                  >
-                    <GitFork size={18} /> Find me on GitHub{" "}
-                    <ArrowUpRight size={18} />
-                  </Magnetic>
-                )}
-                <p className="contact-note">
-                  More ways to connect coming soon.
-                </p>
+                  <article className="timeline-entry" data-reveal>
+                    <div className="timeline-dot" />
+                    <div className="timeline-date">
+                      SEP 2026 — JAN 2027{" "}
+                      <span className="in-progress">{tr("In progress")}</span>
+                    </div>
+                    <h3>{tr("Software Engineering Intern")}</h3>
+                    <p className="organization">
+                      {tr("UMBI / The Malaysian Cohort (TMC)")}
+                    </p>
+                    <p>
+                      {tr(
+                        "Contributing to mobile and web development in a research environment at Universiti Kebangsaan Malaysia.",
+                      )}
+                    </p>
+                    <ul>
+                      <li>
+                        {tr(
+                          "Mobile application development for the MyCohort application.",
+                        )}
+                      </li>
+                      <li>
+                        {tr(
+                          "Website development and improvements for research and publication management.",
+                        )}
+                      </li>
+                      <li>
+                        {tr(
+                          "Translating practical research needs into usable digital solutions.",
+                        )}
+                      </li>
+                    </ul>
+                    <div className="tags">
+                      <span>{tr("Mobile & web")}</span>
+                      <span>{tr("Research systems")}</span>
+                      <span>{tr("UKM")}</span>
+                    </div>
+                  </article>
+                  <article className="timeline-entry" data-reveal>
+                    <div className="timeline-dot" />
+                    <div className="timeline-date">{tr("UKM COURSEWORK")}</div>
+                    <h3>{tr("Project Team Leader")}</h3>
+                    <p className="organization">
+                      {tr("University software & group projects")}
+                    </p>
+                    <p>
+                      {tr(
+                        "Coordinating student teams, organizing responsibilities and helping ideas move from planning to delivery.",
+                      )}
+                    </p>
+                  </article>
+                  <article className="timeline-entry" data-reveal>
+                    <div className="timeline-dot" />
+                    <div className="timeline-date">
+                      <GraduationCap size={16} />
+                      {tr("EDUCATION")}
+                    </div>
+                    <h3>{tr("Software Engineering")}</h3>
+                    <p className="organization">
+                      {tr("Universiti Kebangsaan Malaysia")}
+                    </p>
+                    <p>
+                      {tr(
+                        "Learning by building, questioning and connecting ideas.",
+                      )}
+                    </p>
+                  </article>
+                </div>
+                <div className="experience-art">
+                  <span className="outline-word" aria-hidden="true">
+                    {tr("EVOLVING.")}
+                  </span>
+                  <SectionAvatar section="experience" motion={motion} />
+                  <span className="experience-note">
+                    {tr("EVERY PROJECT.")}
+                    <br />
+                    {tr("ANOTHER STEP FORWARD.")}
+                  </span>
+                </div>
               </div>
-              <div className="contact-art">
-                <div className="contact-glow" />
-                <SectionAvatar section="contact" motion={motion} />
+            </section>
+
+            <section id="contact" className="section contact-section">
+              <div className="page-width">
+                <div className="eyebrow" data-reveal>
+                  <span>06 /</span>
+                  {tr("WHAT’S NEXT?")}
+                </div>
+                <div className="contact-layout">
+                  <div className="contact-copy" data-reveal>
+                    <h2>
+                      {tr("Have something")}
+                      <br />
+                      {tr("in")}{" "}
+                      <span className="accent-text">{tr("mind?")}</span>
+                      <ArrowUpRight className="contact-arrow" strokeWidth={1} />
+                    </h2>
+                    <p>
+                      {tr(
+                        "A project, an opportunity, or just a good conversation.",
+                      )}
+                      <br />
+                      {tr("I’d love to hear from you.")}
+                    </p>
+                    {profile.email ? (
+                      <div className="email-row">
+                        <a href={`mailto:${profile.email}`}>{profile.email}</a>
+                        <button
+                          className="icon-button"
+                          aria-label={tr(
+                            copied ? "Email copied" : "Copy email",
+                          )}
+                          onClick={copyEmail}
+                        >
+                          {copied ? <Check size={18} /> : <Copy size={18} />}
+                        </button>
+                        <span role="status">{copied ? tr("Copied!") : ""}</span>
+                      </div>
+                    ) : (
+                      <Magnetic
+                        className="primary"
+                        href={profile.github}
+                        {...external}
+                      >
+                        <GitFork size={18} /> {tr("Find me on GitHub")}{" "}
+                        <ArrowUpRight size={18} />
+                      </Magnetic>
+                    )}
+                    <p className="contact-note">
+                      {tr("More ways to connect coming soon.")}
+                    </p>
+                  </div>
+                  <div className="contact-art">
+                    <div className="contact-glow" />
+                    <SectionAvatar section="contact" motion={motion} />
+                  </div>
+                </div>
+                <div className="contact-bottom">
+                  <div className="social-links">
+                    <a href={profile.github} {...external}>
+                      {tr("GitHub")}
+                      <ArrowUpRight size={16} />
+                    </a>
+                    {profile.linkedin && (
+                      <a href={profile.linkedin} {...external}>
+                        <Network size={16} />
+                        {tr("LinkedIn")}
+                      </a>
+                    )}
+                    {profile.whatsapp && (
+                      <a href={profile.whatsapp} {...external}>
+                        <MessageCircle size={16} />
+                        {tr("WhatsApp")}
+                      </a>
+                    )}
+                    {profile.email && (
+                      <a href={`mailto:${profile.email}`}>
+                        <Mail size={16} />
+                        {tr("Email")}
+                      </a>
+                    )}
+                  </div>
+                  <span>
+                    <MapPin size={14} />
+                    {tr("Malaysia · UTC+8")}
+                  </span>
+                </div>
               </div>
-            </div>
-            <div className="contact-bottom">
-              <div className="social-links">
-                <a href={profile.github} {...external}>
-                  GitHub <ArrowUpRight size={16} />
-                </a>
-                {profile.linkedin && (
-                  <a href={profile.linkedin} {...external}>
-                    <Network size={16} /> LinkedIn
-                  </a>
-                )}
-                {profile.whatsapp && (
-                  <a href={profile.whatsapp} {...external}>
-                    <MessageCircle size={16} /> WhatsApp
-                  </a>
-                )}
-                {profile.email && (
-                  <a href={`mailto:${profile.email}`}>
-                    <Mail size={16} /> Email
-                  </a>
-                )}
-              </div>
-              <span>
-                <MapPin size={14} /> Malaysia · UTC+8
-              </span>
-            </div>
-          </div>
-        </section>
-      </main>
-      <footer className="footer page-width">
-        <span>© {new Date().getFullYear()} Fares Mohammed</span>
-        <span>Built with intention. Always evolving.</span>
-        <button onClick={() => goTo("home")}>
-          Back to top <ArrowUp size={15} />
-        </button>
-      </footer>
-      <Guide
-        active={active}
-        goTo={goTo}
-        motion={motion}
-        setMotion={setMotion}
-        tourSignal={tourSignal}
-      />
-      {selected && (
-        <ProjectDialog project={selected} close={() => setSelected(null)} />
-      )}
-      {loading && (
-        <Preloader
-          progress={progress}
-          ready={assetReady}
-          dismiss={dismissLoader}
+            </section>
+          </main>
+          <footer className="footer page-width">
+            <span>
+              © {new Date().getFullYear()} {tr("Fares Mohammed")}
+            </span>
+            <span>{tr("Built with intention. Always evolving.")}</span>
+            <button
+              className="replay-welcome"
+              onClick={() => {
+                setMenuOpen(false);
+                setWelcomeVisible(true);
+                setPortfolioReady(false);
+              }}
+            >
+              {tr("Replay welcome")}
+            </button>
+            <button onClick={() => goTo("home")}>
+              {tr("Back to top")}
+              <ArrowUp size={15} />
+            </button>
+          </footer>
+          <Guide
+            active={active}
+            goTo={goTo}
+            motion={motion}
+            setMotion={setMotion}
+            tourSignal={tourSignal}
+          />
+          {selected && (
+            <ProjectDialog project={selected} close={() => setSelected(null)} />
+          )}
+        </div>
+      </div>
+      {welcomeVisible && (
+        <WelcomeExperience
+          motion={motion}
+          onReveal={() => {
+            setPortfolioReady(true);
+            goTo("home");
+          }}
+          onComplete={() => {
+            setWelcomeVisible(false);
+          }}
         />
       )}
-    </div>
+    </>
   );
 }

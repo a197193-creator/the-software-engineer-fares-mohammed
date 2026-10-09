@@ -6,7 +6,16 @@ import "lenis/dist/lenis.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export function useMotion(enabled, blocked, ready) {
+export function useMotion(enabled, blocked, ready, layoutKey) {
+  useEffect(() => {
+    let active = true;
+    document.fonts.ready.then(() => {
+      if (active) ScrollTrigger.refresh();
+    });
+    return () => {
+      active = false;
+    };
+  }, [layoutKey]);
   useEffect(() => {
     if (
       !enabled ||
@@ -33,13 +42,6 @@ export function useMotion(enabled, blocked, ready) {
   useEffect(() => {
     if (!enabled || !ready) return;
     const context = gsap.context(() => {
-      gsap.from(".hero-word", {
-        yPercent: 105,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.11,
-        ease: "power3.out",
-      });
       gsap.utils.toArray("[data-reveal]").forEach((el) => {
         gsap.from(el, {
           y: 32,

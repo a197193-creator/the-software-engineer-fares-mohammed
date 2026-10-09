@@ -1,0 +1,979 @@
+/* Phase 1: isolated welcome/video choreography. No scroll-controlled character work. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.portfolio-content[data-ready="false"] {
+  visibility: hidden;
+}
+.welcome-experience {
+  --welcome-height: max(900px, 100svh);
+  --cyan: #40dfff;
+  --gold: #f5c66a;
+  --choice: var(--gold);
+  --energy: 0;
+  --ending: 0;
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  overflow: auto;
+  background: #080b10;
+  color: #f4f5f7;
+  font-family: "DM Sans", sans-serif;
+  isolation: isolate;
+  transition:
+    opacity 0.68s ease,
+    visibility 0.68s;
+}
+.welcome-experience[data-selected="en"] {
+  --choice: var(--cyan);
+}
+.welcome-experience.phase-leaving {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.welcome-header {
+  position: absolute;
+  top: 29px;
+  left: 5%;
+  right: 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  z-index: 6;
+}
+.welcome-brand {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.welcome-brand > span {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  color: #f5c66a;
+  font-size: 44px;
+  border-left: 1px solid #f5c66a88;
+  padding-left: 5px;
+  line-height: 1;
+}
+.welcome-brand strong,
+.welcome-brand small {
+  display: block;
+}
+.welcome-brand strong {
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-weight: 500;
+}
+.welcome-brand small {
+  margin-top: 6px;
+  font-size: 7px;
+  letter-spacing: 1.8px;
+  color: #a8b2c1;
+}
+.intro-skip {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: #c8cdd3;
+  padding: 12px 14px;
+  border: 1px solid #ffffff24;
+  border-radius: 25px;
+  font-size: 10px;
+  background: #080b1099;
+}
+.intro-skip:hover {
+  color: #fff;
+  border-color: #f5c66a88;
+}
+.welcome-scene {
+  position: absolute;
+  width: min(1280px, 100%);
+  aspect-ratio: 1280 / 647;
+  top: max(74px, calc((100svh - 900px) / 2 + 74px));
+  left: 50%;
+  transform: translateX(-50%);
+}
+.welcome-depth {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  animation: guardian-presence 6.8s ease-in-out infinite;
+}
+.welcome-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.welcome-image-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(0deg, #080b10 0%, #080b1070 15%, transparent 32%),
+    linear-gradient(180deg, #080b1060, transparent 18%);
+}
+.interactive-sphere {
+  position: absolute;
+  top: 50.5%;
+  width: 15.5%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  color: #70e9ff;
+  --sphere-color: #40dfff;
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.7, 0.3, 1),
+    opacity 0.5s;
+}
+.sphere-en {
+  left: 18.3%;
+  top: 51.9%;
+}
+.sphere-ar {
+  left: 81.9%;
+  top: 52.9%;
+  color: #ffe2a0;
+  --sphere-color: #f5c66a;
+}
+.sphere-breath {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    transparent 43%,
+    color-mix(in srgb, var(--sphere-color) 13%, transparent) 66%,
+    transparent 76%
+  );
+  animation: sphere-breathe 4.2s ease-in-out infinite;
+}
+.sphere-ar .sphere-breath {
+  animation-duration: 5.1s;
+  animation-delay: -0.8s;
+}
+.sphere-ring {
+  position: absolute;
+  inset: 5%;
+  border: 1px solid color-mix(in srgb, var(--sphere-color) 20%, transparent);
+  border-radius: 50%;
+  box-shadow: 0 0 40px 5px
+    color-mix(in srgb, var(--sphere-color) 12%, transparent);
+}
+.sphere-tag {
+  position: absolute;
+  left: 50%;
+  top: 103%;
+  transform: translateX(-50%);
+  color: inherit;
+  font-size: 9px;
+  letter-spacing: 1.8px;
+  white-space: nowrap;
+  text-shadow: 0 2px 10px #000;
+}
+.sphere-ar .sphere-tag {
+  font-family: "Noto Sans Arabic", sans-serif;
+  letter-spacing: 0;
+}
+.interactive-sphere:hover,
+.interactive-sphere:focus-visible,
+.interactive-sphere.selected {
+  transform: translate(-50%, -50%) scale(1.07);
+}
+.interactive-sphere:focus-visible {
+  outline: 2px solid var(--sphere-color);
+  outline-offset: 5px;
+}
+.welcome-experience[data-highlight="en"] .sphere-ar,
+.welcome-experience[data-highlight="ar"] .sphere-en {
+  opacity: 0.55;
+}
+.welcome-experience[data-highlight="en"] .sphere-en .sphere-ring,
+.welcome-experience[data-highlight="ar"] .sphere-ar .sphere-ring {
+  border-color: var(--sphere-color);
+}
+.language-choices {
+  position: absolute;
+  top: calc(var(--welcome-height) - 310px);
+  left: 5%;
+  right: 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 25%;
+  z-index: 3;
+}
+.language-choice {
+  width: 330px;
+  max-width: 32%;
+  --language-color: #70e9ff;
+  transition:
+    transform 0.4s ease,
+    opacity 0.5s,
+    border-color 0.35s;
+}
+@media (hover: hover) and (pointer: fine) {
+  .language-choice:hover {
+    transform: scale(1.008);
+  }
+}
+.choice-ar {
+  --language-color: #f5c66a;
+  font-family: "Noto Sans Arabic", sans-serif;
+}
+.language-label {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--language-color);
+  margin-bottom: 13px;
+}
+.choice-ar .language-label {
+  letter-spacing: 0;
+}
+.language-choice h2 {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1.03;
+  letter-spacing: -0.5px;
+  color: #f4f5f7;
+}
+.choice-ar h2 {
+  font-family: "Noto Naskh Arabic", serif;
+  font-size: 37px;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+.language-choice p {
+  font-size: 12px;
+  line-height: 1.75;
+  color: #a8b2c1;
+  margin: 16px 0 20px;
+}
+.choice-ar p {
+  font-size: 11px;
+  line-height: 1.95;
+}
+.language-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 44px;
+  padding: 11px 19px;
+  font-size: 11px;
+  border: 1px solid color-mix(in srgb, var(--language-color) 65%, transparent);
+  border-radius: 9px;
+  color: var(--language-color);
+  background: color-mix(in srgb, var(--language-color) 7%, #080b10);
+  transition:
+    transform 0.3s,
+    background 0.3s,
+    border-color 0.3s;
+}
+.language-cta:hover {
+  transform: scale(1.04);
+  background: color-mix(in srgb, var(--language-color) 14%, #080b10);
+  border-color: var(--language-color);
+}
+.language-cta:active {
+  transform: scale(0.96);
+}
+.language-cta:focus-visible {
+  outline-color: var(--language-color);
+}
+.choice-ar .language-cta svg {
+  transform: scaleX(-1);
+}
+.welcome-experience[data-highlight="en"] .choice-ar,
+.welcome-experience[data-highlight="ar"] .choice-en {
+  opacity: 0.82;
+}
+.phase-transition .language-choices {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s;
+}
+.phase-transition .welcome-depth {
+  animation: none;
+  transform: scale(1.024);
+  transition: transform 1.4s ease;
+}
+.phase-transition .interactive-sphere:not(.selected) {
+  opacity: 0.3;
+}
+.phase-transition .interactive-sphere:not(.selected) .sphere-breath {
+  animation: none;
+}
+.interactive-sphere.selected .sphere-breath {
+  animation: sphere-selected 0.8s ease-out both;
+}
+.welcome-ambient {
+  position: absolute;
+  width: 100%;
+  height: var(--welcome-height);
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+.welcome-ambient i {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #f5c66a;
+  border-radius: 50%;
+  top: 42%;
+  left: 8%;
+  opacity: 0.4;
+  animation: ambient-drift 6s ease-in-out infinite alternate;
+}
+.welcome-ambient i:nth-child(2) {
+  left: 89%;
+  top: 55%;
+  animation-duration: 7s;
+  animation-delay: -3s;
+}
+.welcome-ambient i:nth-child(3) {
+  left: 12%;
+  top: 20%;
+  background: #70e9ff;
+  animation-delay: -2s;
+}
+.welcome-ambient i:nth-child(4) {
+  left: 80%;
+  top: 27%;
+  animation-duration: 5s;
+}
+.phase-transition .welcome-ambient i {
+  animation-play-state: paused;
+}
+.phase-leaving .welcome-depth,
+.phase-leaving .sphere-breath,
+.phase-leaving .welcome-ambient i {
+  animation-play-state: paused;
+}
+.transition-video-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  background: #080b10;
+  transition:
+    opacity 0.8s ease,
+    visibility 0.8s;
+}
+.video-playing .transition-video-layer {
+  opacity: 1;
+  visibility: visible;
+}
+.transition-video-layer video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.transition-energy,
+.transition-ending {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.transition-energy {
+  opacity: var(--energy);
+  background: radial-gradient(ellipse, var(--choice), transparent 75%);
+  transition: opacity 0.3s linear;
+}
+.transition-ending {
+  opacity: var(--ending);
+  background: radial-gradient(
+    ellipse at 50% 45%,
+    color-mix(in srgb, var(--choice) 17%, #080b10),
+    #080b10 78%
+  );
+  transition: opacity 0.3s linear;
+}
+.welcome-status {
+  position: absolute;
+  top: calc(var(--welcome-height) - 33px);
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: #a8b2c1;
+  font-size: 9px;
+  letter-spacing: 1px;
+  z-index: 5;
+}
+.welcome-status i {
+  height: 1px;
+  width: 30px;
+  background: #ffffff30;
+}
+.phase-transition .welcome-status {
+  position: fixed;
+  top: auto;
+  bottom: 27px;
+  color: #f4f5f7;
+}
+
+/* Hero entrance owns its transforms; inner buttons own hover/press transforms. */
+.cinematic .hero-phase-one {
+  min-height: 760px;
+  height: min(850px, 100svh);
+  direction: ltr;
+}
+.cinematic .hero-phase-one .hero-copy {
+  max-width: 445px;
+}
+.cinematic .hero-phase-one h1 {
+  font-size: clamp(49px, 4.3vw, 61px);
+  line-height: 0.98;
+  margin-bottom: 18px;
+}
+.hero-introduction > span {
+  display: block;
+}
+.hero-introduction .accent-text {
+  white-space: nowrap;
+}
+.hero-introduction:focus {
+  outline: none;
+}
+.cinematic .hero-secondary {
+  font-size: 29px;
+  line-height: 1.12;
+  letter-spacing: -0.3px;
+  font-weight: 500;
+  color: #d8c09a;
+  margin-bottom: 19px;
+  max-width: 415px;
+}
+.cinematic .hero-phase-one .hero-description {
+  max-width: 400px;
+  font-size: 12px;
+  line-height: 1.85;
+}
+.hero-action-reveal {
+  display: inline-flex;
+}
+.hero-phase-one .hero-actions {
+  direction: inherit;
+}
+.hero-ambient-light {
+  position: absolute;
+  width: 35%;
+  height: 55%;
+  left: 53%;
+  bottom: 10%;
+  pointer-events: none;
+  background: radial-gradient(ellipse, #dba95414, transparent 67%);
+  opacity: 0.6;
+  animation: light-breathe 5.8s ease-in-out infinite;
+  animation-play-state: paused;
+}
+.hero-visible .hero-ambient-light {
+  animation-play-state: running;
+}
+.hero-phase-one .hero-cv {
+  display: inline-flex;
+  gap: 6px;
+  font-size: 9px;
+  align-items: center;
+}
+.cinematic .hero-phase-one .button {
+  transition:
+    transform 0.3s cubic-bezier(0.2, 0.7, 0.3, 1),
+    border-color 0.3s,
+    background 0.3s;
+}
+.cinematic .hero-phase-one .button:hover {
+  scale: 1.04;
+}
+.cinematic .hero-phase-one .button:active {
+  scale: 0.96;
+}
+.language-toggle,
+.replay-welcome {
+  font-size: 11px;
+  min-height: 35px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 7px 12px;
+  white-space: nowrap;
+}
+.language-toggle {
+  font-family: "DM Sans", "Noto Sans Arabic", sans-serif;
+}
+.replay-welcome {
+  color: var(--muted);
+}
+.cinematic .header .header-identity {
+  gap: 10px;
+}
+.cinematic .header .header-identity i {
+  width: 30px;
+}
+.cinematic .header .header-actions {
+  gap: 12px;
+}
+html[lang="ar"] {
+  font-family: "Noto Sans Arabic", sans-serif;
+  --display: "Noto Naskh Arabic", Georgia, serif;
+}
+html[lang="ar"] .cinematic h2,
+html[lang="ar"] .cinematic h3 {
+  letter-spacing: 0;
+}
+html[lang="ar"] .hero-introduction {
+  font-family: "Noto Naskh Arabic", serif;
+  line-height: 1.16;
+}
+html[lang="ar"] .hero-copy {
+  text-align: right;
+}
+html[lang="ar"] .hero-secondary {
+  font-family: "Noto Naskh Arabic", serif;
+  font-size: 31px;
+  line-height: 1.4;
+}
+html[lang="ar"] .hero-phase-one .hero-description {
+  font-size: 12px;
+  line-height: 2;
+}
+html[lang="ar"] .hero-socials {
+  justify-content: flex-start;
+}
+html[lang="ar"] .hero-actions {
+  justify-content: flex-start;
+}
+html[lang="ar"] .eyebrow,
+html[lang="ar"] .chapter-label {
+  letter-spacing: 0;
+}
+html[lang="ar"] .cinematic .header {
+  direction: ltr;
+}
+html[lang="ar"] .desktop-nav {
+  direction: rtl;
+}
+html[lang="ar"] .avatar-speech {
+  text-align: right;
+}
+html[lang="ar"] .speech-mark {
+  left: auto;
+  right: 12px;
+}
+html[lang="ar"] .avatar-speech {
+  padding-right: 35px;
+  padding-left: 20px;
+}
+html[lang="ar"] .chapter-rail {
+  direction: ltr;
+}
+html[lang="ar"] .chapter-card {
+  text-align: right;
+}
+html[lang="ar"] .chapter-quote {
+  direction: rtl;
+  font-size: 12px;
+  line-height: 1.5;
+}
+html[lang="ar"] .skill-card h3 {
+  font-family: "Noto Sans Arabic", sans-serif;
+  font-size: 15px;
+}
+html[lang="ar"] .timeline-entry {
+  padding: 0 42px 55px 0;
+}
+html[lang="ar"] .timeline-track {
+  left: auto;
+  right: 4px;
+}
+html[lang="ar"] .timeline-dot {
+  left: auto;
+  right: 0;
+}
+html[lang="ar"] .timeline-entry ul {
+  padding-left: 0;
+  padding-right: 17px;
+}
+html[lang="ar"] .guide,
+html[lang="ar"] .header-identity,
+html[lang="ar"] .brand {
+  direction: ltr;
+}
+html[lang="ar"] .guide-panel {
+  direction: rtl;
+}
+html[lang="ar"] .project-title h3,
+html[lang="ar"] .dialog-content > h2 {
+  font-family: "DM Sans", sans-serif;
+  font-size: 27px;
+}
+html[lang="ar"] .project-card .project-info {
+  text-align: right;
+}
+html[lang="ar"] .dialog-close {
+  right: auto;
+  left: 20px;
+}
+html[lang="ar"] .project-dialog {
+  text-align: right;
+}
+html[lang="ar"] .project-dialog .tags {
+  direction: rtl;
+}
+html[lang="ar"] .filter-button {
+  letter-spacing: 0;
+}
+/* Existing project motion uses rotate transforms. Independent scale prevents conflicts. */
+@media (hover: hover) and (pointer: fine) {
+  .cinematic .project-card:hover {
+    scale: 1.018;
+    translate: 0 -3px;
+  }
+  .cinematic .project-card {
+    transition:
+      transform 0.25s,
+      border-color 0.3s,
+      scale 0.35s,
+      translate 0.35s;
+  }
+  .cinematic .project-card .project-symbol {
+    transition: scale 0.5s;
+  }
+  .cinematic .project-card:hover .project-symbol {
+    scale: 1.035;
+  }
+  .cinematic .icon-button:hover {
+    scale: 1.04;
+  }
+}
+.cinematic .icon-button:active,
+.cinematic .project-open:active,
+.language-toggle:active {
+  scale: 0.96;
+}
+@keyframes sphere-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-4px) scale(1.025);
+    opacity: 1;
+  }
+}
+@keyframes sphere-selected {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+}
+@keyframes guardian-presence {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.004);
+  }
+}
+@keyframes ambient-drift {
+  from {
+    transform: translateY(0);
+    opacity: 0.15;
+  }
+  to {
+    transform: translateY(-9px);
+    opacity: 0.5;
+  }
+}
+@keyframes light-breathe {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.025);
+  }
+}
+@media (max-width: 1199px) {
+  .language-choice {
+    width: 300px;
+    max-width: 34%;
+  }
+  .language-choice h2 {
+    font-size: 37px;
+  }
+  .choice-ar h2 {
+    font-size: 34px;
+  }
+  .cinematic .hero-phase-one .hero-copy {
+    width: 365px;
+    max-width: 365px;
+  }
+  .cinematic .hero-phase-one h1 {
+    font-size: 52px;
+  }
+  .cinematic .hero-secondary {
+    font-size: 27px;
+  }
+  .cinematic .header-identity {
+    display: none;
+  }
+}
+@media (max-width: 900px) {
+  .language-choice {
+    max-width: 38%;
+  }
+  .language-choice h2 {
+    font-size: 34px;
+  }
+  .choice-ar h2 {
+    font-size: 33px;
+  }
+  .language-choice p {
+    font-size: 11px;
+  }
+  .choice-ar p {
+    font-size: 10px;
+  }
+  .cinematic .hero-phase-one {
+    min-height: 770px;
+    height: 790px;
+  }
+  .cinematic .hero-phase-one .hero-copy {
+    width: 325px;
+    max-width: 325px;
+  }
+  .cinematic .hero-phase-one h1 {
+    font-size: 46px;
+  }
+  .cinematic .hero-secondary {
+    font-size: 25px;
+  }
+  .cinematic .hero-phase-one .button {
+    padding-inline: 13px;
+    font-size: 10px;
+  }
+  .cinematic .header .header-actions {
+    gap: 8px;
+  }
+}
+@media (max-width: 767px) {
+  .welcome-experience {
+    --welcome-height: max(790px, 100svh);
+    display: flex;
+    flex-direction: column;
+  }
+  .welcome-header {
+    top: 23px;
+    left: 20px;
+    right: 20px;
+    gap: 8px;
+  }
+  .welcome-brand {
+    gap: 11px;
+  }
+  .welcome-brand > span {
+    font-size: 35px;
+  }
+  .welcome-brand strong {
+    font-size: 8px;
+    letter-spacing: 1.2px;
+  }
+  .welcome-brand small {
+    font-size: 5px;
+    letter-spacing: 0.8px;
+  }
+  .intro-skip {
+    min-height: 44px;
+    padding: 9px 10px;
+    font-size: 8px;
+    gap: 5px;
+  }
+  .intro-skip svg {
+    width: 12px;
+  }
+  .welcome-scene {
+    top: 93px;
+    width: calc(100% - 12px);
+  }
+  .welcome-image-shade {
+    background: linear-gradient(0deg, #080b10, transparent 28%);
+  }
+  .sphere-tag {
+    display: none;
+  }
+  .interactive-sphere {
+    min-width: 44px;
+  }
+  .language-choices {
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: calc(100vw * 0.505 + 124px) 20px 32px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 18px;
+    align-items: stretch;
+  }
+  .language-choice {
+    width: 100%;
+    max-width: none;
+    display: flex;
+    flex-direction: column;
+  }
+  .language-label {
+    font-size: 8px;
+    margin-bottom: 10px;
+  }
+  .language-choice h2 {
+    font-size: 28px;
+    line-height: 1.06;
+  }
+  .choice-ar h2 {
+    font-size: 28px;
+    line-height: 1.3;
+  }
+  .language-choice p {
+    font-size: 12px;
+    line-height: 1.85;
+    margin: 14px 0 19px;
+  }
+  .choice-ar p {
+    font-size: 11.5px;
+    line-height: 2.05;
+  }
+  .language-cta {
+    margin-top: auto;
+    width: 100%;
+    gap: 7px;
+    padding: 10px 7px;
+    min-height: 47px;
+    font-size: 9px;
+  }
+  .language-cta svg {
+    width: 12px;
+  }
+  .welcome-status {
+    position: relative;
+    top: auto;
+    margin-top: auto;
+    padding: 0 20px 24px;
+    font-size: 8px;
+  }
+  .welcome-ambient i:nth-child(n + 3) {
+    display: none;
+  }
+  .welcome-depth {
+    animation: none;
+  }
+  .transition-video-layer video {
+    align-self: start;
+    height: auto;
+    margin-top: 93px;
+    aspect-ratio: 848 / 478;
+    object-fit: contain;
+  }
+  .cinematic .hero-phase-one {
+    min-height: 980px;
+    height: auto;
+    padding-top: 395px;
+    padding-bottom: 75px;
+  }
+  .cinematic .hero-phase-one .hero-copy {
+    width: 100%;
+    max-width: none;
+  }
+  .cinematic .hero-phase-one h1 {
+    font-size: clamp(40px, 10.7vw, 61px);
+    line-height: 1.04;
+    margin-bottom: 18px;
+  }
+  .cinematic .hero-secondary {
+    font-size: 29px;
+    line-height: 1.17;
+    margin-bottom: 20px;
+  }
+  .cinematic .hero-phase-one .hero-description {
+    font-size: 12px;
+  }
+  .cinematic .hero-phase-one .hero-actions {
+    gap: 10px;
+  }
+  .cinematic .hero-phase-one .button {
+    padding-inline: 14px;
+    font-size: 10px;
+  }
+  html[lang="ar"] .hero-phase-one h1 {
+    font-size: 53px;
+  }
+  html[lang="ar"] .hero-secondary {
+    font-size: 29px;
+  }
+  .hero-ambient-light {
+    display: none;
+  }
+  .language-toggle {
+    padding-inline: 10px;
+    font-size: 10px;
+  }
+  .cinematic .header .header-actions {
+    gap: 7px;
+  }
+  html[lang="ar"] .timeline-entry {
+    padding-right: 30px;
+  }
+}
+.motion-off .welcome-depth,
+.motion-off .sphere-breath,
+.motion-off .welcome-ambient i,
+.motion-off .hero-ambient-light {
+  animation: none !important;
+}
+.motion-off .hero-phase-one .button,
+.motion-off .project-card,
+.motion-off .icon-button {
+  scale: 1 !important;
+  translate: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .welcome-experience *,
+  .hero-phase-one * {
+    animation: none !important;
+    transition: none !important;
+  }
+  .cinematic .project-card,
+  .cinematic .icon-button,
+  .hero-phase-one .button {
+    scale: 1 !important;
+    translate: none !important;
+  }
+}

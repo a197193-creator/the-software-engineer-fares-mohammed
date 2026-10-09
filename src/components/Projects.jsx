@@ -1,3 +1,4 @@
+import { useLanguage } from "../LanguageContext";
 import { useEffect, useId, useRef, useState } from "react";
 import {
   ArrowUpRight,
@@ -8,7 +9,6 @@ import {
   ExternalLink,
   GitFork,
   HeartPulse,
-  Receipt,
   Smartphone,
   Sparkles,
   X,
@@ -21,17 +21,17 @@ const filters = ["All work", "Mobile", "Web", "AI"];
 const filterTypes = {
   Mobile: ["mobile", "health"],
   Web: ["research", "booking"],
-  AI: ["health", "budget"],
+  AI: ["health"],
 };
 const projectIcons = {
   mobile: Smartphone,
   health: HeartPulse,
-  budget: Receipt,
   research: BookOpen,
   booking: CalendarDays,
 };
 
 function ProjectVisual({ project }) {
+  const { tr } = useLanguage();
   const Icon = projectIcons[project.type] || Code2;
   const word =
     project.id === "tmc-web"
@@ -63,7 +63,7 @@ function ProjectVisual({ project }) {
         <Icon strokeWidth={1.15} />
       </div>
       <span className="visual-word">{word}</span>
-      <span className="visual-caption">{project.tagline}</span>
+      <span className="visual-caption">{tr(project.tagline)}</span>
     </div>
   );
 }
@@ -76,6 +76,7 @@ function resetPointer(element) {
 }
 
 function ProjectCard({ project, onOpen, motion }) {
+  const { tr } = useLanguage();
   const cardRef = useRef(null);
   const titleId = useId();
 
@@ -121,25 +122,25 @@ function ProjectCard({ project, onOpen, motion }) {
       <ProjectVisual project={project} />
       <div className="project-info">
         <div className="project-meta">
-          <span>{project.category}</span>
+          <span>{tr(project.category)}</span>
           <span>{project.number}</span>
         </div>
         <div className="project-title">
-          <h3 id={titleId}>{project.name}</h3>
+          <h3 id={titleId}>{tr(project.name)}</h3>
           <button
             className="project-open"
             type="button"
             onClick={() => onOpen(project)}
-            aria-label={`Explore ${project.name}`}
+            aria-label={`${tr("Explore")} ${project.name}`}
             aria-haspopup="dialog"
           >
             <ArrowUpRight size={21} aria-hidden="true" />
           </button>
         </div>
-        <p>{project.description}</p>
+        <p>{tr(project.description)}</p>
         <div className="tags">
           {project.tags.map((tag) => (
-            <span key={tag}>{tag}</span>
+            <span key={tag}>{tr(tag)}</span>
           ))}
         </div>
       </div>
@@ -148,12 +149,12 @@ function ProjectCard({ project, onOpen, motion }) {
 }
 
 export default function Projects({ onOpen, motion = true }) {
+  const { tr } = useLanguage();
   const [filter, setFilter] = useState("All work");
   const visibleProjects = projects.filter(
     (project) =>
       filter === "All work" || filterTypes[filter].includes(project.type),
   );
-
   return (
     <section
       id="projects"
@@ -163,21 +164,26 @@ export default function Projects({ onOpen, motion = true }) {
       <div className="section-heading projects-heading">
         <div data-reveal>
           <div className="eyebrow">
-            <span>04</span> SELECTED WORK
+            <span>04</span>
+            {tr("SELECTED WORK")}
           </div>
           <h2 id="projects-heading">
-            Ideas made <span className="serif">real.</span>
+            {tr("Ideas made")} <span className="serif">{tr("real.")}</span>
           </h2>
           <p>
-            A few projects that reflect how I think,
+            {tr("A few projects that reflect how I think,")}
             <br />
-            build, and solve problems.
+            {tr("build, and solve problems.")}
           </p>
         </div>
         <SectionAvatar section="projects" motion={motion} compact />
       </div>
       <div className="project-toolbar">
-        <div className="filters" role="group" aria-label="Filter projects">
+        <div
+          className="filters"
+          role="group"
+          aria-label={tr("Filter projects")}
+        >
           {filters.map((label) => (
             <button
               key={label}
@@ -187,7 +193,7 @@ export default function Projects({ onOpen, motion = true }) {
               className={filter === label ? "selected" : ""}
               onClick={() => setFilter(label)}
             >
-              {label}
+              {tr(label)}
             </button>
           ))}
         </div>
@@ -197,7 +203,7 @@ export default function Projects({ onOpen, motion = true }) {
           aria-live="polite"
           aria-atomic="true"
         >
-          {String(visibleProjects.length).padStart(2, "0")} PROJECTS
+          {String(visibleProjects.length).padStart(2, "0")} {tr("PROJECTS")}
         </span>
       </div>
       <div id="project-grid" className="project-grid">
@@ -211,9 +217,9 @@ export default function Projects({ onOpen, motion = true }) {
         ))}
       </div>
       <div className="section-footnote">
-        <span>Every project is another step forward.</span>
+        <span>{tr("Every project is another step forward.")}</span>
         <a href={profile.github} {...externalProps}>
-          <GitFork size={17} aria-hidden="true" /> More on GitHub{" "}
+          <GitFork size={17} aria-hidden="true" /> {tr("More on GitHub")}{" "}
           <ArrowUpRight size={15} aria-hidden="true" />
         </a>
       </div>
@@ -222,6 +228,7 @@ export default function Projects({ onOpen, motion = true }) {
 }
 
 export function ProjectDialog({ project, close }) {
+  const { tr, language } = useLanguage();
   const dialogRef = useRef(null);
   const closeButtonRef = useRef(null);
   const titleId = useId();
@@ -276,69 +283,71 @@ export function ProjectDialog({ project, close }) {
         className="dialog-close icon-button"
         type="button"
         onClick={close}
-        aria-label="Close project"
+        aria-label={tr("Close project")}
       >
         <X aria-hidden="true" />
       </button>
       <ProjectVisual project={project} />
       <div className="dialog-content">
         <div className="eyebrow">
-          {project.category}
-          <span> / {project.status}</span>
+          {tr(project.category)}
+          <span> / {tr(project.status)}</span>
         </div>
-        <h2 id={titleId}>{project.name}</h2>
+        <h2 id={titleId}>{tr(project.name)}</h2>
         <p id={descriptionId} className="dialog-intro">
-          {project.description}
+          {tr(project.description)}
         </p>
         <div className="tags">
           {project.tags.map((tag) => (
-            <span key={tag}>{tag}</span>
+            <span key={tag}>{tr(tag)}</span>
           ))}
         </div>
         <div className="case-columns">
           <div>
-            <h3>The problem</h3>
-            <p>{project.problem}</p>
+            <h3>{tr("The problem")}</h3>
+            <p>{tr(project.problem)}</p>
           </div>
           <div>
-            <h3>The approach</h3>
-            <p>{project.solution}</p>
+            <h3>{tr("The approach")}</h3>
+            <p>{tr(project.solution)}</p>
           </div>
         </div>
-        <h3>Features &amp; focus</h3>
+        <h3>{tr("Features & focus")}</h3>
         <ul className="features">
           {project.features.map((feature) => (
             <li key={feature}>
               <Check size={16} aria-hidden="true" />
-              <span>{feature}</span>
+              <span>{tr(feature)}</span>
             </li>
           ))}
         </ul>
         <div className="learning">
           <Sparkles size={21} aria-hidden="true" />
           <div>
-            <h3>What I learned</h3>
-            <p>{project.learning}</p>
+            <h3>{tr("What I learned")}</h3>
+            <p>{tr(project.learning)}</p>
           </div>
         </div>
         {project.screenshot && (
           <img
             className="case-screenshot"
             src={project.screenshot}
-            alt={`${project.name} application screenshot`}
+            alt={`${tr(project.name)} application screenshot`}
             loading="lazy"
           />
         )}
         <div className="case-footer">
-          <span>{project.context}</span>
+          <span>{tr(project.context)}</span>
           {project.github && (
             <a href={project.github} {...externalProps}>
-              GitHub <GitFork size={17} aria-hidden="true" />
+              {tr("GitHub")}
+              <GitFork size={17} aria-hidden="true" />
             </a>
           )}
           {project.demo && (
             <a href={project.demo} {...externalProps}>
-              Live demo <ExternalLink size={17} aria-hidden="true" />
+              {tr("Live demo")}
+              <ExternalLink size={17} aria-hidden="true" />
             </a>
           )}
         </div>

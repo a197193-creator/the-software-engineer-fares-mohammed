@@ -1,9 +1,11 @@
+import { useLanguage } from "../LanguageContext";
 import { useEffect, useRef, useState } from "react";
 import { Compass, X, ArrowRight, ChevronLeft, Pause, Play } from "lucide-react";
 import { guideSteps } from "../data";
 import { avatarScenes } from "./SectionAvatar";
 
 export default function Guide({ active, goTo, motion, setMotion, tourSignal }) {
+  const { tr, language } = useLanguage();
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(null);
   const closeRef = useRef(null);
@@ -48,17 +50,18 @@ export default function Guide({ active, goTo, motion, setMotion, tourSignal }) {
     goTo(guideSteps[current + 1].id);
   }
   return (
-    <aside className="guide" aria-label="Portfolio guide">
+    <aside className="guide" aria-label={tr("Portfolio guide")}>
       {open && (
         <div id="guide-panel" className="guide-panel">
           <div className="guide-header">
             <span>
-              <Compass size={15} /> YOUR PERSONAL GUIDE
+              <Compass size={15} />
+              {tr("YOUR PERSONAL GUIDE")}
             </span>
             <button
               ref={closeRef}
               className="icon-button"
-              aria-label="Close guide"
+              aria-label={tr("Close guide")}
               onClick={close}
             >
               <X size={18} />
@@ -67,7 +70,7 @@ export default function Guide({ active, goTo, motion, setMotion, tourSignal }) {
           <div className="guide-profile">
             <img
               src={avatarScenes[step.id].image}
-              alt="Fares’ digital companion"
+              alt={tr("Fares’ digital companion")}
               width="64"
               height="96"
               onError={(event) => {
@@ -80,24 +83,26 @@ export default function Guide({ active, goTo, motion, setMotion, tourSignal }) {
               }}
             />
             <div>
-              <strong>A little character.</strong>
-              <span>A lot of curiosity.</span>
+              <strong>{tr("A little character.")}</strong>
+              <span>{tr("A lot of curiosity.")}</span>
             </div>
           </div>
           <div aria-live="polite">
             <span className="eyebrow">
               {index === null
-                ? active
-                : `STOP ${index + 1} OF ${guideSteps.length}`}
+                ? tr(active.charAt(0).toUpperCase() + active.slice(1))
+                : language === "ar"
+                  ? `المحطة ${index + 1} من ${guideSteps.length}`
+                  : `STOP ${index + 1} OF ${guideSteps.length}`}
             </span>
-            <h3>{step.title}</h3>
-            <p>{step.text}</p>
+            <h3>{tr(step.title)}</h3>
+            <p>{tr(step.text)}</p>
           </div>
           <div className="guide-controls">
             {index !== null && index > 0 && (
               <button
                 className="icon-button"
-                aria-label="Previous tour stop"
+                aria-label={tr("Previous tour stop")}
                 onClick={() => {
                   setIndex(index - 1);
                   goTo(guideSteps[index - 1].id);
@@ -107,16 +112,16 @@ export default function Guide({ active, goTo, motion, setMotion, tourSignal }) {
               </button>
             )}
             <button className="guide-next" onClick={next}>
-              {step.action}
+              {tr(step.action)}
               <ArrowRight size={16} />
             </button>
           </div>
           <div className="guide-shortcuts">
-            <button onClick={() => goTo("projects")}>Projects</button>
-            <button onClick={() => goTo("contact")}>Contact</button>
+            <button onClick={() => goTo("projects")}>{tr("Projects")}</button>
+            <button onClick={() => goTo("contact")}>{tr("Contact")}</button>
             <button aria-pressed={!motion} onClick={() => setMotion(!motion)}>
               {motion ? <Pause size={12} /> : <Play size={12} />}{" "}
-              {motion ? "Pause motion" : "Enable motion"}
+              {tr(motion ? "Pause motion" : "Enable motion")}
             </button>
           </div>
         </div>
@@ -129,7 +134,7 @@ export default function Guide({ active, goTo, motion, setMotion, tourSignal }) {
         onClick={() => (open ? close() : setOpen(true))}
       >
         <Compass size={19} />
-        <span>{open ? "Hide guide" : "Take a tour"}</span>
+        <span>{tr(open ? "Hide guide" : "Take a tour")}</span>
         <i />
       </button>
     </aside>

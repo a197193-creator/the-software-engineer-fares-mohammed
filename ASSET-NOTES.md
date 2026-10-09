@@ -51,3 +51,13 @@ Generation prompt:
 ## Other visuals
 
 Project graphics are conceptual layouts made from CSS and Lucide icons, not screenshots of the applications. Lucide supplies the interface icons. Cormorant Garamond and DM Sans are loaded from Google Fonts with Georgia and system font fallbacks. The SVG favicon is a code-native gold F monogram.
+
+## Phase 1 bilingual welcome — October 9, 2026
+
+The owner supplied `C:\Users\User\Desktop\WhatsApp Image 2026-10-09 at 10.55.51 AM.jpeg` and `C:\Users\User\Desktop\animation after choose language.mp4`. No new character image or model was generated for this phase.
+
+- `welcome-guardian.webp`: same 1280 × 647 image, exported as WebP at quality 90 (96,150 bytes). Cyan-left and gold-right sphere buttons use normalized image coordinates and share its aspect-ratio container.
+- `welcome-transition.mp4`: original H.264 video stream, 848 × 478, 24 fps, approximately ten seconds (1,673,322 bytes). FFmpeg remuxed it with fast-start metadata and removed the audio track; visual frames were not altered. Playback is also muted and inline.
+- `welcome-video-poster.webp`: the provided video's actual opening frame (25,586 bytes), used as a loading poster.
+
+The supplied clip shows gold on the left and cyan on the right, unlike the static welcome image, and includes baked Arabic text near the end. It is not mirrored or represented as a separately translated clip. Both language entries intentionally share the same user-provided video. Crossfades and restrained language-color overlays blend the transition; `welcomeAssets.videos` can accept separate clips later. Noto Naskh Arabic and Noto Sans Arabic add suitable Arabic display and body typography, with local font fallbacks.

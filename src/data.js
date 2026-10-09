@@ -68,37 +68,8 @@ export const projects = [
     demo: null,
   },
   {
-    id: "coda",
-    number: "03",
-    name: "Coda",
-    category: "AI · FINANCE",
-    type: "budget",
-    accent: "#d3b788",
-    tagline: "Less busywork. Better budget decisions.",
-    description:
-      "AI-assisted expense management with receipt OCR and automated financial insights.",
-    tags: ["AI integration", "Receipt OCR", "Budget planning"],
-    problem:
-      "Manual expense entry makes it harder to keep a clear and consistent view of everyday spending.",
-    solution:
-      "An AI-assisted budget planning application centered on receipt recognition and understandable spending insights.",
-    features: [
-      "Receipt OCR",
-      "Expense organization",
-      "Automated financial insights",
-      "Budget planning",
-    ],
-    learning:
-      "Exploring AI-assisted workflows means considering data quality, understandable outputs and how much control users retain.",
-    context: "Personal project",
-    status: "Project overview",
-    screenshot: null,
-    github: null,
-    demo: null,
-  },
-  {
     id: "tmc-web",
-    number: "04",
+    number: "03",
     name: "TMC Research & Publications",
     category: "WEB · RESEARCH",
     type: "research",
@@ -126,7 +97,7 @@ export const projects = [
   },
   {
     id: "uwc",
-    number: "05",
+    number: "04",
     name: "UWC Appointment System",
     category: "WEB · BOOKING",
     type: "booking",

@@ -1,0 +1,276 @@
+// English is the verified source copy. Arabic preserves its meaning and project facts.
+export const arabic = {
+  "Previous tour stop": "المحطة السابقة",
+  "FARES MOHAMMED · MALAYSIA": "فارس محمد · ماليزيا",
+  Home: "الرئيسية",
+  Projects: "المشاريع",
+  About: "نبذة عني",
+  "About Me": "نبذة عني",
+  Skills: "المهارات",
+  Experience: "الخبرة",
+  Contact: "التواصل",
+  "Skip to content": "انتقل إلى المحتوى",
+  "Main navigation": "التنقّل الرئيسي",
+  "Mobile navigation": "قائمة التنقّل",
+  "Open navigation": "فتح قائمة التنقّل",
+  "Close navigation": "إغلاق قائمة التنقّل",
+  "Fares Mohammed home": "فارس محمد — الرئيسية",
+  "Let’s connect": "لنتواصل",
+  "Switch to light theme": "التبديل إلى المظهر الفاتح",
+  "Switch to dark theme": "التبديل إلى المظهر الداكن",
+  "Change language": "تغيير اللغة",
+  "Replay welcome": "شاشة الترحيب",
+  Explore: "استكشف",
+  "Explore chapter": "استكشف القسم",
+  "Explore the portfolio chapters": "استكشف أقسام الموقع",
+  "I build ideas into reality.": "أحوّل الأفكار إلى واقع.",
+  "Curiosity is where improvement begins.": "الفضول هو بداية التطوّر.",
+  "Still learning. Always building.": "أتعلّم باستمرار. وأواصل البناء.",
+  "Every project starts with a problem worth solving.":
+    "كل مشروع يبدأ بمشكلة تستحق الحل.",
+  "Experience turns knowledge into confidence.":
+    "الخبرة تحوّل المعرفة إلى ثقة.",
+  "Let’s build something meaningful.": "لنبنِ شيئًا له قيمة.",
+  "A LITTLE ABOUT ME": "نبذة عني",
+  "A builder.": "أبني الأفكار.",
+  "A problem solver.": "وأحلّ المشكلات.",
+  "Still curious.": "وأظلّ فضوليًا.",
+  "I’m a Software Engineering student at Universiti Kebangsaan Malaysia (UKM), interested in building practical software that solves real problems.":
+    "أنا طالب هندسة برمجيات في الجامعة الوطنية الماليزية (UKM)، وأهتم ببناء برمجيات عملية تعالج مشكلات حقيقية.",
+  "My work spans mobile and web development, with a particular interest in Flutter, AI-powered applications, databases and digital solutions.":
+    "تشمل أعمالي تطوير تطبيقات الهاتف والويب، مع اهتمام خاص بـFlutter، والتطبيقات المدعومة بالذكاء الاصطناعي، وقواعد البيانات والحلول الرقمية.",
+  "I enjoy taking an idea from a simple concept and turning it into something people can actually use.":
+    "أستمتع بتطوير الفكرة من مفهوم بسيط إلى منتج يمكن للناس استخدامه فعليًا.",
+  "Selected projects": "مشاريع مختارة",
+  "Software Engineering": "هندسة البرمجيات",
+  "Download my CV": "تحميل سيرتي الذاتية",
+  "Download CV": "تحميل السيرة الذاتية",
+  "Updated CV coming soon": "السيرة الذاتية المحدّثة قريبًا",
+  "MY TOOLKIT": "أدواتي",
+  "Good tools.": "أدوات مناسبة.",
+  "Better possibilities.": "وإمكانيات أفضل.",
+  "I choose the technology that fits the problem.":
+    "أختار التقنية التي تناسب المشكلة.",
+  "And keep learning along the way.": "وأواصل التعلّم خلال الرحلة.",
+  "Mobile development": "تطوير تطبيقات الهاتف",
+  "Useful experiences, built for everyday life.":
+    "تجارب مفيدة للاستخدام اليومي.",
+  "Web development": "تطوير الويب",
+  "Clear interfaces that connect people to information.":
+    "واجهات واضحة تصل الناس بالمعلومات.",
+  "Backend & data": "الأنظمة الخلفية والبيانات",
+  "The structure behind a reliable application.":
+    "البنية التي تدعم التطبيق الموثوق.",
+  "AI integration": "دمج الذكاء الاصطناعي",
+  "Making intelligent tools practical and accessible.":
+    "تحويل الأدوات الذكية إلى حلول عملية وسهلة الاستخدام.",
+  "AI-assisted apps": "تطبيقات مدعومة بالذكاء الاصطناعي",
+  "SELECTED WORK": "أعمال مختارة",
+  "Ideas made": "أفكار أصبحت",
+  "real.": "واقعًا.",
+  "A few projects that reflect how I think,": "مشاريع تعكس طريقة تفكيري،",
+  "build, and solve problems.": "وأسلوبي في البناء وحلّ المشكلات.",
+  "Filter projects": "تصفية المشاريع",
+  "All work": "كل الأعمال",
+  Mobile: "تطبيقات الهاتف",
+  Web: "الويب",
+  AI: "الذكاء الاصطناعي",
+  PROJECTS: "مشاريع",
+  "Every project is another step forward.": "كل مشروع خطوة جديدة إلى الأمام.",
+  "More on GitHub": "المزيد على GitHub",
+  "Close project": "إغلاق المشروع",
+  "The problem": "المشكلة",
+  "The approach": "الحل",
+  "Features & focus": "الخصائص والتركيز",
+  "What I learned": "ما تعلّمته",
+  "Live demo": "عرض مباشر",
+  "MOBILE · RESEARCH": "تطبيق هاتف · أبحاث",
+  "MOBILE · HEALTHCARE": "تطبيق هاتف · صحة",
+  "WEB · RESEARCH": "ويب · أبحاث",
+  "WEB · BOOKING": "ويب · حجوزات",
+  Research: "الأبحاث",
+  Publications: "المنشورات",
+  "Appointment booking": "حجز المواعيد",
+  Payments: "المدفوعات",
+  "Customer tracking": "متابعة العملاء",
+  "Internship project": "مشروع تدريب",
+  "Student project": "مشروع جامعي",
+  "Project overview": "نبذة عن المشروع",
+  "Final-year project · UKM": "مشروع السنة النهائية · UKM",
+  "System development project": "مشروع تطوير نظام",
+  "Connecting people. Supporting research.": "ربط الناس. ودعم الأبحاث.",
+  "Mobile application development for The Malaysian Cohort (TMC) Project at UKM.":
+    "تطوير تطبيق للهاتف ضمن مشروع The Malaysian Cohort (TMC) في UKM.",
+  "Research projects need practical digital touchpoints that connect participants with their activities and information.":
+    "تحتاج المشاريع البحثية إلى وسائل رقمية عملية تربط المشاركين بأنشطتهم ومعلوماتهم.",
+  "Contributing to mobile application development for The Malaysian Cohort, within the UMBI research environment at UKM.":
+    "المساهمة في تطوير تطبيق The Malaysian Cohort ضمن البيئة البحثية في UMBI بجامعة UKM.",
+  "Mobile application development": "تطوير تطبيق للهاتف",
+  "Research-oriented digital workflows": "مسارات عمل رقمية للأبحاث",
+  "Participant-facing experience": "تجربة موجّهة للمشاركين",
+  "Working in a research setting brings usability, clear requirements and careful handling of information into every development decision.":
+    "العمل في بيئة بحثية يربط قرارات التطوير بسهولة الاستخدام ووضوح المتطلبات والتعامل الدقيق مع المعلومات.",
+  "A little more clarity. Every day.": "وضوح أكبر. كل يوم.",
+  "An Android application for diabetes self-management, from daily tracking to reminders and useful information.":
+    "تطبيق Android لمتابعة السكري ذاتيًا، يجمع المتابعة اليومية والتذكيرات والمعلومات المفيدة.",
+  "Keeping health activities, meals, medication reminders and appointments organized can be difficult when they are spread across different tools.":
+    "يصعب تنظيم الأنشطة الصحية والوجبات وتذكيرات الأدوية والمواعيد عندما تتوزّع على أدوات متعددة.",
+  "A Flutter application that brings diabetes-related tracking and support into one mobile experience for users in Malaysia.":
+    "تطبيق Flutter يجمع متابعة السكري وأدوات الدعم في تجربة واحدة لمستخدمي الهاتف في ماليزيا.",
+  "Health and activity tracking": "متابعة الصحة والنشاط",
+  "Medication reminders and notifications": "تذكيرات الأدوية والإشعارات",
+  "Meal support and educational content": "دعم الوجبات والمحتوى التثقيفي",
+  "Appointment tracking, charts and PDF reports":
+    "متابعة المواعيد والرسوم البيانية وتقارير PDF",
+  "Cloud storage and user authentication":
+    "التخزين السحابي وتسجيل دخول المستخدمين",
+  "Taking responsibility for requirements, system design, implementation and testing strengthened my ability to build a complete application independently.":
+    "تحمّل مسؤولية المتطلبات وتصميم النظام والتنفيذ والاختبار عزّز قدرتي على بناء تطبيق متكامل بصورة مستقلة.",
+  "Making research easier to find.": "الوصول إلى الأبحاث بسهولة أكبر.",
+  "Website development and improvements for research and publication management.":
+    "تطوير موقع وتحسينه لدعم إدارة الأبحاث والمنشورات.",
+  "Research and publication information needs to be organized so visitors can find and understand it easily.":
+    "تحتاج معلومات الأبحاث والمنشورات إلى تنظيم يتيح للزوّار الوصول إليها وفهمها بسهولة.",
+  "Contributing to website development and improvements for The Malaysian Cohort research and publication workflows.":
+    "المساهمة في تطوير موقع The Malaysian Cohort وتحسين مسارات عمل الأبحاث والمنشورات.",
+  "Research information presentation": "عرض المعلومات البحثية",
+  "Publication management improvements": "تحسين إدارة المنشورات",
+  "Website usability and maintenance": "سهولة استخدام الموقع وصيانته",
+  "Developing for a research organization connects technical work with real information needs and practical maintenance.":
+    "تطوير البرمجيات لمؤسسة بحثية يربط العمل التقني باحتياجات المعلومات الفعلية والصيانة العملية.",
+  "From booking to follow-through.": "من الحجز إلى المتابعة.",
+  "An appointment booking and management system with payment and customer tracking.":
+    "نظام لحجز المواعيد وإدارتها مع متابعة المدفوعات والعملاء.",
+  "Appointment workflows need to connect booking, payment and customer information in a coherent process.":
+    "تحتاج إدارة المواعيد إلى ربط الحجز والمدفوعات ومعلومات العملاء في مسار عمل متكامل.",
+  "A system designed around booking and managing appointments, with payment and customer tracking in the same workflow.":
+    "نظام لحجز المواعيد وإدارتها، مع متابعة المدفوعات والعملاء ضمن مسار العمل نفسه.",
+  "Appointment booking and management": "حجز المواعيد وإدارتها",
+  "Payment workflow": "مسار المدفوعات",
+  "Thinking through the full booking journey helps uncover the relationships between scheduling, payments and customer records.":
+    "دراسة رحلة الحجز كاملة تساعد على فهم العلاقة بين جدولة المواعيد والمدفوعات وسجلات العملاء.",
+  "THE JOURNEY": "الرحلة",
+  "Code meets": "حين يرتبط الكود",
+  "context.": "بالواقع.",
+  "Real teams. Real needs.": "فرق حقيقية. واحتياجات حقيقية.",
+  "A broader perspective on building software.": "رؤية أوسع لبناء البرمجيات.",
+  "In progress": "جارٍ حاليًا",
+  "Software Engineering Intern": "متدرّب هندسة برمجيات",
+  "Contributing to mobile and web development in a research environment at Universiti Kebangsaan Malaysia.":
+    "المساهمة في تطوير تطبيقات الهاتف والويب ضمن بيئة بحثية في الجامعة الوطنية الماليزية.",
+  "Mobile application development for the MyCohort application.":
+    "المساهمة في تطوير تطبيق MyCohort للهاتف.",
+  "Translating practical research needs into usable digital solutions.":
+    "تحويل الاحتياجات البحثية العملية إلى حلول رقمية قابلة للاستخدام.",
+  "Mobile & web": "الهاتف والويب",
+  "Research systems": "أنظمة بحثية",
+  "UKM COURSEWORK": "مشاريع جامعية في UKM",
+  "Project Team Leader": "قائد فريق مشروع",
+  "University software & group projects": "مشاريع برمجية وجماعية في الجامعة",
+  "Coordinating student teams, organizing responsibilities and helping ideas move from planning to delivery.":
+    "تنسيق فرق الطلاب وتنظيم المسؤوليات والمساعدة في تطوير الأفكار من التخطيط إلى التسليم.",
+  EDUCATION: "التعليم",
+  "Universiti Kebangsaan Malaysia": "الجامعة الوطنية الماليزية",
+  "Learning by building, questioning and connecting ideas.":
+    "أتعلّم عبر البناء وطرح الأسئلة وربط الأفكار.",
+  "WHAT’S NEXT?": "ما الخطوة التالية؟",
+  "Have something": "لديك فكرة",
+  in: "في",
+  "mind?": "ذهنك؟",
+  "A project, an opportunity, or just a good conversation.":
+    "مشروع، أو فرصة، أو حتى حوار مفيد.",
+  "I’d love to hear from you.": "يسعدني التواصل معك.",
+  "Find me on GitHub": "تواصل معي على GitHub",
+  "More ways to connect coming soon.": "وسائل أخرى للتواصل قريبًا.",
+  "Email copied": "تم نسخ البريد الإلكتروني",
+  "Copy email": "نسخ البريد الإلكتروني",
+  "Copied!": "تم النسخ!",
+  Email: "البريد الإلكتروني",
+  "Malaysia · UTC+8": "ماليزيا · UTC+8",
+  "Fares Mohammed": "فارس محمد",
+  "Built with intention. Always evolving.": "بُني بعناية. ويتطوّر باستمرار.",
+  "Back to top": "العودة إلى الأعلى",
+  "Portfolio guide": "دليل الموقع",
+  "Close guide": "إغلاق الدليل",
+  "YOUR PERSONAL GUIDE": "دليلك الشخصي",
+  "A little character.": "شخصية صغيرة.",
+  "A lot of curiosity.": "وفضول كبير.",
+  "Pause motion": "إيقاف الحركة",
+  "Enable motion": "تشغيل الحركة",
+  "Hide guide": "إخفاء الدليل",
+  "Take a tour": "جولة في الموقع",
+  "Take a guided tour": "جولة إرشادية",
+  "Fares’ digital companion": "رفيق فارس الرقمي",
+  "Hey, welcome to my corner of the web.": "مرحبًا بك في مساحتي الرقمية.",
+  "I'm Fares. Let me show you what I build and how I work.":
+    "أنا فارس. دعني أريك مشاريعي وطريقة عملي.",
+  "A little about me": "نبذة عني",
+  "Curiosity is part of the process.": "الفضول جزء من رحلتي.",
+  "I enjoy taking a simple idea through design, development, testing and iteration.":
+    "أستمتع بتطوير الفكرة عبر التصميم والتنفيذ والاختبار والتحسين.",
+  "Meet my toolkit": "تعرّف على أدواتي",
+  "The tools behind the ideas.": "الأدوات خلف الأفكار.",
+  "Mobile, web, data and AI — each tool has a place when it helps solve the problem.":
+    "الهاتف والويب والبيانات والذكاء الاصطناعي؛ لكل أداة دور عندما تساعد في حل المشكلة.",
+  "Explore my work": "استكشف أعمالي",
+  "Start with the work.": "لنبدأ بالمشاريع.",
+  "Open a project to explore the problem, approach, features and lessons behind it.":
+    "افتح مشروعًا للتعرّف على المشكلة والحل والخصائص والدروس المستفادة.",
+  "See my experience": "اطّلع على خبرتي",
+  "Learning in the real world.": "التعلّم في بيئة العمل.",
+  "My UMBI / TMC internship connects software development with research at UKM.":
+    "يربط تدريبي في UMBI / TMC تطوير البرمجيات بالأبحاث في UKM.",
+  "Let's connect": "لنتواصل",
+  "Thanks for exploring my work.": "شكرًا لاستكشاف أعمالي.",
+  "You can find more on my GitHub. More ways to connect will be available soon.":
+    "يمكنك متابعة المزيد على GitHub. ستتوفر وسائل أخرى للتواصل قريبًا.",
+  "Finish the tour": "إنهاء الجولة",
+  "SCROLL TO DISCOVER": "مرّر للاستكشاف",
+  "PORTFOLIO — 2026": "بورتفوليو — 2026",
+  "UKM · MALAYSIA": "UKM · ماليزيا",
+};
+
+export const welcomeCopy = {
+  en: {
+    heading: "Welcome to My Digital World.",
+    description:
+      "I'm Fares Mohammed, a Software Engineering student exploring how ideas become meaningful digital experiences. Choose your language and discover the projects, skills, and ideas behind my work.",
+    button: "Explore in English",
+    label: "ENGLISH",
+    skip: "Skip intro",
+    entering: "Entering my digital world",
+    choose: "Choose your language",
+  },
+  ar: {
+    heading: "مرحبًا بك في عالمي الرقمي",
+    description:
+      "أنا فارس محمد، طالب هندسة برمجيات أسعى لتحويل الأفكار إلى تجارب رقمية عملية ومميزة. اختر لغتك، وابدأ رحلتك لاكتشاف مشاريعي ومهاراتي والأفكار التي أعمل على تطويرها.",
+    button: "استكشف بالعربية",
+    label: "العربية",
+    skip: "تخطّي المقدّمة",
+    entering: "ندخل إلى عالمي الرقمي",
+    choose: "اختر لغتك",
+  },
+};
+export const heroCopy = {
+  en: {
+    eyebrow: "SOFTWARE ENGINEERING • DIGITAL EXPERIENCES",
+    greeting: "Hi, I'm",
+    name: "Fares Mohammed.",
+    secondary: "Turning Ideas into Thoughtful Digital Experiences.",
+    description:
+      "I'm a Software Engineering student interested in building practical, intuitive, and well-designed digital products. Through my projects, I explore software development, problem-solving, and the connection between technology and user experience.",
+    projects: "Explore My Projects",
+    about: "More About Me",
+  },
+  ar: {
+    eyebrow: "هندسة البرمجيات • التجارب الرقمية",
+    greeting: "مرحبًا، أنا",
+    name: "فارس محمد.",
+    secondary: "أحوّل الأفكار إلى تجارب رقمية مدروسة.",
+    description:
+      "أنا طالب هندسة برمجيات، أهتم بتطوير منتجات رقمية عملية وسهلة الاستخدام. من خلال مشاريعي، أستكشف تطوير البرمجيات، وحل المشكلات، وكيفية الجمع بين التكنولوجيا وتجربة المستخدم لتقديم حلول أفضل.",
+    projects: "استكشف مشاريعي",
+    about: "المزيد عني",
+  },
+};

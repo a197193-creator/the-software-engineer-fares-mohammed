@@ -1,3 +1,4 @@
+import { useLanguage } from "../LanguageContext";
 import { useEffect, useRef, useState } from "react";
 
 export const avatarScenes = {
@@ -52,6 +53,7 @@ export default function SectionAvatar({
   compact = false,
   imageHidden = false,
 }) {
+  const { tr } = useLanguage();
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
   const [paused, setPaused] = useState(false);
@@ -95,9 +97,9 @@ export default function SectionAvatar({
         <span className="speech-mark" aria-hidden="true">
           “
         </span>
-        <p>{scene.quote}</p>
+        <p>{tr(scene.quote)}</p>
         <span className="speech-signature">
-          FARES / {scene.name.toUpperCase()}
+          FARES / {tr(scene.name).toUpperCase()}
         </span>
       </figcaption>
     </figure>
@@ -105,17 +107,21 @@ export default function SectionAvatar({
 }
 
 export function ChapterRail({ goTo, active }) {
+  const { tr } = useLanguage();
   return (
-    <nav className="chapter-rail" aria-label="Explore the portfolio chapters">
+    <nav
+      className="chapter-rail"
+      aria-label={tr("Explore the portfolio chapters")}
+    >
       {Object.entries(avatarScenes).map(([id, scene]) => (
         <button
           className={`chapter-card ${active === id ? "current" : ""}`}
           key={id}
           onClick={() => goTo(id)}
-          aria-label={`Explore ${scene.name}`}
+          aria-label={`${tr("Explore")} ${tr(scene.name)}`}
         >
           <span className="chapter-label">
-            <b>{scene.number}.</b> {scene.name}
+            <b>{scene.number}.</b> {tr(scene.name)}
           </span>
           <span className="chapter-picture">
             <img
@@ -131,11 +137,12 @@ export function ChapterRail({ goTo, active }) {
             />
             <span className="chapter-quote">
               <i aria-hidden="true">“</i>
-              {scene.quote}
+              {tr(scene.quote)}
             </span>
           </span>
           <span className="chapter-link">
-            Explore chapter <span>↗</span>
+            {tr("Explore chapter")}
+            <span>↗</span>
           </span>
         </button>
       ))}

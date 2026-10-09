@@ -21,7 +21,10 @@ The production output is `dist/`. The portfolio is a static site with no require
 ## Customize
 
 - `src/App.jsx`: page structure, navigation, theme, motion controls and guide.
-- `src/data.js`: verified profile links, five project records and tour copy.
+- `src/data.js`: verified profile links, four project records and tour copy.
+- `src/LanguageContext.jsx` and `src/locales.js`: saved Arabic/English preference, RTL direction and translations.
+- `src/components/WelcomeExperience.jsx`: isolated language selection and provided-video transition.
+- `src/components/PortfolioHero.jsx` and `src/welcome.css`: bilingual hero entrance and lightweight Phase 1 animation layers.
 - `src/design.css`: color tokens, typography, navigation and primary page layout.
 - `src/details.css`: project cards, dialogs, guide and supporting interface styles.
 - `src/responsive.css`: responsive layout and reduced-motion overrides.
@@ -36,6 +39,8 @@ Email, LinkedIn, WhatsApp and CV remain unset because the owner deferred supplyi
 Project repository links, demos and screenshots remain unset until real materials are available. Add them to the corresponding project record; existing conditional UI will display them. The illustrated project panels are conceptual graphic identities, not application screenshots. Preserve the supplied project descriptions and avoid adding unverified outcomes or metrics.
 
 ## Character and motion
+
+Phase 1 adds the owner's bilingual guardian welcome screen and ten-second transition video. New visitors choose a language; returning visitors enter the portfolio in their saved language. The header switches language without replaying the video, and the footer's **Replay welcome / شاشة الترحيب** reopens the experience. See `PHASE-1.md` for flow, animation ownership, verification and limitations. Advanced scroll-controlled avatar storytelling remains deferred until explicitly approved.
 
 The hero uses an optimized cinematic image. Six consistent transparent WebP poses belong to the Home, About, Skills, Projects, Experience and Contact chapters. Each section has its own figure and readable quote; the character never travels across content. Intersection Observer fades the figure in and pauses its subtle four-second CSS breathing cycle outside the viewport. Hover pauses the pose, and touch toggles its pause state. The guide uses the corresponding pose at each stop.
 
