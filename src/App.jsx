@@ -116,10 +116,10 @@ export default function App() {
   );
   useEffect(() => {
     if (welcomeVisible || !portfolioReady) return;
-    const frame = requestAnimationFrame(() => {
+    const focusTimer = setTimeout(() => {
       document.getElementById("hero-title")?.focus({ preventScroll: true });
-    });
-    return () => cancelAnimationFrame(frame);
+    }, 50);
+    return () => clearTimeout(focusTimer);
   }, [welcomeVisible, portfolioReady]);
 
   useEffect(() => {
