@@ -23,7 +23,10 @@ The production output is `dist/`. The portfolio is a static site with no require
 - `src/App.jsx`: page structure, navigation, theme, motion controls and guide.
 - `src/data.js`: verified profile links, four project records and tour copy.
 - `src/LanguageContext.jsx` and `src/locales.js`: saved Arabic/English preference, RTL direction and translations.
-- `src/components/WelcomeExperience.jsx`: isolated language selection and provided-video transition.
+- `src/components/WelcomeExperience.jsx` and `CinematicTransition.jsx`: language selection and a coded cinematic greeting on every page load.
+- `src/intro.css`: language feedback, resolution-independent transition and sand cursor visuals.
+- `src/readability.css`: larger, higher-contrast text throughout the portfolio.
+- `src/components/SandCursor.jsx`: bounded desktop cursor ring and twelve fading sand grains; stops updating when idle.
 - `src/components/PortfolioHero.jsx` and `src/welcome.css`: bilingual hero entrance and lightweight Phase 1 animation layers.
 - `src/design.css`: color tokens, typography, navigation and primary page layout.
 - `src/details.css`: project cards, dialogs, guide and supporting interface styles.
@@ -40,7 +43,7 @@ Project repository links, demos and screenshots remain unset until real material
 
 ## Character and motion
 
-Phase 1 adds the owner's bilingual guardian welcome screen and ten-second transition video. New visitors choose a language; returning visitors enter the portfolio in their saved language. The header switches language without replaying the video, and the footer's **Replay welcome / شاشة الترحيب** reopens the experience. See `PHASE-1.md` for flow, animation ownership, verification and limitations. Advanced scroll-controlled avatar storytelling remains deferred until explicitly approved.
+Phase 1 shows the bilingual guardian language screen on every fresh opening and refresh. It remembers the language without using that preference to skip the welcome. After selection, a four-second coded transition reveals a bilingual greeting with cyan or gold geometry and typography. The previous video and poster are removed from the public assets. The header switches language within the portfolio, and the footer's **Replay welcome / شاشة الترحيب** reopens the complete experience. Reduced motion shows a short static greeting. See `PHASE-1.md` for flow, animation ownership and verification. Advanced scroll-controlled avatar storytelling remains deferred until explicitly approved.
 
 The hero uses an optimized cinematic image. Six consistent transparent WebP poses belong to the Home, About, Skills, Projects, Experience and Contact chapters. Each section has its own figure and readable quote; the character never travels across content. Intersection Observer fades the figure in and pauses its subtle four-second CSS breathing cycle outside the viewport. Hover pauses the pose, and touch toggles its pause state. The guide uses the corresponding pose at each stop.
 

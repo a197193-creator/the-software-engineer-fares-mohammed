@@ -240,6 +240,11 @@ export const welcomeCopy = {
     skip: "Skip intro",
     entering: "Entering my digital world",
     choose: "Choose your language",
+    descriptionShort: "Discover my projects, skills, and ideas.",
+    introHeading: "Welcome.",
+    introSubtitle: "To my digital world.",
+    introNote: "Every idea starts with curiosity. Let's explore together.",
+    introIdentity: "FARES MOHAMMED · SOFTWARE ENGINEERING",
   },
   ar: {
     heading: "مرحبًا بك في عالمي الرقمي",
@@ -250,6 +255,11 @@ export const welcomeCopy = {
     skip: "تخطّي المقدّمة",
     entering: "ندخل إلى عالمي الرقمي",
     choose: "اختر لغتك",
+    descriptionShort: "اكتشف مشاريعي ومهاراتي وأفكاري.",
+    introHeading: "أهلًا بك.",
+    introSubtitle: "في عالمي الرقمي.",
+    introNote: "كل فكرة تبدأ بفضول. لنستكشف الرحلة معًا.",
+    introIdentity: "فارس محمد · هندسة البرمجيات",
   },
 };
 export const heroCopy = {

@@ -54,10 +54,14 @@ Project graphics are conceptual layouts made from CSS and Lucide icons, not scre
 
 ## Phase 1 bilingual welcome — October 9, 2026
 
-The owner supplied `C:\Users\User\Desktop\WhatsApp Image 2026-10-09 at 10.55.51 AM.jpeg` and `C:\Users\User\Desktop\animation after choose language.mp4`. No new character image or model was generated for this phase.
+The owner supplied `C:\Users\User\Desktop\WhatsApp Image 2026-10-09 at 10.55.51 AM.jpeg` and `C:\Users\User\Desktop\animation after choose language.mp4`. No new character image or model was generated for this phase. At the owner's request, the transition video was subsequently replaced by code, and the packaged MP4/poster were removed. The original desktop source files are untouched. The following video notes document the earlier revision.
 
 - `welcome-guardian.webp`: same 1280 × 647 image, exported as WebP at quality 90 (96,150 bytes). Cyan-left and gold-right sphere buttons use normalized image coordinates and share its aspect-ratio container.
 - `welcome-transition.mp4`: original H.264 video stream, 848 × 478, 24 fps, approximately ten seconds (1,673,322 bytes). FFmpeg remuxed it with fast-start metadata and removed the audio track; visual frames were not altered. Playback is also muted and inline.
 - `welcome-video-poster.webp`: the provided video's actual opening frame (25,586 bytes), used as a loading poster.
 
-The supplied clip shows gold on the left and cyan on the right, unlike the static welcome image, and includes baked Arabic text near the end. It is not mirrored or represented as a separately translated clip. Both language entries intentionally share the same user-provided video. Crossfades and restrained language-color overlays blend the transition; `welcomeAssets.videos` can accept separate clips later. Noto Naskh Arabic and Noto Sans Arabic add suitable Arabic display and body typography, with local font fallbacks.
+The earlier clip showed gold on the left and cyan on the right, unlike the static image, and included baked Arabic text. It was not mirrored. The current programmed entrance localizes all its text and uses no video. Noto Naskh Arabic and Noto Sans Arabic provide suitable Arabic display and body typography, with local font fallbacks.
+
+## Current programmed entrance
+
+`CinematicTransition.jsx` and `intro.css` render the new entrance from CSS circles, axes, six small stars, an F seal and live bilingual HTML text. No raster video, external animation service, new model or additional library is used. The selection image remains the owner's WebP guardian. The cursor uses one ring and a fixed pool of twelve tiny grains, with a requestAnimationFrame loop that ends when its position and particle fades settle. It is hidden on small screens, touch pointers and reduced motion. `readability.css` increases normal body text to 17 pixels and welcome descriptions to 16 pixels, with larger controls and stronger contrast.

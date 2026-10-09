@@ -16,8 +16,7 @@ function readLanguage() {
   }
 }
 export function LanguageProvider({ children }) {
-  const [preference] = useState(readLanguage);
-  const [language, setValue] = useState(preference || "en");
+  const [language, setValue] = useState(() => readLanguage() || "en");
   const setLanguage = useCallback((value) => {
     if (value !== "en" && value !== "ar") return;
     setValue(value);
@@ -40,7 +39,6 @@ export function LanguageProvider({ children }) {
       value={{
         language,
         setLanguage,
-        hasPreference: !!preference,
         tr,
         hero: heroCopy[language],
         welcome: welcomeCopy[language],

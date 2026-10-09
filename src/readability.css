@@ -1,0 +1,195 @@
+/* Readable type for live content; small labels are never used as body text. */
+.cinematic {
+  --muted: #c0c6cd;
+  --subtle: #aeb6be;
+}
+html[data-theme="light"] .cinematic {
+  --muted: #514e46;
+  --subtle: #625e55;
+}
+.cinematic .eyebrow,
+.cinematic .hero .eyebrow {
+  font-size: 13px;
+  letter-spacing: 1px;
+  line-height: 1.7;
+}
+.cinematic .desktop-nav a {
+  font-size: 14px;
+}
+.cinematic .header-identity {
+  font-size: 12px;
+}
+.cinematic .header {
+  gap: 24px;
+}
+.cinematic .desktop-nav {
+  gap: 23px;
+}
+.cinematic .button,
+.cinematic .hero-phase-one .button {
+  font-size: 15px;
+  height: auto;
+  min-height: 50px;
+  padding: 12px 19px;
+  line-height: 1.5;
+}
+.cinematic .hero-phase-one .hero-description,
+html[lang="ar"] .hero-phase-one .hero-description {
+  font-size: 17px;
+  line-height: 1.85;
+  color: #d7dce2;
+}
+.cinematic .hero-phase-one {
+  min-height: 850px;
+}
+.cinematic .hero-socials > span,
+.cinematic .hero-bottom,
+.cinematic .hero-index {
+  font-size: 12px;
+  color: #cbd0d6;
+}
+.cinematic .language-toggle,
+.cinematic .replay-welcome {
+  font-size: 14px;
+  min-height: 44px;
+}
+.cinematic .hero-cv {
+  font-size: 13px;
+}
+.cinematic .about-copy p,
+.cinematic .section-heading p,
+.cinematic .skill-card p,
+.cinematic .project-info p,
+.cinematic .timeline-entry p,
+.cinematic .timeline-entry li,
+.cinematic .contact-copy p {
+  font-size: 17px;
+  line-height: 1.85;
+}
+.cinematic .tags span {
+  font-size: 13px;
+  line-height: 1.7;
+}
+.cinematic .visual-index {
+  font-size: 12px;
+}
+.cinematic .visual-caption {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.cinematic .timeline-date,
+.cinematic .about-facts span,
+.cinematic .contact-bottom,
+.cinematic .contact-bottom a,
+.cinematic .contact-note {
+  font-size: 14px;
+  line-height: 1.7;
+}
+.cinematic .project-meta,
+.cinematic .filter-button,
+.cinematic .project-results,
+.cinematic .projects-bottom,
+.cinematic .timeline-entry > span,
+.cinematic .timeline-entry time,
+.cinematic .in-progress,
+.cinematic .cv-note,
+.cinematic .about-stat span {
+  font-size: 13px;
+  line-height: 1.7;
+}
+.cinematic .skill-card h3,
+html[lang="ar"] .cinematic .skill-card h3 {
+  font-size: 20px;
+  line-height: 1.5;
+}
+.cinematic .chapter-label,
+.cinematic .chapter-link {
+  font-size: 12px;
+  line-height: 1.5;
+}
+.cinematic .chapter-quote,
+html[lang="ar"] .cinematic .chapter-quote {
+  font-size: 15px;
+  line-height: 1.4;
+  width: 124px;
+}
+.cinematic .avatar-speech p {
+  font-size: 24px;
+  line-height: 1.4;
+}
+.cinematic .speech-signature {
+  font-size: 11px;
+  line-height: 1.5;
+}
+.cinematic .guide-trigger span,
+.cinematic .guide-header > span,
+.cinematic .guide-shortcuts button {
+  font-size: 13px;
+}
+.cinematic .guide-profile span {
+  font-size: 13px;
+}
+.cinematic .guide-panel p {
+  font-size: 16px;
+  line-height: 1.8;
+}
+.cinematic .guide-next {
+  font-size: 15px;
+  min-height: 44px;
+}
+.cinematic .dialog-content p,
+.cinematic .features li {
+  font-size: 17px;
+  line-height: 1.8;
+}
+.cinematic .dialog-meta,
+.cinematic .project-context {
+  font-size: 13px;
+}
+.cinematic .footer,
+.cinematic .footer button,
+.cinematic .contact-links {
+  font-size: 14px;
+  line-height: 1.7;
+}
+@media (max-width: 1199px) {
+  .cinematic .desktop-nav {
+    gap: 17px;
+  }
+  .cinematic .desktop-nav a {
+    font-size: 13px;
+  }
+}
+@media (max-width: 767px) {
+  .cinematic .hero-phase-one {
+    min-height: 1050px;
+  }
+  .cinematic .hero-phase-one .hero-description,
+  html[lang="ar"] .cinematic .hero-phase-one .hero-description {
+    font-size: 17px;
+  }
+  .cinematic .hero .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.3px;
+  }
+  .cinematic .hero-phase-one .button {
+    font-size: 14px;
+    padding: 12px 16px;
+  }
+  .cinematic .chapter-label,
+  .cinematic .chapter-link {
+    font-size: 12px;
+  }
+  .cinematic .avatar-speech p {
+    font-size: 21px;
+  }
+  .cinematic .chapter-quote {
+    font-size: 15px;
+  }
+  .cinematic .language-toggle {
+    font-size: 13px;
+  }
+  .cinematic .dialog-content {
+    padding-inline: 22px;
+  }
+}

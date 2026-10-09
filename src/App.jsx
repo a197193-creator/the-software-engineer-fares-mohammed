@@ -31,6 +31,7 @@ import Guide from "./components/Guide";
 import { Magnetic } from "./components/Effects";
 import WelcomeExperience from "./components/WelcomeExperience";
 import PortfolioHero from "./components/PortfolioHero";
+import SandCursor from "./components/SandCursor";
 import { useLanguage } from "./LanguageContext";
 import { useMotion, usePageTracking } from "./hooks/useMotion";
 
@@ -90,9 +91,9 @@ function Heading({ number, label, children }) {
 }
 
 export default function App() {
-  const { language, setLanguage, hasPreference, tr } = useLanguage();
-  const [welcomeVisible, setWelcomeVisible] = useState(!hasPreference);
-  const [portfolioReady, setPortfolioReady] = useState(hasPreference);
+  const { language, setLanguage, tr } = useLanguage();
+  const [welcomeVisible, setWelcomeVisible] = useState(true);
+  const [portfolioReady, setPortfolioReady] = useState(false);
   const [active, setActive] = useState("home");
   const [navHidden, setNavHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -692,6 +693,7 @@ export default function App() {
           )}
         </div>
       </div>
+      <SandCursor enabled={motion} />
       {welcomeVisible && (
         <WelcomeExperience
           motion={motion}

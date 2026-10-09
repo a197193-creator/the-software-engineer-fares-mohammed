@@ -2,16 +2,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowRight, SkipForward } from "lucide-react";
 import { useLanguage } from "../LanguageContext";
 import { welcomeCopy } from "../locales";
+import CinematicTransition from "./CinematicTransition";
 
-// Phase 1 media only. Future language-specific clips can be configured here.
 export const welcomeAssets = {
   image: "/assets/welcome-guardian.webp",
-  poster: "/assets/welcome-video-poster.webp",
-  videos: {
-    en: "/assets/welcome-transition.mp4",
-    ar: "/assets/welcome-transition.mp4",
-  },
-  energyPeak: 2.5,
 };
 function InteractiveSphere({
   language,
@@ -36,6 +30,7 @@ function InteractiveSphere({
     >
       <span className="sphere-breath" aria-hidden="true">
         <span className="sphere-ring" />
+        <span className="sphere-focus-ring" />
       </span>
       <span className="sphere-tag">
         {language === "en" ? "ENGLISH" : "العربية"}
@@ -55,16 +50,25 @@ function LanguageChoice({ language, disabled, onChoose, onHighlight }) {
     >
       <span className="language-label">{text.label}</span>
       <h2>{text.heading}</h2>
-      <p>{text.description}</p>
+      <p>
+        <span className="welcome-description-full">{text.description}</span>
+        <span className="welcome-description-short">
+          {text.descriptionShort}
+        </span>
+      </p>
       <button
         className="language-cta"
         type="button"
+        aria-label={text.button}
         disabled={disabled}
         onClick={() => onChoose(language)}
         onFocus={() => onHighlight(language)}
         onBlur={() => onHighlight(null)}
       >
-        {text.button}
+        <span className="welcome-description-full">{text.button}</span>
+        <span className="welcome-description-short">
+          {language === "ar" ? "العربية" : "English"}
+        </span>
         <ArrowRight size={17} aria-hidden="true" />
       </button>
     </section>
@@ -75,9 +79,7 @@ export default function WelcomeExperience({ motion, onReveal, onComplete }) {
   const [phase, setPhase] = useState("choose");
   const [highlight, setHighlight] = useState(null);
   const [selected, setSelected] = useState(null);
-  const [playing, setPlaying] = useState(false);
   const root = useRef(null),
-    video = useRef(null),
     lock = useRef(false),
     finished = useRef(false),
     callbacks = useRef({ onReveal, onComplete }),
@@ -90,7 +92,6 @@ export default function WelcomeExperience({ motion, onReveal, onComplete }) {
     finished.current = true;
     lock.current = true;
     clearTimeout(timer.current);
-    video.current?.pause();
     setLanguage(selectedRef.current);
     setPhase("leaving");
     callbacks.current.onReveal();
@@ -102,18 +103,18 @@ export default function WelcomeExperience({ motion, onReveal, onComplete }) {
   useEffect(() => {
     const before = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    root.current
-      ?.querySelector(".language-cta")
-      ?.focus({ preventScroll: true });
+    root.current?.focus({ preventScroll: true });
     return () => {
       document.body.style.overflow = before;
       clearTimeout(timer.current);
       clearTimeout(exitTimer.current);
-      video.current?.pause();
     };
   }, []);
   useEffect(() => {
-    if (!motion && phase === "transition") finish();
+    if (phase !== "transition") return;
+    // CSS completion and this bounded timer share the same guarded exit.
+    timer.current = setTimeout(finish, motion ? 4200 : 2200);
+    return () => clearTimeout(timer.current);
   }, [motion, phase, finish]);
   function choose(value) {
     if (lock.current) return;
@@ -122,46 +123,9 @@ export default function WelcomeExperience({ motion, onReveal, onComplete }) {
     setLanguage(value);
     setSelected(value);
     setHighlight(value);
-    if (!motion) {
-      finish();
-      return;
-    }
     setPhase("transition");
     root.current.scrollTop = 0;
     root.current.querySelector(".intro-skip")?.focus({ preventScroll: true });
-    timer.current = setTimeout(finish, 18000);
-    const player = video.current;
-    if (!player) {
-      finish();
-      return;
-    }
-    const source = welcomeAssets.videos[value];
-    if (player.getAttribute("src") !== source) {
-      player.src = source;
-      player.load();
-    }
-    player.muted = true;
-    try {
-      player.play()?.catch(finish);
-    } catch {
-      finish();
-    }
-  }
-  function updateEnergy() {
-    const player = video.current;
-    if (!player || !root.current) return;
-    const pulse = Math.max(
-      0,
-      1 - Math.abs(player.currentTime - welcomeAssets.energyPeak) / 0.9,
-    );
-    const ending = Number.isFinite(player.duration)
-      ? Math.max(
-          0,
-          Math.min(1, (player.currentTime - (player.duration - 0.9)) / 0.9),
-        )
-      : 0;
-    root.current.style.setProperty("--energy", String(pulse * 0.18));
-    root.current.style.setProperty("--ending", String(ending));
   }
   function keyDown(event) {
     if (event.key === "Escape") {
@@ -181,13 +145,14 @@ export default function WelcomeExperience({ motion, onReveal, onComplete }) {
   return (
     <div
       ref={root}
-      className={`welcome-experience phase-${phase} ${playing ? "video-playing" : ""}`}
+      className={`welcome-experience phase-${phase}`}
       data-highlight={highlight || "none"}
       data-selected={selected || "none"}
       dir="ltr"
       role="dialog"
       aria-modal="true"
       aria-labelledby="welcome-title"
+      tabIndex={-1}
       onKeyDown={keyDown}
     >
       <h1 id="welcome-title" className="sr-only">
@@ -203,7 +168,7 @@ export default function WelcomeExperience({ motion, onReveal, onComplete }) {
         </div>
         <button className="intro-skip" onClick={finish} type="button">
           <span lang={language}>
-            {phase === "choose" ? "Skip intro / تخطّي المقدّمة" : welcome.skip}
+            {phase === "choose" ? "Skip / تخطّي" : welcome.skip}
           </span>
           <SkipForward size={15} />
         </button>
@@ -255,25 +220,14 @@ export default function WelcomeExperience({ motion, onReveal, onComplete }) {
           onHighlight={setHighlight}
         />
       </div>
-      <div className="transition-video-layer" aria-hidden="true">
-        <video
-          ref={video}
-          src={welcomeAssets.videos.en}
-          poster={welcomeAssets.poster}
-          preload="metadata"
-          playsInline
-          muted
-          onPlaying={() => setPlaying(true)}
-          onTimeUpdate={updateEnergy}
-          onEnded={finish}
-          onError={() => {
-            if (lock.current) finish();
-          }}
-        />
-        <div className="transition-energy" />
-        <div className="transition-ending" />
-      </div>
-      <div className="welcome-status" role="status" aria-live="polite">
+      {phase !== "choose" && selected && (
+        <CinematicTransition language={selected} onFinish={finish} />
+      )}
+      <div
+        className="welcome-status"
+        role="status"
+        aria-live={phase === "choose" ? "polite" : "off"}
+      >
         {phase === "choose" ? (
           <>
             <span lang="en">Choose your language</span>

@@ -1,0 +1,644 @@
+/* Language selection: feedback never dims the text of the other language. */
+.welcome-experience {
+  --welcome-height: max(1040px, 100svh);
+  display: flex;
+  flex-direction: column;
+}
+.welcome-experience:focus {
+  outline: none;
+}
+.welcome-description-short {
+  display: none;
+}
+.welcome-brand strong {
+  font-size: 13px;
+  letter-spacing: 1.4px;
+}
+.welcome-brand small {
+  font-size: 11px;
+  letter-spacing: 0.7px;
+  color: #c8cdd3;
+}
+.intro-skip {
+  font-size: 14px;
+  min-height: 44px;
+  padding: 12px 18px;
+}
+.welcome-scene {
+  width: min(1100px, 100%);
+  top: 98px;
+}
+.sphere-tag {
+  font-size: 13px;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+.sphere-focus-ring {
+  position: absolute;
+  inset: -9%;
+  border-radius: 50%;
+  border: 1px dashed var(--sphere-color);
+  opacity: 0;
+  transform: scale(0.9);
+  transition:
+    opacity 0.35s,
+    transform 0.45s;
+}
+.interactive-sphere:hover .sphere-focus-ring,
+.interactive-sphere:focus-visible .sphere-focus-ring {
+  opacity: 0.75;
+  transform: scale(1);
+}
+.interactive-sphere:hover .sphere-ring,
+.interactive-sphere:focus-visible .sphere-ring {
+  background: color-mix(in srgb, var(--sphere-color) 8%, transparent);
+}
+.interactive-sphere:active {
+  transform: translate(-50%, -50%) scale(0.98);
+}
+.welcome-experience[data-highlight="en"] .sphere-ar,
+.welcome-experience[data-highlight="ar"] .sphere-en {
+  opacity: 0.9;
+}
+.language-choices {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  flex-shrink: 0;
+  margin: calc(var(--welcome-height) - 452px) 5% 28px;
+  display: grid;
+  grid-template-columns: minmax(0, 380px) minmax(0, 380px);
+  justify-content: space-between;
+  gap: 26px;
+  align-items: stretch;
+}
+.language-choice {
+  width: auto;
+  max-width: none;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  border: 1px solid color-mix(in srgb, var(--language-color) 24%, transparent);
+  border-radius: 18px;
+  background: linear-gradient(135deg, #10171ee8, #080b10e8);
+  transition:
+    transform 0.35s,
+    border-color 0.35s,
+    background 0.35s;
+}
+.language-label {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+.language-choice h2 {
+  font-size: 39px;
+  line-height: 1.08;
+}
+.choice-ar h2 {
+  font-size: 39px;
+  line-height: 1.3;
+}
+.language-choice p,
+.choice-ar p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #dae0e8;
+  margin: 18px 0 24px;
+}
+.language-cta {
+  width: 100%;
+  margin-top: auto;
+  font-size: 16px;
+  min-height: 52px;
+  font-weight: 600;
+  background: color-mix(in srgb, var(--language-color) 12%, #080b10);
+  transition:
+    transform 0.25s,
+    background 0.3s,
+    border-color 0.3s;
+}
+.language-cta svg {
+  transition: translate 0.3s;
+}
+.choice-en .language-cta:hover svg {
+  translate: 4px 0;
+}
+.choice-ar .language-cta:hover svg {
+  translate: -4px 0;
+}
+.welcome-experience[data-highlight="en"] .choice-ar,
+.welcome-experience[data-highlight="ar"] .choice-en {
+  opacity: 1;
+}
+.welcome-experience[data-highlight="en"] .choice-en,
+.welcome-experience[data-highlight="ar"] .choice-ar {
+  border-color: var(--language-color);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--language-color) 9%, #10171e),
+    #080b10f5
+  );
+}
+@media (hover: hover) and (pointer: fine) {
+  .language-choice:hover {
+    transform: translateY(-5px);
+  }
+}
+.welcome-status {
+  position: relative;
+  top: auto;
+  margin-top: auto;
+  flex-shrink: 0;
+  padding-bottom: 24px;
+  font-size: 13px;
+  color: #c7ced9;
+  letter-spacing: 0.3px;
+}
+.phase-transition .welcome-scene {
+  opacity: 0;
+  transition: opacity 0.55s;
+}
+.phase-transition .sphere-focus-ring {
+  opacity: 1;
+}
+.phase-transition .welcome-status {
+  z-index: 7;
+}
+
+/* The coded entrance is made of typography, thin geometry and restrained light. */
+.cinematic-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 44%,
+    color-mix(in srgb, var(--choice) 7%, #080b10),
+    #080b10 72%
+  );
+  animation: intro-cover 0.55s ease both;
+}
+.intro-sequence {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  animation: intro-sequence 4.2s linear both;
+}
+.intro-geometry {
+  position: absolute;
+  width: min(680px, 90vw);
+  aspect-ratio: 1;
+  opacity: 0.55;
+}
+.intro-orbit {
+  position: absolute;
+  inset: 0;
+  border: 1px solid color-mix(in srgb, var(--choice) 22%, transparent);
+  border-radius: 50%;
+  animation: intro-orbit 4.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.orbit-one:before,
+.orbit-two:before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  border-top-color: var(--choice);
+  transform: rotate(-35deg);
+}
+.orbit-two {
+  inset: 10%;
+  border-style: dashed;
+  animation-direction: reverse;
+}
+.orbit-three {
+  inset: 22%;
+  border-color: color-mix(in srgb, var(--choice) 12%, transparent);
+}
+.intro-axis {
+  position: absolute;
+  top: 50%;
+  left: -20%;
+  width: 140%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--choice) 15%, transparent),
+    transparent
+  );
+}
+.axis-one {
+  transform: rotate(45deg);
+}
+.axis-two {
+  transform: rotate(-45deg);
+}
+.intro-star {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--choice);
+  rotate: 45deg;
+  animation: intro-star 3s ease both;
+}
+.star-0 {
+  left: 15%;
+  top: 15%;
+}
+.star-1 {
+  right: 14%;
+  top: 16%;
+  animation-delay: 0.2s;
+}
+.star-2 {
+  right: 0;
+  top: 50%;
+  animation-delay: 0.4s;
+}
+.star-3 {
+  right: 16%;
+  bottom: 14%;
+  animation-delay: 0.1s;
+}
+.star-4 {
+  left: 14%;
+  bottom: 15%;
+  animation-delay: 0.3s;
+}
+.star-5 {
+  left: 0;
+  top: 50%;
+  animation-delay: 0.5s;
+}
+.intro-message {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 90px 24px;
+  width: min(860px, 100%);
+}
+.intro-seal {
+  display: grid;
+  place-items: center;
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 30px;
+  border: 1px solid color-mix(in srgb, var(--choice) 65%, transparent);
+  border-radius: 50%;
+  background: #080b10;
+  animation: intro-seal 0.85s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.intro-seal span {
+  color: var(--choice);
+  font:
+    58px/1 "Cormorant Garamond",
+    Georgia,
+    serif;
+}
+.intro-identity {
+  font:
+    13px/1.7 "DM Sans",
+    "Noto Sans Arabic",
+    sans-serif;
+  letter-spacing: 2px;
+  color: #d1d6df;
+  margin-bottom: 20px;
+  animation: intro-message 0.65s 0.45s ease both;
+}
+.intro-greeting {
+  font:
+    600 clamp(64px, 8vw, 100px)/1.05 "Cormorant Garamond",
+    Georgia,
+    serif;
+  color: #fffaf2;
+  margin: 0 0 8px;
+  animation: intro-message 0.85s 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.intro-world {
+  font:
+    500 clamp(31px, 4vw, 49px)/1.25 "Cormorant Garamond",
+    Georgia,
+    serif;
+  color: var(--choice);
+  animation: intro-message 0.85s 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.intro-note {
+  font-size: 17px;
+  line-height: 1.8;
+  color: #d1d6df;
+  margin: 25px auto 0;
+  max-width: 490px;
+  animation: intro-message 0.7s 1.05s ease both;
+}
+.cinematic-transition[lang="ar"] .intro-greeting,
+.cinematic-transition[lang="ar"] .intro-world {
+  font-family: "Noto Naskh Arabic", serif;
+}
+.cinematic-transition[lang="ar"] .intro-identity {
+  letter-spacing: 0;
+  font-size: 16px;
+}
+.intro-trace {
+  display: block;
+  width: 140px;
+  height: 1px;
+  margin: 35px auto 0;
+  background: #ffffff20;
+  overflow: hidden;
+}
+.intro-trace i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--choice);
+  transform-origin: left;
+  animation: intro-trace 3.2s 0.6s cubic-bezier(0.3, 0.2, 0.2, 1) both;
+}
+@keyframes intro-cover {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes intro-sequence {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes intro-orbit {
+  from {
+    transform: scale(0.7) rotate(-28deg);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.06) rotate(28deg);
+    opacity: 1;
+  }
+}
+@keyframes intro-seal {
+  from {
+    transform: scale(0.65) rotate(-20deg);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) rotate(0);
+    opacity: 1;
+  }
+}
+@keyframes intro-message {
+  from {
+    transform: translateY(18px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes intro-star {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  40% {
+    transform: scale(1.6);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+}
+@keyframes intro-trace {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@media (min-width: 768px) and (max-height: 850px) {
+  .welcome-experience {
+    --welcome-height: max(780px, 100svh);
+  }
+  .welcome-scene {
+    width: min(850px, 100%);
+    top: 82px;
+  }
+  .language-choices {
+    margin-top: calc(var(--welcome-height) - 400px);
+  }
+  .welcome-description-full {
+    display: none;
+  }
+  .welcome-description-short {
+    display: inline;
+  }
+}
+
+/* Bounded sand grains, one ring; the animation frame loop stops when idle. */
+.sand-cursor {
+  position: fixed;
+  inset: 0;
+  z-index: 4500;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+  --cursor-color: #efbc6d;
+  transition: opacity 0.18s;
+}
+.sand-cursor.cursor-visible {
+  opacity: 1;
+}
+.sand-ring-position {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.sand-ring {
+  display: block;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--cursor-color);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.6;
+  transition:
+    scale 0.25s,
+    opacity 0.2s;
+}
+.cursor-hover .sand-ring {
+  scale: 1.45;
+  opacity: 0.9;
+}
+.cursor-pressed .sand-ring {
+  scale: 0.8;
+}
+.cursor-grain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 2px;
+  background: var(--cursor-color);
+  border-radius: 50%;
+  opacity: 0;
+}
+.cursor-grain:nth-of-type(3n) {
+  width: 3px;
+  height: 1px;
+}
+@media (max-width: 767px) {
+  .welcome-experience {
+    --welcome-height: max(810px, 100svh);
+  }
+  .welcome-scene {
+    width: calc(100% - 12px);
+    top: 105px;
+  }
+  .welcome-brand strong {
+    font-size: 11px;
+  }
+  .welcome-brand small {
+    font-size: 11px;
+    letter-spacing: 0.15px;
+  }
+  .intro-skip {
+    font-size: 13px;
+    padding: 9px 12px;
+  }
+  .sphere-tag {
+    display: block;
+    font-size: 12px;
+    top: 115%;
+    letter-spacing: 0.5px;
+  }
+  .language-choices {
+    top: 0;
+    margin: calc(100vw * 0.505 + 143px) 18px 30px;
+    gap: 12px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .language-choice {
+    padding: 16px 12px;
+    border-radius: 13px;
+  }
+  .language-label {
+    font-size: 12px;
+    margin-bottom: 12px;
+  }
+  .language-choice h2,
+  .choice-ar h2 {
+    font-size: 29px;
+    line-height: 1.18;
+  }
+  .choice-ar h2 {
+    line-height: 1.4;
+  }
+  .language-choice p,
+  .choice-ar p {
+    font-size: 16px;
+    line-height: 1.8;
+    margin: 16px 0 20px;
+  }
+  .welcome-description-full {
+    display: none;
+  }
+  .welcome-description-short {
+    display: inline;
+  }
+  .language-cta {
+    font-size: 15px;
+    min-height: 50px;
+    padding: 10px 7px;
+    gap: 8px;
+  }
+  .language-cta svg {
+    width: 16px;
+  }
+  .welcome-status {
+    font-size: 12px;
+  }
+  .intro-message {
+    padding: 90px 24px;
+  }
+  .intro-seal {
+    width: 72px;
+    height: 72px;
+    margin-bottom: 25px;
+  }
+  .intro-seal span {
+    font-size: 47px;
+  }
+  .intro-identity {
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+  .intro-greeting {
+    font-size: 70px;
+  }
+  .intro-world {
+    font-size: 34px;
+  }
+  .intro-note {
+    font-size: 16px;
+  }
+  .cinematic-transition[lang="ar"] .intro-identity {
+    font-size: 14px;
+  }
+  .sand-cursor {
+    display: none;
+  }
+}
+@media (max-width: 360px) {
+  .welcome-brand > div {
+    display: none;
+  }
+  .language-choice h2,
+  .choice-ar h2 {
+    font-size: 27px;
+  }
+}
+@media (hover: none), (pointer: coarse) {
+  .sand-cursor {
+    display: none;
+  }
+}
+.motion-off .sand-cursor {
+  display: none;
+}
+.motion-off .welcome-experience *,
+.motion-off .cinematic-transition * {
+  animation: none !important;
+  transition: none !important;
+}
+.motion-off .cinematic-transition {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sand-cursor {
+    display: none;
+  }
+  .cinematic-transition,
+  .cinematic-transition * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

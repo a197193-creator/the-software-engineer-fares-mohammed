@@ -7,6 +7,8 @@ import "./details.css";
 import "./responsive.css";
 import "./cinematic.css";
 import "./welcome.css";
+import "./intro.css";
+import "./readability.css";
 
 createRoot(document.getElementById("root")).render(
   <LanguageProvider>

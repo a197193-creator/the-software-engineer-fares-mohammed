@@ -1,4 +1,4 @@
-/* Phase 1: isolated welcome/video choreography. No scroll-controlled character work. */
+/* Phase 1: isolated welcome choreography. No scroll-controlled character work. */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -18,8 +18,6 @@
   --cyan: #40dfff;
   --gold: #f5c66a;
   --choice: var(--gold);
-  --energy: 0;
-  --ending: 0;
   position: fixed;
   inset: 0;
   z-index: 3000;
@@ -364,49 +362,6 @@
 .phase-leaving .sphere-breath,
 .phase-leaving .welcome-ambient i {
   animation-play-state: paused;
-}
-.transition-video-layer {
-  position: fixed;
-  inset: 0;
-  z-index: 4;
-  display: grid;
-  place-items: center;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  background: #080b10;
-  transition:
-    opacity 0.8s ease,
-    visibility 0.8s;
-}
-.video-playing .transition-video-layer {
-  opacity: 1;
-  visibility: visible;
-}
-.transition-video-layer video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-.transition-energy,
-.transition-ending {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-.transition-energy {
-  opacity: var(--energy);
-  background: radial-gradient(ellipse, var(--choice), transparent 75%);
-  transition: opacity 0.3s linear;
-}
-.transition-ending {
-  opacity: var(--ending);
-  background: radial-gradient(
-    ellipse at 50% 45%,
-    color-mix(in srgb, var(--choice) 17%, #080b10),
-    #080b10 78%
-  );
-  transition: opacity 0.3s linear;
 }
 .welcome-status {
   position: absolute;
@@ -895,13 +850,6 @@ html[lang="ar"] .filter-button {
   }
   .welcome-depth {
     animation: none;
-  }
-  .transition-video-layer video {
-    align-self: start;
-    height: auto;
-    margin-top: 93px;
-    aspect-ratio: 848 / 478;
-    object-fit: contain;
   }
   .cinematic .hero-phase-one {
     min-height: 980px;
