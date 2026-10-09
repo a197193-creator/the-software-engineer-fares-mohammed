@@ -64,9 +64,1302 @@
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>Fares Mohammed — Software Engineering Portfolio</title>
+    <!-- ## CRIMSON WORLD — progressive enhancement styles; Welcome is untouched. -->
+    <style>
+      #crimson-world {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+        background: #0b080e;
+        opacity: 0;
+        transition: opacity 1s;
+      }
+      #crimson-world[data-visible="true"] {
+        opacity: 1;
+      }
+      #crimson-world canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .crimson-fallback {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(ellipse at 78% 32%, #7c172b66, transparent 40%),
+          linear-gradient(120deg, #09080f 20%, #240d17 70%, #09080f);
+      }
+      .crimson-moon {
+        position: absolute;
+        width: clamp(160px, 25vw, 390px);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        right: 8%;
+        top: 13%;
+        background: radial-gradient(
+          circle at 33% 25%,
+          #e67877,
+          #b73649 35%,
+          #75182c 67%,
+          #260c18
+        );
+        box-shadow: 0 0 100px #9e203329;
+        opacity: 0.65;
+      }
+      .crimson-arches {
+        position: absolute;
+        width: 45vw;
+        height: 85vh;
+        border: 1px solid #d8796430;
+        border-radius: 50% 50% 0 0;
+        right: 9%;
+        top: 24%;
+        box-shadow:
+          0 0 0 30px #bc46530a,
+          0 0 0 90px #b5434d08;
+      }
+      #crimson-world[data-webgl="true"] .crimson-fallback {
+        opacity: 0;
+      }
+      .motion-off #crimson-world canvas {
+        display: none;
+      }
+      .motion-off #crimson-world .crimson-fallback {
+        opacity: 1;
+      }
+      .crimson-vignette {
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(90deg, #09080ed9, transparent 65%),
+          linear-gradient(0deg, #09080e80, transparent 35%, #09080e20);
+      }
+      .crimson-active #root {
+        position: relative;
+        z-index: 1;
+      }
+      .crimson-active .site {
+        --surface: #130f16;
+        --raised: #1b141c;
+        --muted: #c8c0ca;
+        --subtle: #b3a8b5;
+        --line: #cb8a7830;
+        background: transparent;
+      }
+      .crimson-active .site main > section {
+        background: transparent;
+      }
+      .crimson-active .site .hero-photo,
+      .crimson-active .site .hero-art,
+      .crimson-active .site .about-art,
+      .crimson-active .site .skills-art,
+      .crimson-active .site .experience-art,
+      .crimson-active .site .contact-art,
+      .crimson-active .site .projects-heading > .section-avatar,
+      .crimson-active .site .character-image,
+      .crimson-active .site .avatar-motion-dock,
+      .crimson-active .site .avatar-speech,
+      .crimson-active .site .avatar-guide-collapsed,
+      .crimson-active .site .chapter-picture img {
+        display: none !important;
+      }
+      .crimson-active .cinematic .hero-phase-one {
+        background: linear-gradient(
+          90deg,
+          #09080ee6 0%,
+          #09080e99 42%,
+          transparent 75%
+        );
+        grid-template-columns: 1fr 1fr;
+      }
+      .crimson-active .cinematic .hero-phase-one .hero-copy {
+        max-width: 520px;
+        width: 100%;
+      }
+      .crimson-active .hero-introduction .accent-text {
+        white-space: normal;
+      }
+      .crimson-active .cinematic .hero h1 {
+        font-size: clamp(50px, 5.4vw, 78px);
+        line-height: 1.03;
+      }
+      .crimson-active .cinematic .hero-secondary {
+        font-size: clamp(28px, 2.7vw, 39px);
+      }
+      .crimson-active .cinematic .hero-description {
+        max-width: 470px;
+      }
+      .crimson-active .cinematic .about-section,
+      .crimson-active .cinematic .skills-layout,
+      .crimson-active .cinematic .experience-layout,
+      .crimson-active .cinematic .contact-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 28px;
+      }
+      .crimson-active .cinematic .about-copy {
+        max-width: 760px;
+      }
+      .crimson-active .cinematic .chapter-rail {
+        background: #110d15d9;
+      }
+      .crimson-active .cinematic .chapter-picture {
+        height: 80px;
+        background: transparent;
+      }
+      .crimson-active .cinematic .chapter-quote {
+        inset: 10px;
+        width: auto;
+        font-size: 14px;
+      }
+      .crimson-active .cinematic .project-workspace {
+        background: #100d16e8;
+      }
+      .crimson-active .cinematic .skill-card,
+      .crimson-active .cinematic .timeline-entry {
+        background: #130f16e8;
+      }
+      .crimson-active .cinematic .header:not(.on-hero) {
+        background: #100c14ed;
+      }
+      .crimson-active .cinematic .hero-message-stack {
+        position: relative;
+      }
+      .crimson-active .hero-message-stack[data-writer] .hero-message-item {
+        opacity: 0 !important;
+      }
+      .crimson-writing {
+        grid-area: 1/1;
+        color: #f2d1a6;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 1.65;
+        white-space: pre-wrap;
+        pointer-events: none;
+      }
+      .crimson-writing[data-typing="true"]:after {
+        content: "";
+        display: inline-block;
+        height: 1em;
+        width: 2px;
+        margin-inline-start: 4px;
+        background: #efb997;
+        vertical-align: -0.12em;
+        animation: crimson-caret 0.8s steps(2, end) infinite;
+      }
+      @keyframes crimson-caret {
+        50% {
+          opacity: 0;
+        }
+      }
+      /* ## SINGLE GUARDIAN — one visual shell; existing React guide owns dialogue. */
+      #journey-guide {
+        position: fixed;
+        inset: 0;
+        z-index: 12;
+        pointer-events: none;
+        color: #f4edf1;
+        font-family: "DM Sans", "Noto Sans Arabic", sans-serif;
+      }
+      #journey-guide[hidden],
+      #journey-guide [hidden] {
+        display: none !important;
+      }
+      .journey-character {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 300px;
+        height: 425px;
+        transform-origin: 50% 70%;
+        pointer-events: none;
+      }
+      .journey-character:after {
+        content: "";
+        position: absolute;
+        width: 65%;
+        height: 13%;
+        left: 17%;
+        bottom: 0;
+        border-radius: 50%;
+        background: radial-gradient(ellipse, #d959492e, transparent 65%);
+        transform: scaleX(1.4);
+      }
+      .journey-character img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        opacity: 0;
+        transition: opacity 0.48s ease;
+        filter: drop-shadow(0 10px 25px #0008);
+      }
+      .journey-character img[data-active="true"] {
+        opacity: 1;
+      }
+      .journey-bubble {
+        position: absolute;
+        width: 270px;
+        right: 24px;
+        top: 110px;
+        padding: 17px;
+        border: 1px solid #be6f7470;
+        border-radius: 16px 16px 4px 16px;
+        background: linear-gradient(140deg, #221520f5, #100d16f7);
+        box-shadow:
+          0 16px 45px #0004,
+          inset 0 1px #f7b5a91a;
+        pointer-events: auto;
+        transition:
+          opacity 0.24s,
+          transform 0.24s;
+      }
+      .journey-bubble:before {
+        content: "";
+        position: absolute;
+        width: 36px;
+        height: 2px;
+        top: -1px;
+        inset-inline-start: 18px;
+        background: #f5c66a;
+      }
+      .journey-bubble header {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        color: #dfbcac;
+        font-size: 12px;
+      }
+      .journey-bubble header strong {
+        flex: 1;
+        font-weight: 500;
+      }
+      .journey-bubble button {
+        color: inherit;
+        font: inherit;
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+      }
+      .journey-bubble .journey-control {
+        width: 32px;
+        min-height: 36px;
+        border: 1px solid #c98a7630;
+        border-radius: 7px;
+        font-size: 20px;
+      }
+      .journey-bubble .journey-message {
+        display: grid;
+        width: 100%;
+        text-align: start;
+        line-height: 1.7;
+        font-size: 15px;
+        min-height: 108px;
+        padding: 12px 0;
+      }
+      .journey-message > span {
+        grid-area: 1/1;
+      }
+      .journey-reserve {
+        visibility: hidden;
+      }
+      .journey-bubble footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        color: #e8bd81;
+        font-size: 12px;
+        border-top: 1px solid #c98a7630;
+        padding-top: 9px;
+      }
+      .journey-bubble .journey-next {
+        min-height: 36px;
+        text-align: end;
+      }
+      .journey-bubble .journey-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #e0978c;
+        box-shadow: 0 0 10px #dd5c6266;
+      }
+      .journey-launcher {
+        position: absolute;
+        right: 22px;
+        bottom: 24px;
+        pointer-events: auto;
+        border: 1px solid #c98a7666;
+        background: #160f1a;
+        border-radius: 24px;
+        padding: 12px 18px;
+        color: #f1d4b3;
+        font:
+          14px "DM Sans",
+          "Noto Sans Arabic",
+          sans-serif;
+        cursor: pointer;
+      }
+      #journey-guide button:focus-visible {
+        outline: 2px solid #f5c66a;
+        outline-offset: 4px;
+      }
+      #journey-guide button:hover {
+        color: #fff;
+      }
+      #journey-guide[data-mode="dismissed"] .journey-character {
+        opacity: 0;
+      }
+      .journey-status {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
+      @media (min-width: 1100px) {
+        .crimson-active .site main > section:not(#home),
+        .crimson-active .site .chapter-rail,
+        .crimson-active .site > footer,
+        .crimson-active .site .avatar-guide-tools {
+          width: calc(100% - 370px);
+          max-width: 1250px;
+          margin-left: 5.4%;
+          margin-right: auto;
+        }
+        .crimson-active .site main > section:not(#home) > .page-width {
+          width: 100%;
+        }
+        .crimson-active .cinematic .project-workspace .project-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .crimson-active .project-panel:last-child:not([data-featured="true"]) {
+          grid-column: 1/-1;
+        }
+      }
+      @media (max-width: 1099px) {
+        .crimson-active .site {
+          padding-bottom: 190px;
+        }
+        .journey-bubble {
+          top: auto !important;
+          bottom: 16px;
+          right: 16px;
+          width: min(340px, calc(100vw - 128px));
+          padding: 10px 13px;
+        }
+        .journey-bubble .journey-message {
+          min-height: 0;
+          max-height: 80px;
+          overflow: auto;
+          font-size: 13px;
+          padding: 7px 0;
+        }
+        .journey-bubble footer {
+          padding-top: 4px;
+        }
+        .journey-bubble header {
+          font-size: 11px;
+        }
+        .journey-bubble .journey-control {
+          width: 28px;
+          min-height: 28px;
+        }
+        .journey-bubble .journey-next {
+          min-height: 28px;
+        }
+        .crimson-active .cinematic .hero-phase-one {
+          min-height: 800px;
+        }
+      }
+      @media (max-width: 767px) {
+        .crimson-active .cinematic .hero-phase-one {
+          grid-template-columns: 1fr;
+          padding-top: 285px;
+          min-height: 1050px;
+          height: auto;
+          background: linear-gradient(0deg, #09080ef2 35%, #09080e11);
+        }
+        .crimson-active .cinematic .hero h1 {
+          font-size: clamp(44px, 11vw, 62px);
+        }
+        .crimson-active .cinematic .hero-secondary {
+          font-size: 29px;
+        }
+        .crimson-active .site main > section {
+          scroll-margin-top: 90px;
+        }
+        .crimson-active .cinematic .chapter-picture {
+          height: 95px;
+        }
+        .crimson-active .cinematic .hero-bottom {
+          bottom: 24px;
+        }
+        .crimson-vignette {
+          background: linear-gradient(0deg, #09080eb3, transparent 80%);
+        }
+      }
+      html[data-theme="light"] .crimson-active .site {
+        --surface: #f6f0ee;
+        --raised: #fffaf7;
+        --muted: #574a52;
+        --subtle: #62525e;
+      }
+      html[data-theme="light"] #crimson-world {
+        background: #eee5e3;
+      }
+      html[data-theme="light"] #crimson-world canvas {
+        opacity: 0.08;
+      }
+      html[data-theme="light"] .crimson-vignette {
+        background: #f5efead9;
+      }
+      html[data-theme="light"] .crimson-active .cinematic .skill-card,
+      html[data-theme="light"] .crimson-active .cinematic .timeline-entry,
+      html[data-theme="light"] .crimson-active .cinematic .project-workspace,
+      html[data-theme="light"] .crimson-active .cinematic .chapter-rail {
+        background: #f6f0eee8;
+      }
+      html[data-theme="light"]
+        .crimson-active
+        .cinematic
+        .header:not(.on-hero) {
+        background: #f5efeaee;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #crimson-world,
+        .journey-character img,
+        .journey-bubble {
+          transition: none;
+        }
+        .crimson-writing:after {
+          animation: none !important;
+        }
+      }
+    </style>
   </head>
   <body>
+    <!-- ## WORLD LAYERS — static fallback also covers reduced motion / no WebGL. -->
+    <div id="crimson-world" aria-hidden="true">
+      <div class="crimson-fallback">
+        <div class="crimson-moon"></div>
+        <div class="crimson-arches"></div>
+      </div>
+      <div class="crimson-vignette"></div>
+    </div>
     <div id="root"></div>
+    <!-- ## ONE AVATAR AND SPEECH SURFACE — actions forward to the existing guide. -->
+    <aside id="journey-guide" aria-label="Digital guide" hidden>
+      <div class="journey-character" aria-hidden="true">
+        <img alt="" width="600" height="850" /><img
+          alt=""
+          width="600"
+          height="850"
+        />
+      </div>
+      <section class="journey-bubble">
+        <header>
+          <span class="journey-dot" aria-hidden="true"></span><strong></strong
+          ><button
+            class="journey-control"
+            data-action="minimize"
+            aria-label="Minimize guide"
+          >
+            −</button
+          ><button
+            class="journey-control"
+            data-action="dismiss"
+            aria-label="Dismiss guide"
+          >
+            ×
+          </button>
+        </header>
+        <p
+          class="journey-status"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        ></p>
+        <button
+          class="journey-message"
+          data-action="complete"
+          aria-label="Show the complete message"
+        >
+          <span aria-hidden="true"></span
+          ><span class="journey-reserve" aria-hidden="true"></span>
+        </button>
+        <footer>
+          <span class="journey-position" dir="ltr" aria-hidden="true"></span
+          ><button class="journey-next" data-action="next"></button>
+        </footer>
+      </section>
+      <button class="journey-launcher" data-action="show" hidden>
+        Show guide
+      </button>
+    </aside>
     <script type="module" src="/src/main.jsx"></script>
+    <!-- ## IMPLEMENTATION — all new application code lives in this index.html. -->
+    <script type="module">
+      import { avatarScenes, loadAvatarPose } from "/src/avatarPoseRegistry.js";
+      import { guideCopy, guideSections } from "/src/guideDialogue.js";
+
+      // ## LIFECYCLE AND EXISTING-APP BRIDGE
+      // React keeps owning section selection, visit preferences and speech timing.
+      // This single presentation layer reads their rendered signals, not a second
+      // competing scroll/dialogue controller. No React-owned nodes are moved.
+      const root = document.getElementById("root");
+      const world = document.getElementById("crimson-world");
+      const guide = document.getElementById("journey-guide");
+      const character = guide.querySelector(".journey-character");
+      const pictures = [...character.querySelectorAll("img")];
+      const bubble = guide.querySelector(".journey-bubble");
+      const launcher = guide.querySelector(".journey-launcher");
+      const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+      const state = {
+        ready: false,
+        blocked: true,
+        motion: true,
+        section: "home",
+        mode: "expanded",
+        lang: "en",
+        level: "balanced",
+        light: false,
+      };
+      let frame = 0,
+        last = 0,
+        time = 0,
+        scene = null,
+        loading = false,
+        disposed = false;
+      let poseVersion = 0,
+        pictureIndex = 0,
+        currentPose = "",
+        writer = null,
+        writerKey = "",
+        writerCount = 0,
+        writerTime = 0;
+      let heroVisible = true,
+        targetDirty = true,
+        x = 0,
+        y = 0,
+        h = 0,
+        progress = 0,
+        pointerX = 0,
+        pointerY = 0;
+      let bubbleHeight = 244;
+      const bubbleSize = new ResizeObserver(([entry]) => {
+        bubbleHeight =
+          entry.borderBoxSize?.[0]?.blockSize ||
+          bubble.getBoundingClientRect().height;
+        wake();
+      });
+      bubbleSize.observe(bubble);
+      const removals = [];
+      function listen(node, event, fn, options) {
+        node.addEventListener(event, fn, options);
+        removals.push(() => node.removeEventListener(event, fn, options));
+      }
+      const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+      const running = () => state.ready && !state.blocked && !document.hidden;
+      function wake() {
+        if (!frame && !disposed) frame = requestAnimationFrame(tick);
+      }
+      function text(node, value) {
+        if (node.textContent !== value) node.textContent = value;
+      }
+      function sourceFrame() {
+        return root.querySelector(".avatar-guide-frame");
+      }
+      function sync() {
+        const site = root.querySelector(".site");
+        if (!site) return;
+        document.body.classList.add("crimson-active");
+        const portfolio = root.querySelector(".portfolio-content");
+        state.ready =
+          portfolio?.dataset.ready === "true" &&
+          !portfolio.hasAttribute("inert");
+        state.blocked = site.dataset.motionBlocked === "true";
+        state.motion =
+          !reduced.matches &&
+          !document.documentElement.classList.contains("motion-off");
+        state.level = site.dataset.motionLevel || "balanced";
+        state.lang = document.documentElement.lang === "ar" ? "ar" : "en";
+        state.light = document.documentElement.dataset.theme === "light";
+        const source = sourceFrame();
+        const collapsed = root.querySelector(".avatar-guide-collapsed");
+        if (source) state.section = source.dataset.section;
+        else if (collapsed)
+          state.section =
+            guideSections.find((id) =>
+              collapsed
+                .closest(".section-avatar")
+                ?.classList.contains(`avatar-${id}`),
+            ) || state.section;
+        state.mode = collapsed
+          ? collapsed.classList.contains("dismissed")
+            ? "dismissed"
+            : "minimized"
+          : "expanded";
+        world.dataset.visible = String(state.ready);
+        guide.hidden = !state.ready || state.blocked;
+        guide.dataset.mode = state.mode;
+        guide.dir = state.lang === "ar" ? "rtl" : "ltr";
+        const copy = guideCopy[state.lang],
+          dialogue = copy.dialogue[state.section];
+        guide.setAttribute("aria-label", copy.label);
+        text(
+          bubble.querySelector("strong"),
+          `${avatarScenes[state.section].number} / ${state.lang === "ar" ? ["الرئيسية", "نبذة عني", "المهارات", "المشاريع", "الخبرة", "التواصل"][guideSections.indexOf(state.section)] : avatarScenes[state.section].name}`,
+        );
+        bubble.hidden = state.mode !== "expanded";
+        launcher.hidden = state.mode === "expanded";
+        text(launcher, copy.show);
+        text(bubble.querySelector(".journey-status"), dialogue.message);
+        text(bubble.querySelector(".journey-reserve"), dialogue.message);
+        text(
+          bubble.querySelector(".journey-next"),
+          `${dialogue.action} ${state.lang === "ar" ? "←" : "→"}`,
+        );
+        text(
+          bubble.querySelector(".journey-position"),
+          `${avatarScenes[state.section].number} / 06`,
+        );
+        guide.querySelector('[data-action="minimize"]').ariaLabel =
+          copy.minimize;
+        guide.querySelector('[data-action="dismiss"]').ariaLabel = copy.dismiss;
+        guide.querySelector('[data-action="complete"]').ariaLabel =
+          copy.complete;
+        text(
+          bubble.querySelector(".journey-message span"),
+          source
+            ? [
+                ...source.querySelectorAll(
+                  '.avatar-guide-word[data-shown="true"]',
+                ),
+              ]
+                .map((n) => n.textContent)
+                .join("")
+            : dialogue.message,
+        );
+        if (currentPose !== state.section) setPose(state.section);
+        syncWriter();
+        targetDirty = true;
+        if (state.ready && state.motion && !state.light && !scene && !loading)
+          loadWorld();
+        wake();
+      }
+      // Existing app remains the source of truth for dismiss/minimize/next actions.
+      listen(guide, "click", (event) => {
+        const action = event.target.closest("[data-action]")?.dataset.action;
+        if (!action) return;
+        const source = sourceFrame(),
+          copy = guideCopy[state.lang];
+        const target =
+          action === "next"
+            ? source?.querySelector(".avatar-guide-next")
+            : action === "show"
+              ? root.querySelector(".avatar-guide-collapsed button")
+              : action === "complete"
+                ? source?.querySelector(".avatar-guide-message")
+                : [...(source?.querySelectorAll("button") || [])].find(
+                    (b) => b.ariaLabel === copy[action],
+                  );
+        target?.click();
+        requestAnimationFrame(() => {
+          sync();
+          if (action === "minimize" || action === "dismiss")
+            launcher.focus({ preventScroll: true });
+          if (action === "show")
+            guide
+              .querySelector(".journey-message")
+              .focus({ preventScroll: true });
+        });
+      });
+      listen(guide, "keydown", (event) => {
+        if (event.key === "Escape" && state.mode === "expanded") {
+          event.preventDefault();
+          guide.querySelector('[data-action="minimize"]').click();
+        }
+      });
+      async function setPose(section) {
+        currentPose = section;
+        const version = ++poseVersion;
+        const src = await loadAvatarPose(section);
+        if (disposed || version !== poseVersion || !src) return;
+        pictureIndex = 1 - pictureIndex;
+        pictures[pictureIndex].src = src;
+        pictures.forEach((image, index) => {
+          image.dataset.active = String(index === pictureIndex);
+          image.style.transitionDuration = state.motion ? ".48s" : "0s";
+        });
+        character.dataset.pose = section;
+      }
+      // ## HERO WRITING — existing phrases, one timer; complete words for Arabic.
+      function syncWriter() {
+        const stack = root.querySelector(".hero-message-stack");
+        const active = stack?.querySelector(
+          '.hero-message-item[data-current="true"]',
+        );
+        if (!active) return;
+        if (!writer || writer.parentElement !== stack) {
+          writer = document.createElement("span");
+          writer.className = "crimson-writing";
+          writer.setAttribute("aria-hidden", "true");
+          stack.append(writer);
+          stack.dataset.writer = "true";
+        }
+        const key = state.lang + ":" + active.textContent;
+        if (key !== writerKey) {
+          writerKey = key;
+          text(writer, "");
+          writerCount = 0;
+          writerTime = 0;
+        }
+        writer.full = active.textContent;
+        writer.units =
+          state.lang === "ar"
+            ? writer.full.match(/\S+\s*/gu) || []
+            : [
+                ...new Intl.Segmenter("en", {
+                  granularity: "grapheme",
+                }).segment(writer.full),
+              ].map((v) => v.segment);
+        if (!state.motion || state.level === "subtle") {
+          writerCount = writer.units.length;
+          text(writer, writer.full);
+          writer.dataset.typing = "false";
+        }
+      }
+      function finishWriting() {
+        if (writer) {
+          writerCount = writer.units.length;
+          text(writer, writer.full);
+          writer.dataset.typing = "false";
+        }
+      }
+      listen(root, "pointerover", (event) => {
+        if (event.target.closest(".hero-message")) finishWriting();
+      });
+      listen(root, "focusin", (event) => {
+        if (event.target.closest(".hero-message")) finishWriting();
+      });
+      const observer = new MutationObserver(sync);
+      observer.observe(root, {
+        subtree: true,
+        childList: true,
+        attributes: true,
+        attributeFilter: [
+          "data-ready",
+          "inert",
+          "data-section",
+          "data-current",
+          "data-shown",
+          "data-motion-blocked",
+          "data-motion-level",
+          "class",
+        ],
+      });
+      const preferences = new MutationObserver(sync);
+      preferences.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["class", "lang", "data-theme"],
+      });
+      listen(reduced, "change", sync);
+      listen(document, "visibilitychange", () => {
+        last = 0;
+        wake();
+      });
+      listen(
+        window,
+        "scroll",
+        () => {
+          targetDirty = true;
+          wake();
+        },
+        { passive: true },
+      );
+      listen(
+        window,
+        "resize",
+        () => {
+          targetDirty = true;
+          scene?.resize();
+          wake();
+        },
+        { passive: true },
+      );
+      listen(
+        window,
+        "pointermove",
+        (event) => {
+          if (event.pointerType === "mouse") {
+            pointerX = (event.clientX / innerWidth - 0.5) * 2;
+            pointerY = (event.clientY / innerHeight - 0.5) * 2;
+            if (state.motion) wake();
+          }
+        },
+        { passive: true },
+      );
+      function tick(now) {
+        frame = 0;
+        const dt = Math.min((now - (last || now - 16)) / 1000, 0.05);
+        last = now;
+        if (!running()) {
+          last = 0;
+          return;
+        }
+        const animated = state.motion && state.level !== "subtle";
+        if (animated) time += dt;
+        if (targetDirty) {
+          const home = root.querySelector("#home");
+          const bounds = home?.getBoundingClientRect();
+          heroVisible = !!bounds && bounds.bottom > 120;
+          progress = clamp(
+            scrollY /
+              Math.max(1, document.documentElement.scrollHeight - innerHeight),
+            0,
+            1,
+          );
+          targetDirty = false;
+        }
+        const desktop = innerWidth >= 1100;
+        const homeBlend = desktop ? clamp(scrollY / 550, 0, 1) : 1;
+        const availableHeight = Math.max(
+          150,
+          innerHeight - (state.mode === "expanded" ? bubbleHeight : 0) - 140,
+        );
+        const targetH = desktop
+          ? Math.min(460, availableHeight) * (1 - homeBlend) +
+            Math.min(310, availableHeight) * homeBlend
+          : 135;
+        const targetX = desktop
+          ? innerWidth * 0.77 * (1 - homeBlend) + (innerWidth - 158) * homeBlend
+          : 65;
+        const targetY = desktop
+          ? innerHeight - targetH - 20
+          : innerHeight - targetH - 12;
+        const mix = animated ? 1 - Math.exp(-dt * 7) : 1;
+        if (!h) {
+          h = targetH;
+          x = targetX;
+          y = targetY;
+        }
+        h += (targetH - h) * mix;
+        x += (targetX - x) * mix;
+        y += (targetY - y) * mix;
+        const drift =
+          animated && desktop
+            ? Math.sin(time * 0.65) * 2 + Math.sin(progress * Math.PI * 6) * 5
+            : 0;
+        character.style.width = `${(h * 600) / 850}px`;
+        character.style.height = `${h}px`;
+        character.style.transform = `translate3d(${x - (h * 600) / 850 / 2}px,${y + drift}px,0) rotate(${animated && desktop ? Math.sin(progress * Math.PI * 8) * 1.1 : 0}deg)`;
+        bubble.style.top = `${Math.max(95, y - bubbleHeight - 20)}px`;
+        if (
+          writer &&
+          animated &&
+          heroVisible &&
+          root.querySelector(".hero-message")?.dataset.running === "true" &&
+          writerCount < writer.units.length
+        ) {
+          writerTime += dt;
+          if (writerTime > (state.lang === "ar" ? 0.13 : 0.042)) {
+            writerTime = 0;
+            writerCount++;
+            text(writer, writer.units.slice(0, writerCount).join(""));
+            writer.dataset.typing = String(writerCount < writer.units.length);
+          }
+        }
+        if (scene && !state.light && state.motion) {
+          scene.render(
+            time,
+            animated ? progress : 0,
+            animated ? pointerX : 0,
+            animated ? pointerY : 0,
+            dt,
+            animated,
+          );
+        }
+        const moving =
+          Math.abs(targetX - x) +
+            Math.abs(targetY - y) +
+            Math.abs(targetH - h) >
+          0.2;
+        if (animated || moving) wake();
+      }
+      // ## THREE.JS — lazy-loaded only after Welcome; procedural digital garden.
+      async function loadWorld() {
+        loading = true;
+        try {
+          const THREE = await import("three");
+          if (disposed) return;
+          scene = createWorld(THREE);
+          world.dataset.webgl = "true";
+          scene.resize();
+          wake();
+        } catch (error) {
+          world.dataset.webgl = "false";
+          world.dataset.fallback = "true";
+          console.info("Crimson environment: static fallback active.");
+        } finally {
+          loading = false;
+        }
+      }
+      function createWorld(T) {
+        const renderer = new T.WebGLRenderer({
+          alpha: false,
+          antialias: innerWidth >= 1100,
+          powerPreference: "low-power",
+        });
+        renderer.setClearColor(0x0b080e);
+        renderer.outputColorSpace = T.SRGBColorSpace;
+        const canvas = renderer.domElement;
+        canvas.setAttribute("aria-hidden", "true");
+        world.insertBefore(canvas, world.querySelector(".crimson-vignette"));
+        const stage = new T.Scene();
+        stage.fog = new T.FogExp2(0x100a14, 0.025);
+        const camera = new T.PerspectiveCamera(
+          43,
+          innerWidth / innerHeight,
+          0.1,
+          90,
+        );
+        camera.position.set(0, 4.2, 21);
+        stage.add(new T.HemisphereLight(0xaa6881, 0x131422, 2));
+        const rim = new T.DirectionalLight(0xffa191, 3.2);
+        rim.position.set(8, 9, 4);
+        stage.add(rim);
+        const garden = new T.Group();
+        stage.add(garden);
+        const dark = new T.MeshStandardMaterial({
+          color: 0x1a101a,
+          roughness: 0.75,
+          metalness: 0.3,
+        });
+        const rose = new T.MeshStandardMaterial({
+          color: 0x542236,
+          roughness: 0.6,
+          metalness: 0.4,
+        });
+        const brass = new T.MeshBasicMaterial({ color: 0xb57362 });
+        const panel = new T.MeshBasicMaterial({
+          color: 0x693a47,
+          transparent: true,
+          opacity: 0.23,
+          side: T.DoubleSide,
+        });
+        function box(w, h, d, x, y, z, material = dark) {
+          const mesh = new T.Mesh(new T.BoxGeometry(w, h, d), material);
+          mesh.position.set(x, y, z);
+          garden.add(mesh);
+          return mesh;
+        }
+        // ## ARCHITECTURE — abstract computational portals, not copied temple art.
+        const floor = new T.Mesh(
+          new T.PlaneGeometry(90, 90),
+          new T.MeshStandardMaterial({
+            color: 0x100d15,
+            roughness: 0.46,
+            metalness: 0.48,
+          }),
+        );
+        floor.rotation.x = -Math.PI / 2;
+        floor.position.y = -1.8;
+        garden.add(floor);
+        const grid = new T.GridHelper(70, 48, 0x5a2838, 0x291723);
+        grid.position.y = -1.79;
+        garden.add(grid);
+        for (let i = 0; i < 4; i++) {
+          const z = -i * 5 - 3;
+          const curve = new T.CatmullRomCurve3([
+            new T.Vector3(-5, -1.8, z),
+            new T.Vector3(-5, 4, z),
+            new T.Vector3(-3.5, 7, z),
+            new T.Vector3(0, 8.5, z),
+            new T.Vector3(3.5, 7, z),
+            new T.Vector3(5, 4, z),
+            new T.Vector3(5, -1.8, z),
+          ]);
+          const arch = new T.Mesh(
+            new T.TubeGeometry(curve, 48, 0.075, 5, false),
+            i === 0 ? brass : rose,
+          );
+          garden.add(arch);
+          for (let side of [-1, 1]) {
+            box(0.48, 6, 0.8, side * 5.8, 1.2, z);
+            box(0.045, 4, 0.84, side * 5.8, 1.2, z + 0.03, brass);
+          }
+          box(8, 0.08, 3, 0, -1.75 + i * 0.025, z);
+        }
+        for (let i = 0; i < 9; i++) {
+          const side = i % 2 ? -1 : 1,
+            x = side * (7 + (i % 3) * 1.3),
+            z = -i * 2;
+          const p = box(1.2, 2.1, 0.035, x, 2.3 + (i % 3) * 0.65, z, panel);
+          p.rotation.y = side * 0.3;
+          for (let row = 0; row < 4; row++)
+            box(
+              0.65 - row * 0.1,
+              0.02,
+              0.04,
+              x,
+              2.4 + (i % 3) * 0.65 - row * 0.25,
+              z + 0.03,
+              brass,
+            );
+        }
+        // ## MOON AND LIGHT — deterministic texture, no remote media dependency.
+        const textureCanvas = document.createElement("canvas");
+        textureCanvas.width = 512;
+        textureCanvas.height = 512;
+        const ctx = textureCanvas.getContext("2d");
+        let seed = 1947;
+        const random = () => {
+          seed = (seed * 16807) % 2147483647;
+          return (seed - 1) / 2147483646;
+        };
+        const gradient = ctx.createRadialGradient(170, 150, 10, 256, 256, 250);
+        gradient.addColorStop(0, "#e59788");
+        gradient.addColorStop(0.45, "#bc4b5b");
+        gradient.addColorStop(1, "#5a152d");
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(256, 256, 248, 0, Math.PI * 2);
+        ctx.fill();
+        for (let i = 0; i < 170; i++) {
+          const mx = random() * 512,
+            my = random() * 512,
+            r = random() * 25 + 3;
+          if (Math.hypot(mx - 256, my - 256) < 222) {
+            ctx.fillStyle = `rgba(55,13,37,${random() * 0.12})`;
+            ctx.beginPath();
+            ctx.ellipse(mx, my, r, r * 0.7, random(), 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+        const moonTexture = new T.CanvasTexture(textureCanvas);
+        moonTexture.colorSpace = T.SRGBColorSpace;
+        const moon = new T.Sprite(
+          new T.SpriteMaterial({
+            map: moonTexture,
+            transparent: true,
+            opacity: 0.85,
+            fog: false,
+            depthWrite: false,
+          }),
+        );
+        moon.position.set(8, 9, -23);
+        moon.scale.set(10, 10, 1);
+        stage.add(moon);
+        // ## CHERRY BLOSSOMS — branches + shared instanced petals at the edges.
+        const petalShape = new T.Shape();
+        petalShape.moveTo(0, -0.1);
+        petalShape.bezierCurveTo(-0.18, 0.01, -0.12, 0.2, 0, 0.13);
+        petalShape.bezierCurveTo(0.12, 0.2, 0.18, 0.01, 0, -0.1);
+        const petalGeometry = new T.ShapeGeometry(petalShape, 3);
+        const blossomMaterial = new T.MeshBasicMaterial({
+          color: 0xa85868,
+          side: T.DoubleSide,
+        });
+        const blossoms = new T.InstancedMesh(
+          petalGeometry,
+          blossomMaterial,
+          180,
+        );
+        garden.add(blossoms);
+        let petalIndex = 0;
+        const dummy = new T.Object3D();
+        for (const side of [-1, 1]) {
+          const base = new T.Vector3(side * 10, -1.8, -5);
+          for (let j = 0; j < 6; j++) {
+            const tip = new T.Vector3(
+              side * (5.8 + random() * 4),
+              3 + j * 0.75,
+              -5 - random() * 5,
+            );
+            const curve = new T.CatmullRomCurve3([
+              base,
+              new T.Vector3(side * 9, 1.5, -5),
+              new T.Vector3(side * 8, 3 + j * 0.2, -6),
+              tip,
+            ]);
+            garden.add(
+              new T.Mesh(
+                new T.TubeGeometry(
+                  curve,
+                  14,
+                  0.055 + (6 - j) * 0.017,
+                  4,
+                  false,
+                ),
+                dark,
+              ),
+            );
+            for (let k = 0; k < 15; k++) {
+              dummy.position.set(
+                tip.x + (random() - 0.5) * 2.1,
+                tip.y + (random() - 0.5) * 1.3,
+                tip.z + (random() - 0.5) * 1.5,
+              );
+              dummy.rotation.set(random() * 3, random() * 3, random() * 6);
+              dummy.scale.setScalar(1 + random());
+              dummy.updateMatrix();
+              blossoms.setMatrixAt(petalIndex++, dummy.matrix);
+            }
+          }
+        }
+        // ## GENTLE RAIN — one draw call, motion calculated in the vertex shader.
+        const rainCount = innerWidth < 768 ? 80 : 200,
+          rainPositions = new Float32Array(rainCount * 6),
+          rainSeeds = new Float32Array(rainCount * 2);
+        for (let i = 0; i < rainCount; i++) {
+          const rx = (random() - 0.5) * 42,
+            ry = random() * 22,
+            rz = (random() - 0.5) * 35;
+          rainPositions.set([rx, ry, rz, rx + 0.015, ry + 0.22, rz], i * 6);
+          rainSeeds[i * 2] = rainSeeds[i * 2 + 1] = random();
+        }
+        const rainGeometry = new T.BufferGeometry();
+        rainGeometry.setAttribute(
+          "position",
+          new T.BufferAttribute(rainPositions, 3),
+        );
+        rainGeometry.setAttribute("aSeed", new T.BufferAttribute(rainSeeds, 1));
+        const rainMaterial = new T.ShaderMaterial({
+          transparent: true,
+          depthWrite: false,
+          uniforms: { uTime: { value: 0 } },
+          vertexShader:
+            "uniform float uTime; attribute float aSeed; varying float vAlpha; void main(){vec3 p=position; p.y=mod(p.y-uTime*(2.1+aSeed)+50.0,22.0)-3.0; p.x+=sin(uTime*.13+aSeed*8.0)*.3; vAlpha=.08+aSeed*.13; gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.0);}",
+          fragmentShader:
+            "varying float vAlpha; void main(){gl_FragColor=vec4(.69,.51,.64,vAlpha);}",
+        });
+        const rain = new T.LineSegments(rainGeometry, rainMaterial);
+        rain.frustumCulled = false;
+        stage.add(rain);
+        // ## DRIFTING RED LEAVES — bounded instances; no individual DOM particles.
+        const leafCount = innerWidth < 768 ? 18 : 42;
+        const leaves = new T.InstancedMesh(
+          petalGeometry,
+          new T.MeshBasicMaterial({
+            color: 0xbb3e56,
+            side: T.DoubleSide,
+            transparent: true,
+            opacity: 0.65,
+          }),
+          leafCount,
+        );
+        leaves.frustumCulled = false;
+        stage.add(leaves);
+        const leafSeeds = Array.from({ length: leafCount }, () => ({
+          x: (random() - 0.5) * 35,
+          y: random() * 17,
+          z: (random() - 0.5) * 25,
+          s: 0.6 + random() * 1.3,
+          speed: 0.22 + random() * 0.3,
+          phase: random() * 6.28,
+        }));
+        let cameraZ = 21,
+          renderTime = 0,
+          lost = false;
+        listen(canvas, "webglcontextlost", (event) => {
+          event.preventDefault();
+          lost = true;
+          world.dataset.webgl = "false";
+        });
+        listen(canvas, "webglcontextrestored", () => {
+          lost = false;
+          world.dataset.webgl = "true";
+          wake();
+        });
+        function resize() {
+          moon.position.x = innerWidth < 768 ? 2 : 8;
+          renderer.setPixelRatio(
+            Math.min(devicePixelRatio, innerWidth < 768 ? 1 : 1.35),
+          );
+          renderer.setSize(innerWidth, innerHeight);
+          camera.aspect = innerWidth / innerHeight;
+          camera.updateProjectionMatrix();
+        }
+        function render(t, p, px, py, dt, animated) {
+          if (lost) return;
+          renderTime += dt;
+          const cap =
+            innerWidth < 768
+              ? 1 / 24
+              : state.level === "cinematic"
+                ? 1 / 45
+                : 1 / 30;
+          if (animated && renderTime < cap) return;
+          renderTime = 0;
+          cameraZ += (21 - p * 5 - cameraZ) * Math.min(1, dt * 5);
+          camera.position.set(
+            Math.sin(p * Math.PI * 1.5) * 1.7 + px * 0.22,
+            4.2 + p * 0.7 - py * 0.12,
+            cameraZ,
+          );
+          camera.lookAt(0, 2.5, -7);
+          rainMaterial.uniforms.uTime.value = t;
+          leafSeeds.forEach((s, i) => {
+            dummy.position.set(
+              s.x + Math.sin(t * 0.23 + s.phase) * 1.5,
+              ((((s.y - t * s.speed) % 17) + 17) % 17) - 2,
+              s.z,
+            );
+            dummy.rotation.set(
+              t * 0.25 + s.phase,
+              t * 0.2 + s.phase,
+              Math.sin(t * 0.32 + s.phase),
+            );
+            dummy.scale.setScalar(s.s);
+            dummy.updateMatrix();
+            leaves.setMatrixAt(i, dummy.matrix);
+          });
+          leaves.instanceMatrix.needsUpdate = true;
+          renderer.render(stage, camera);
+        }
+        function dispose() {
+          const geometries = new Set(),
+            materials = new Set();
+          stage.traverse((o) => {
+            if (o.geometry) geometries.add(o.geometry);
+            if (o.material) materials.add(o.material);
+          });
+          geometries.forEach((g) => g.dispose());
+          materials.forEach((m) => m.dispose());
+          moonTexture.dispose();
+          renderer.dispose();
+          canvas.remove();
+        }
+        return { resize, render, dispose };
+      }
+      // ## CLEANUP — including hot reload, page cache, listeners and GPU resources.
+      function dispose() {
+        disposed = true;
+        cancelAnimationFrame(frame);
+        observer.disconnect();
+        bubbleSize.disconnect();
+        preferences.disconnect();
+        removals.forEach((fn) => fn());
+        scene?.dispose();
+        writer?.remove();
+        document.body.classList.remove("crimson-active");
+      }
+      listen(window, "pagehide", (event) => {
+        if (!event.persisted) dispose();
+        else cancelAnimationFrame(frame);
+      });
+      listen(window, "pageshow", () => {
+        frame = 0;
+        last = 0;
+        sync();
+      });
+      if (import.meta.hot) import.meta.hot.dispose(dispose);
+      sync();
+    </script>
   </body>
 </html>
