@@ -12,6 +12,8 @@ import { useLanguage } from "../LanguageContext";
 import { profile } from "../data";
 import { Magnetic } from "./Effects";
 import SectionAvatar from "./SectionAvatar";
+import { StoryHeading } from "./StoryTypography";
+import HeroMessage from "./HeroMessage";
 const external = { target: "_blank", rel: "noopener noreferrer" };
 export default function PortfolioHero({ motion, ready, goTo }) {
   const { language, hero, tr } = useLanguage();
@@ -28,15 +30,12 @@ export default function PortfolioHero({ motion, ready, goTo }) {
   useEffect(() => {
     if (!ready || !motion) return;
     const context = gsap.context(() => {
-      const sequence = gsap.timeline({ defaults: { ease: "power3.out" } });
+      const sequence = gsap.timeline({
+        defaults: { ease: "power3.out" },
+        delay: 0.85,
+      });
       sequence
-        .from(".hero-introduction", { opacity: 0, y: 24, duration: 0.8 })
-        .from(".hero-secondary", { opacity: 0, y: 18, duration: 0.7 }, "-=.4")
-        .from(
-          ".hero-description",
-          { opacity: 0, y: 16, duration: 0.65 },
-          "-=.4",
-        )
+        .from(".hero-description", { opacity: 0, y: 16, duration: 0.65 })
         .from(
           ".hero-action-reveal",
           { opacity: 0, y: 12, stagger: 0.1, duration: 0.55 },
@@ -68,11 +67,20 @@ export default function PortfolioHero({ motion, ready, goTo }) {
       </div>
       <div className="hero-copy" dir={language === "ar" ? "rtl" : "ltr"}>
         <div className="eyebrow">{hero.eyebrow}</div>
-        <h1 className="hero-introduction" id="hero-title" tabIndex={-1}>
-          <span>{hero.greeting}</span>
+        <StoryHeading
+          as="h1"
+          className="hero-introduction"
+          id="hero-title"
+          tabIndex={-1}
+        >
+          {hero.greeting}
+          <br />
           <span className="accent-text">{hero.name}</span>
-        </h1>
-        <h2 className="hero-secondary">{hero.secondary}</h2>
+        </StoryHeading>
+        <StoryHeading className="hero-secondary" delay={0.28}>
+          {hero.secondary}
+        </StoryHeading>
+        <HeroMessage heroVisible={visible} />
         <p className="hero-description">{hero.description}</p>
         <div className="hero-actions">
           <span className="hero-action-reveal">

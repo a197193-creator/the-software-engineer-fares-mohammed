@@ -32,6 +32,11 @@ import { Magnetic } from "./components/Effects";
 import WelcomeExperience from "./components/WelcomeExperience";
 import PortfolioHero from "./components/PortfolioHero";
 import SandCursor from "./components/SandCursor";
+import {
+  StoryHeading,
+  StoryStatement,
+  StoryMain,
+} from "./components/StoryTypography";
 import { useLanguage } from "./LanguageContext";
 import { useMotion, usePageTracking } from "./hooks/useMotion";
 
@@ -85,7 +90,7 @@ function Heading({ number, label, children }) {
       <div className="eyebrow">
         <span>{number} /</span> {tr(label)}
       </div>
-      <h2>{children}</h2>
+      <StoryHeading>{children}</StoryHeading>
     </>
   );
 }
@@ -311,7 +316,7 @@ export default function App() {
             </nav>
           )}
 
-          <main>
+          <StoryMain motion={motion} ready={portfolioReady && !welcomeVisible}>
             <PortfolioHero motion={motion} ready={portfolioReady} goTo={goTo} />
 
             <ChapterRail goTo={goTo} active={active} />
@@ -340,11 +345,11 @@ export default function App() {
                   <br />
                   <span className="muted-text">{tr("Still curious.")}</span>
                 </Heading>
-                <p>
+                <StoryStatement>
                   {tr(
                     "I’m a Software Engineering student at Universiti Kebangsaan Malaysia (UKM), interested in building practical software that solves real problems.",
                   )}
-                </p>
+                </StoryStatement>
                 <p>
                   {tr(
                     "My work spans mobile and web development, with a particular interest in Flutter, AI-powered applications, databases and digital solutions.",
@@ -394,11 +399,11 @@ export default function App() {
                       </span>
                     </Heading>
                   </div>
-                  <p>
+                  <StoryStatement>
                     {tr("I choose the technology that fits the problem.")}
                     <br />
                     {tr("And keep learning along the way.")}
-                  </p>
+                  </StoryStatement>
                 </div>
                 <div className="skills-layout">
                   <div className="skills-art">
@@ -480,11 +485,11 @@ export default function App() {
                     <span className="muted-text">{tr("context.")}</span>
                   </Heading>
                 </div>
-                <p>
+                <StoryStatement>
                   {tr("Real teams. Real needs.")}
                   <br />
                   {tr("A broader perspective on building software.")}
-                </p>
+                </StoryStatement>
               </div>
               <div className="experience-layout">
                 <div className="timeline">
@@ -581,20 +586,20 @@ export default function App() {
                 </div>
                 <div className="contact-layout">
                   <div className="contact-copy" data-reveal>
-                    <h2>
+                    <StoryHeading>
                       {tr("Have something")}
                       <br />
                       {tr("in")}{" "}
                       <span className="accent-text">{tr("mind?")}</span>
                       <ArrowUpRight className="contact-arrow" strokeWidth={1} />
-                    </h2>
-                    <p>
+                    </StoryHeading>
+                    <StoryStatement>
                       {tr(
                         "A project, an opportunity, or just a good conversation.",
                       )}
                       <br />
                       {tr("I’d love to hear from you.")}
-                    </p>
+                    </StoryStatement>
                     {profile.email ? (
                       <div className="email-row">
                         <a href={`mailto:${profile.email}`}>{profile.email}</a>
@@ -660,7 +665,7 @@ export default function App() {
                 </div>
               </div>
             </section>
-          </main>
+          </StoryMain>
           <footer className="footer page-width">
             <span>
               © {new Date().getFullYear()} {tr("Fares Mohammed")}

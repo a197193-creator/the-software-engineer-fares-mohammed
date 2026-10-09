@@ -1,0 +1,113 @@
+/* TASK 2 owns typography only. Resting text is readable without animation. */
+.cinematic .story-heading-visual {
+  display: block;
+}
+.cinematic .hero-phase-one .hero-introduction {
+  color: #f3f0e9;
+}
+.cinematic .story-line {
+  display: block;
+  overflow: clip;
+  padding-block: 0.15em;
+  margin-block: -0.15em;
+}
+.cinematic .story-word-mask {
+  display: inline-block;
+  vertical-align: baseline;
+  overflow: clip;
+  padding: 0.15em 0.03em;
+  margin: -0.15em -0.03em;
+}
+.cinematic .story-word {
+  display: inline-block;
+  transform-origin: center 80%;
+}
+.cinematic .story-running .story-word {
+  will-change: transform, opacity;
+}
+.cinematic .story-statement {
+  text-wrap: pretty;
+}
+.hero-message {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 32px;
+  gap: 7px 12px;
+  align-items: center;
+  margin-block: 0 22px;
+  padding-inline-start: 13px;
+  border-inline-start: 1px solid #efbc6d77;
+  max-width: 415px;
+  text-align: start;
+}
+.hero-message-label {
+  grid-column: 1;
+  font-family: "DM Sans", "Noto Sans Arabic", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #c4ccd4;
+  line-height: 1.6;
+}
+.hero-message-stack {
+  display: grid;
+  grid-column: 1;
+  grid-row: 2;
+  align-items: start;
+  min-width: 0;
+}
+.hero-message-item {
+  grid-area: 1 / 1;
+  font-family: "DM Sans", "Noto Sans Arabic", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.65;
+  color: #f0d1a0;
+  opacity: 0;
+  transform: translateY(0.25em);
+  pointer-events: none;
+  user-select: none;
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease;
+}
+.hero-message-item[data-current="true"] {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  user-select: text;
+}
+.hero-message-toggle {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  width: 32px;
+  min-height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #efbc6d44;
+  border-radius: 8px;
+  color: #f0d1a0;
+}
+.hero-message-toggle:hover {
+  background: #efbc6d12;
+}
+.hero-message:focus-visible {
+  outline: 1px solid #efbc6d;
+  outline-offset: 7px;
+}
+html[lang="ar"] .hero-message-item {
+  font-family: "Noto Sans Arabic", sans-serif;
+}
+.motion-off .story-word,
+.motion-off .story-statement {
+  opacity: 1 !important;
+  transform: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .story-word,
+  .story-statement {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .hero-message-item {
+    transition: none;
+  }
+}

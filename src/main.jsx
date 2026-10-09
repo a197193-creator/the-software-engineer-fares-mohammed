@@ -9,6 +9,7 @@ import "./cinematic.css";
 import "./welcome.css";
 import "./intro.css";
 import "./readability.css";
+import "./typography.css";
 
 createRoot(document.getElementById("root")).render(
   <LanguageProvider>

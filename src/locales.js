@@ -272,6 +272,14 @@ export const heroCopy = {
       "I'm a Software Engineering student interested in building practical, intuitive, and well-designed digital products. Through my projects, I explore software development, problem-solving, and the connection between technology and user experience.",
     projects: "Explore My Projects",
     about: "More About Me",
+    messageLabel: "My focus",
+    messagePause: "Pause focus messages",
+    messageResume: "Resume focus messages",
+    messages: [
+      "Building useful software.",
+      "Turning ideas into working products.",
+      "Creating intuitive digital experiences.",
+    ],
   },
   ar: {
     eyebrow: "هندسة البرمجيات • التجارب الرقمية",
@@ -282,5 +290,13 @@ export const heroCopy = {
       "أنا طالب هندسة برمجيات، أهتم بتطوير منتجات رقمية عملية وسهلة الاستخدام. من خلال مشاريعي، أستكشف تطوير البرمجيات، وحل المشكلات، وكيفية الجمع بين التكنولوجيا وتجربة المستخدم لتقديم حلول أفضل.",
     projects: "استكشف مشاريعي",
     about: "المزيد عني",
+    messageLabel: "ما أعمل عليه",
+    messagePause: "إيقاف تبديل الرسائل",
+    messageResume: "استئناف تبديل الرسائل",
+    messages: [
+      "أطوّر برمجيات تلبي احتياجات حقيقية.",
+      "أحوّل الأفكار إلى منتجات قابلة للاستخدام.",
+      "أصمّم تجارب رقمية سهلة وواضحة.",
+    ],
   },
 };

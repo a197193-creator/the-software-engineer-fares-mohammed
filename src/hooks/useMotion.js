@@ -43,6 +43,8 @@ export function useMotion(enabled, blocked, ready, layoutKey) {
     if (!enabled || !ready) return;
     const context = gsap.context(() => {
       gsap.utils.toArray("[data-reveal]").forEach((el) => {
+        // Typography owns its words/statement; do not also move its ancestor.
+        if (el.querySelector("[data-story-heading], [data-story-copy]")) return;
         gsap.from(el, {
           y: 32,
           opacity: 0,

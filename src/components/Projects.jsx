@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { profile, projects } from "../data";
 import SectionAvatar from "./SectionAvatar";
+import { StoryHeading, StoryStatement } from "./StoryTypography";
 
 const externalProps = { target: "_blank", rel: "noopener noreferrer" };
 const filters = ["All work", "Mobile", "Web", "AI"];
@@ -167,14 +168,14 @@ export default function Projects({ onOpen, motion = true }) {
             <span>04</span>
             {tr("SELECTED WORK")}
           </div>
-          <h2 id="projects-heading">
+          <StoryHeading id="projects-heading">
             {tr("Ideas made")} <span className="serif">{tr("real.")}</span>
-          </h2>
-          <p>
+          </StoryHeading>
+          <StoryStatement>
             {tr("A few projects that reflect how I think,")}
             <br />
             {tr("build, and solve problems.")}
-          </p>
+          </StoryStatement>
         </div>
         <SectionAvatar section="projects" motion={motion} compact />
       </div>
