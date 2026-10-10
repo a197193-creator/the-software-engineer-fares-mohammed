@@ -1,4 +1,5 @@
 import { welcomeCopy } from "../locales";
+import LandscapeScene from "./LandscapeScene";
 
 // Resolution-independent artwork. Only the finishing layer signals completion.
 export default function CinematicTransition({ language, onFinish }) {
@@ -9,6 +10,7 @@ export default function CinematicTransition({ language, onFinish }) {
       lang={language}
       dir={language === "ar" ? "rtl" : "ltr"}
     >
+      <LandscapeScene variant="transition" motion={true} />
       <div
         className="intro-sequence"
         onAnimationEnd={(event) => {

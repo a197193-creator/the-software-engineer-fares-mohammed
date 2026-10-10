@@ -1,6 +1,7 @@
 import { useLanguage } from "../LanguageContext";
 import { useEffect, useRef, useState } from "react";
 import AvatarGuide from "./AvatarGuide";
+import MotionCard from "./MotionCard";
 import { avatarScenes } from "../avatarPoseRegistry";
 export { avatarScenes } from "../avatarPoseRegistry";
 
@@ -84,7 +85,8 @@ export function ChapterRail({ goTo, active }) {
       aria-label={tr("Explore the portfolio chapters")}
     >
       {Object.entries(avatarScenes).map(([id, scene]) => (
-        <button
+        <MotionCard
+          as="button"
           className={`chapter-card ${active === id ? "current" : ""}`}
           key={id}
           onClick={() => goTo(id)}
@@ -114,7 +116,7 @@ export function ChapterRail({ goTo, active }) {
             {tr("Explore chapter")}
             <span>↗</span>
           </span>
-        </button>
+        </MotionCard>
       ))}
     </nav>
   );

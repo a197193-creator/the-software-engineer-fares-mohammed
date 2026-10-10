@@ -25,6 +25,7 @@ export const arabic = {
   Skills: "المهارات",
   Experience: "الخبرة",
   Contact: "التواصل",
+  "Contact me": "تواصل معي",
   "Skip to content": "انتقل إلى المحتوى",
   "Main navigation": "التنقّل الرئيسي",
   "Mobile navigation": "قائمة التنقّل",

@@ -1,0 +1,257 @@
+/* ## HERO FLOW — the copy, controls and chapter rail always occupy separate rows. */
+.crimson-active .cinematic .hero-phase-one {
+  height: auto;
+  min-height: max(850px, 100svh);
+  padding-block: 140px 38px;
+  grid-template-rows: 1fr auto;
+  align-items: center;
+  row-gap: 54px;
+  direction: inherit;
+  isolation: isolate;
+}
+.crimson-active .cinematic .hero-phase-one .hero-copy {
+  max-width: 550px;
+  pointer-events: auto;
+  min-width: 0;
+}
+.crimson-active .cinematic .hero-bottom {
+  position: relative;
+  grid-column: 1 / -1;
+  inset: auto;
+  width: 100%;
+  margin: 0;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding-top: 25px;
+  border-top: 1px solid var(--line);
+  line-height: 1.6;
+}
+.cinematic .hero-actions { gap: 12px; }
+.cinematic .hero-socials { flex-wrap: wrap; gap: 18px; line-height: 1.7; }
+.cinematic .hero-socials a { display: inline-flex; align-items: center; min-height: 36px; }
+.cinematic .hero-contact { border-color: #40dfff66; }
+.cinematic .header.on-hero { background: #0b080ef5; border-bottom: 1px solid var(--line); }
+.header-contact-icon { display: none; }
+.mobile-guide-slot { display: none; }
+.cinematic .header-connect {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  min-height: 44px;
+  border: 1px solid #40dfff4d;
+  border-radius: 24px;
+  padding: 8px 15px;
+  font-size: 14px;
+  color: var(--text);
+}
+@media (max-width: 1350px) { .cinematic .header-identity { display: none; } }
+@media (max-width: 767px) {
+  .cinematic .header-connect { display: grid; place-items: center; width: 40px; min-height: 40px; padding: 0; }
+  .header-contact-label, .header-connect > svg:not(.header-contact-icon) { display: none; }
+  .header-contact-icon { display: block; }
+  .crimson-active .cinematic .hero-phase-one {
+    padding-top: 125px;
+    padding-bottom: 30px;
+    min-height: 100svh;
+    row-gap: 34px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .crimson-active .cinematic .hero-phase-one .hero-copy { max-width: none; }
+  .crimson-active .cinematic .hero h1 { font-size: clamp(42px, 10.8vw, 62px); }
+  .cinematic .hero-socials { gap: 14px; }
+}
+/* ## SHARED CARDS — entrance / idle / pointer layers never compete for transform. */
+.motion-panel { min-width: 0; position: relative; }
+.motion-card-float { height: 100%; }
+.motion-card {
+  position: relative;
+  min-width: 0;
+  height: 100%;
+  transform: perspective(1000px) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg));
+  transform-origin: center;
+  transition: transform var(--motion-interaction, .26s) var(--motion-ease, ease),
+    scale var(--motion-interaction, .26s) ease, border-color .26s ease, box-shadow .26s ease;
+}
+.motion-card:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(260px circle at var(--pointer-x, 50%) var(--pointer-y, 50%), #40dfff0c, transparent 72%);
+  opacity: var(--pointer-active, 0);
+  transition: opacity .26s ease;
+}
+.cinematic .about-fact {
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+.cinematic .about-facts { gap: 16px; border: 0; padding-top: 0; }
+.cinematic .about-fact > span { font-size: 14px; margin-top: 8px; }
+.cinematic .skill-tags span { font-size: 13px; line-height: 1.6; }
+.cinematic .timeline > .motion-panel { margin-bottom: 24px; }
+.cinematic .timeline-entry.motion-card {
+  padding: 28px 30px 28px 42px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+.cinematic .email-row.motion-card { height: auto; padding: 16px; border: 1px solid var(--line); border-radius: 12px; flex-wrap: wrap; background: var(--surface); }
+.cinematic .email-row a { overflow-wrap: anywhere; min-width: 0; }
+.cinematic .chapter-rail { gap: 12px; padding: 20px; border-radius: 16px; }
+.cinematic .chapter-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  text-align: start;
+}
+.crimson-active .cinematic .chapter-picture { height: auto; flex: 1; margin-top: 12px; overflow: visible; }
+.crimson-active .cinematic .chapter-quote {
+  position: relative;
+  display: block;
+  inset: auto;
+  width: 100%;
+  min-height: 100px;
+  height: 100%;
+  font-size: 15px;
+  line-height: 1.55;
+  padding: 10px;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+}
+.chapter-quote:after { display: none; }
+.chapter-label { flex-wrap: wrap; }
+.chapter-link { margin-top: 16px; }
+@media (min-width: 1100px) and (hover: hover) and (pointer: fine) {
+  .motion-panel[data-floating="true"] > .motion-card-float {
+    animation: shared-card-float var(--motion-cycle, 8s) ease-in-out infinite;
+  }
+  .motion-panel:has(.motion-card:is(:hover, :focus-within)) { z-index: 2; }
+  .motion-panel:has(.motion-card:is(:hover, :focus-within)) > .motion-card-float { animation-play-state: paused; }
+  .motion-card:is(:hover, :focus-within) {
+    scale: var(--motion-card-scale, 1.01);
+    border-color: #40dfff85;
+    box-shadow: 0 12px 30px #0003, 0 0 20px #40dfff0a;
+  }
+}
+@keyframes shared-card-float { 50% { transform: translateY(calc(var(--motion-float, 2px) * -1)); } }
+@media (max-width: 1099px) { .cinematic .chapter-rail { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+/* Give the single guide an authored art slot on compact screens, away from controls. */
+@media (max-width: 1099px) {
+  .mobile-guide-slot { display: block; grid-column: 1 / -1; height: 180px; }
+  #journey-guide { position: absolute; }
+  #journey-guide .journey-bubble { top: var(--guide-mobile-top, 0px) !important; bottom: auto; }
+  #journey-guide .journey-launcher { position: fixed; }
+  .crimson-active .site { padding-bottom: 0; }
+  .landscape-section { min-height: 180px; }
+}
+@media (max-width: 600px) { .cinematic .chapter-rail { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 12px; gap: 10px; } }
+/* ## REPLAYABLE LANDSCAPES — opacity and separated depth layers, no canvas loop. */
+.landscape-scene {
+  position: relative;
+  overflow: hidden;
+  pointer-events: none;
+  min-width: 0;
+  grid-column: 1 / -1;
+  height: clamp(140px, 20vw, 235px);
+  border-radius: 18px;
+  margin-bottom: 38px;
+  border: 1px solid #c7877024;
+  background: #100c19;
+  isolation: isolate;
+}
+.landscape-scene svg { width: 100%; height: 100%; display: block; }
+.landscape-scene:after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(0deg, #09080e99, transparent 55%);
+}
+.landscape-horizon {
+  position: absolute;
+  inset: auto 12% 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #40dfff55, #f5c66a55, transparent);
+}
+.landscape-far, .landscape-near, .landscape-petals {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 1.3s cubic-bezier(.16, 1, .3, 1), opacity 1s ease;
+}
+.landscape-scene[data-motion="true"][data-visible="false"] .landscape-far { transform: translateY(18px) scale(1.03); opacity: .35; }
+.landscape-scene[data-motion="true"][data-visible="false"] .landscape-near { transform: translateY(36px); opacity: .2; }
+.landscape-scene[data-visible="true"] .landscape-petals { animation: landscape-petals 8s ease-in-out infinite; }
+@keyframes landscape-petals { 50% { transform: translate(8px, 9px); opacity: .25; } }
+.landscape-hero, .landscape-welcome, .landscape-transition {
+  position: absolute;
+  border: 0;
+  border-radius: 0;
+  margin: 0;
+}
+.landscape-hero { inset: 0; height: 100%; z-index: -1; opacity: .4; }
+.landscape-hero svg { object-fit: cover; }
+.landscape-hero:after { background: linear-gradient(90deg, #09080ef5 15%, #09080e75 55%, transparent); }
+.landscape-welcome { inset: 0; height: 100%; z-index: -1; opacity: .62; }
+.landscape-welcome svg { position: absolute; bottom: 0; height: 55%; }
+.landscape-welcome:after { background: linear-gradient(0deg, #09080e66, #09080e44 50%, #09080eee); }
+.landscape-transition { inset: 0; height: 100%; z-index: 0; opacity: .7; }
+.landscape-transition svg { position: absolute; bottom: 0; height: 60%; }
+.intro-sequence { z-index: 1; }
+.welcome-experience { background: #0b080e; }
+.welcome-experience .language-choice { background: linear-gradient(140deg, #221520f0, #100d16f5); }
+.welcome-image { mask-image: radial-gradient(ellipse at center, #000 35%, transparent 75%); }
+.welcome-experience .welcome-image-shade { background: linear-gradient(0deg, #0b080e, transparent 35%); }
+.cinematic-transition {
+  background: radial-gradient(ellipse at 50% 44%, #281326, #0b080ee8 72%);
+  --choice: #f5c66a;
+}
+.intro-orbit { border-color: #40dfff30; }
+.orbit-two { border-color: #f5c66a40; }
+.intro-world { color: #f2d1a6; }
+/* ## RTL — content on the right, the existing single guardian on the left. */
+html[lang="ar"] .crimson-active .cinematic .hero-phase-one {
+  background: linear-gradient(270deg, #09080ee6, #09080e99 42%, transparent 75%);
+}
+html[lang="ar"] .landscape-hero:after { background: linear-gradient(270deg, #09080ef5 15%, #09080e75 55%, transparent); }
+html[lang="ar"] .crimson-vignette { background: linear-gradient(270deg, #09080ed9, transparent 65%), linear-gradient(0deg, #09080e80, transparent 35%, #09080e20); }
+html[lang="ar"] .cinematic .chapter-rail { direction: rtl; }
+html[lang="ar"] .cinematic .chapter-card { text-align: right; padding: 14px; }
+html[lang="ar"] .cinematic .timeline-entry.motion-card { padding: 28px 42px 28px 30px; }
+html[lang="ar"] .cinematic .desktop-nav { margin-inline-end: auto; margin-inline-start: 0; }
+html[lang="ar"] .cinematic .header { direction: rtl; }
+.brand-mark { font-family: "Cormorant Garamond", Georgia, serif !important; }
+html[lang="ar"] .cinematic :is(.about-copy, .section-heading, .contact-copy, .timeline-entry, .skill-card) { text-align: right; }
+@media (min-width: 1100px) {
+  .crimson-active .cinematic .hero-bottom { width: calc(100% - 300px); }
+  html[lang="ar"] .crimson-active .site main > section:not(#home),
+  html[lang="ar"] .crimson-active .site .chapter-rail,
+  html[lang="ar"] .crimson-active .site > footer,
+  html[lang="ar"] .crimson-active .site .avatar-guide-tools { margin-right: 5.4%; margin-left: auto; }
+  #journey-guide[dir="rtl"] .journey-bubble { left: 24px; right: auto; border-radius: 16px 16px 16px 4px; }
+  #journey-guide[dir="rtl"] .journey-launcher { left: 22px; right: auto; }
+}
+/* Mobile retains a compact avatar on the left and text beside it, in both languages. */
+@media (max-width: 767px) {
+  .landscape-scene { margin-bottom: 28px; }
+  .landscape-hero, .landscape-welcome, .landscape-transition { margin: 0; }
+  .cinematic .timeline-entry.motion-card { padding: 22px 22px 22px 32px; }
+  html[lang="ar"] .cinematic .timeline-entry.motion-card { padding: 22px 32px 22px 22px; }
+  .cinematic .email-row a { font-size: 16px; }
+}
+html[data-theme="light"] .landscape-section { opacity: .85; }
+.motion-off :is(.motion-card-float, .landscape-petals) { animation: none !important; }
+.motion-off #crimson-world canvas { display: none !important; }
+.motion-off #crimson-world .crimson-fallback { opacity: 1; }
+@media (hover: none), (pointer: coarse) { .motion-card { transform: none; } }
+.motion-off .motion-card { transform: none !important; scale: 1; }
+.motion-off :is(.landscape-far, .landscape-near, .landscape-petals) { transition: none; transform: none !important; opacity: 1 !important; }
+@media (prefers-reduced-motion: reduce) {
+  .motion-card { transform: none !important; scale: 1 !important; }
+  .motion-card-float, .landscape-petals { animation: none !important; }
+  .landscape-far, .landscape-near, .landscape-petals { transition: none; transform: none !important; opacity: 1 !important; }
+}

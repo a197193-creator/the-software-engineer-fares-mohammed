@@ -44,6 +44,10 @@ The main portfolio uses the existing Three.js atmospheric environment, with a re
 
 Avatar assets are in `public/assets/`; the social preview is `public/og.png`. See `ASSET-NOTES.md` and existing motion documentation for implementation history.
 
+`src/components/MotionCard.jsx` shares project-style reveals, floating and pointer feedback across chapter, skills, facts, experience and contact cards, using separate transform layers. `LandscapeScene.jsx` draws lightweight panoramic scenery with repeatable visibility reveals. Welcome and the coded transition use the same scenery and crimson/cyan/gold palette.
+
+`src/journey-polish.css` keeps the Hero in natural document flow, mirrors Arabic content to the right, and reserves a left rail for the single avatar on desktop. On compact screens the avatar and dialogue occupy landscape art slots instead of covering content. Contact is available from both the header and Hero. Reduced motion displays static scenery and readable text.
+
 ## Publish and verify
 
 Use the existing Vercel project with build command `npm run build`, output `dist`, and Node.js 24. Verify the linked project before deploying; do not create a replacement project for routine updates.

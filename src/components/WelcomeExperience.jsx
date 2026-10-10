@@ -3,6 +3,8 @@ import { ArrowRight, SkipForward } from "lucide-react";
 import { useLanguage } from "../LanguageContext";
 import { welcomeCopy } from "../locales";
 import CinematicTransition from "./CinematicTransition";
+import LandscapeScene from "./LandscapeScene";
+import { usePointerSurface } from "../hooks/usePointerSurface";
 
 export const welcomeAssets = {
   image: "/assets/welcome-guardian.webp",
@@ -38,11 +40,14 @@ function InteractiveSphere({
     </button>
   );
 }
-function LanguageChoice({ language, disabled, onChoose, onHighlight }) {
+function LanguageChoice({ language, disabled, onChoose, onHighlight, motion }) {
   const text = welcomeCopy[language];
+  const surface = useRef(null);
+  usePointerSurface(surface, { enabled: motion && !disabled, kind: "card" });
   return (
     <section
-      className={`language-choice choice-${language}`}
+      ref={surface}
+      className={`language-choice motion-card choice-${language}`}
       lang={language}
       dir={language === "ar" ? "rtl" : "ltr"}
       onPointerEnter={() => onHighlight(language)}
@@ -158,6 +163,7 @@ export default function WelcomeExperience({ motion, onReveal, onComplete }) {
       <h1 id="welcome-title" className="sr-only">
         Fares Mohammed — Choose your language / اختر لغتك
       </h1>
+      <LandscapeScene variant="welcome" motion={motion} />
       <header className="welcome-header">
         <div className="welcome-brand">
           <span>F</span>
@@ -208,12 +214,14 @@ export default function WelcomeExperience({ motion, onReveal, onComplete }) {
       </div>
       <div className="language-choices">
         <LanguageChoice
+          motion={motion}
           language="en"
           disabled={phase !== "choose"}
           onChoose={choose}
           onHighlight={setHighlight}
         />
         <LanguageChoice
+          motion={motion}
           language="ar"
           disabled={phase !== "choose"}
           onChoose={choose}

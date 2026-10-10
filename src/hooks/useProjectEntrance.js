@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import gsap from "gsap";
 import { useStoryMotion } from "../components/StoryTypography";
 import { useMotionSettings } from "../components/MotionSettings";
+import { subscribeMotionEnvironment } from "../motionEnvironment";
 
 // Entrance owns the outer panel; CSS floating and pointer tilt own inner wrappers.
 export function useProjectEntrance(ref, projectKey) {
@@ -21,7 +22,9 @@ export function useProjectEntrance(ref, projectKey) {
       update();
     });
     observer.observe(root);
-    document.addEventListener("visibilitychange", update);
+    const unsubscribe = subscribeMotionEnvironment((event) => {
+      if (event === "visibilitychange") update();
+    });
     const context = gsap.context(() => {
       if (!motion || !ready) return;
       gsap.fromTo(
@@ -37,14 +40,18 @@ export function useProjectEntrance(ref, projectKey) {
           scale: 1,
           duration: config.reveal,
           ease: config.ease,
-          scrollTrigger: { trigger: root, start: "top 93%", once: true },
+          scrollTrigger: {
+            trigger: root,
+            start: "top 93%",
+            toggleActions: "restart none restart none",
+          },
         },
       );
     }, root);
     update();
     return () => {
       observer.disconnect();
-      document.removeEventListener("visibilitychange", update);
+      unsubscribe();
       context.revert();
       root.dataset.floating = "false";
     };

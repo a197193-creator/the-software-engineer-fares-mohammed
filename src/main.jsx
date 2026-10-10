@@ -16,6 +16,7 @@ import "./avatar-motion.css";
 import "./pointer.css";
 import "./project-showcase.css";
 import "./motion.css";
+import "./journey-polish.css";
 
 createRoot(document.getElementById("root")).render(
   <LanguageProvider>

@@ -15,6 +15,7 @@ import { usePointerSurface } from "../hooks/usePointerSurface";
 import { useAvatarGuide } from "./AvatarGuideContext";
 import ProjectPreview from "./ProjectPreview";
 import { useProjectEntrance } from "../hooks/useProjectEntrance";
+import LandscapeScene from "./LandscapeScene";
 
 const externalProps = { target: "_blank", rel: "noopener noreferrer" };
 const filters = ["All work", "Mobile", "Web", "AI"];
@@ -123,6 +124,7 @@ export default function Projects({ onOpen, motion = true }) {
       className="section page-width projects-section"
       aria-labelledby="projects-heading"
     >
+      <LandscapeScene />
       <div className="section-heading projects-heading">
         <div data-reveal>
           <div className="eyebrow">

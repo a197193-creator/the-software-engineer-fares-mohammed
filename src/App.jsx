@@ -44,6 +44,8 @@ import { useLanguage } from "./LanguageContext";
 import { useMotion, usePageTracking } from "./hooks/useMotion";
 import { useMotionSettings } from "./components/MotionSettings";
 import { motionVariables } from "./motionConfig";
+import MotionCard from "./components/MotionCard";
+import LandscapeScene from "./components/LandscapeScene";
 
 const external = { target: "_blank", rel: "noopener noreferrer" };
 const navItems = [
@@ -294,10 +296,12 @@ export default function App() {
               </button>
               <a
                 className="header-connect"
+                aria-label={tr("Contact me")}
                 href="#contact"
                 onClick={jump("contact")}
               >
-                {tr("Let’s connect")}
+                <span className="header-contact-label">{tr("Contact me")}</span>
+                <Mail className="header-contact-icon" size={17} />
                 <ArrowUpRight size={16} />
               </a>
               <button
@@ -341,6 +345,7 @@ export default function App() {
             <ChapterRail goTo={goTo} active={active} />
 
             <section id="about" className="section page-width about-section">
+              <LandscapeScene />
               <div className="about-art">
                 <span className="outline-word" aria-hidden="true">
                   {tr("CURIOUS.")}
@@ -380,17 +385,17 @@ export default function App() {
                   )}
                 </p>
                 <div className="about-facts">
-                  <div>
+                  <MotionCard className="about-fact">
                     <strong>{String(projects.length).padStart(2, "0")}</strong>
                     <span>{tr("Selected projects")}</span>
-                  </div>
-                  <div>
+                  </MotionCard>
+                  <MotionCard className="about-fact">
                     <strong>
                       {tr("UKM")}
                       <span> ↗</span>
                     </strong>
                     <span>{tr("Software Engineering")}</span>
-                  </div>
+                  </MotionCard>
                 </div>
                 {profile.cv ? (
                   <a className="text-link" href={profile.cv} download>
@@ -408,6 +413,7 @@ export default function App() {
 
             <section id="skills" className="section skills-section">
               <div className="page-width">
+                <LandscapeScene />
                 <div className="section-heading" data-reveal>
                   <div>
                     <Heading number="03" label="MY TOOLKIT">
@@ -443,7 +449,7 @@ export default function App() {
                   </div>
                   <div className="skills-grid">
                     {toolkit.map(({ Icon, title, desc, tags }, i) => (
-                      <article className="skill-card" key={title} data-reveal>
+                      <MotionCard as="article" className="skill-card" key={title}>
                         <div className="skill-top">
                           <Icon size={24} strokeWidth={1.4} />
                           <span>0{i + 1}</span>
@@ -455,7 +461,7 @@ export default function App() {
                             <span key={t}>{tr(t)}</span>
                           ))}
                         </div>
-                      </article>
+                      </MotionCard>
                     ))}
                   </div>
                 </div>
@@ -496,6 +502,7 @@ export default function App() {
               id="experience"
               className="section page-width experience-section"
             >
+              <LandscapeScene />
               <div className="section-heading" data-reveal>
                 <div>
                   <Heading number="05" label="THE JOURNEY">
@@ -515,7 +522,7 @@ export default function App() {
                   <div className="timeline-track">
                     <div className="timeline-fill" />
                   </div>
-                  <article className="timeline-entry" data-reveal>
+                  <MotionCard as="article" className="timeline-entry">
                     <div className="timeline-dot" />
                     <div className="timeline-date">
                       <bdi dir="ltr">3 SEP 2026 — 19 JAN 2027</bdi>{" "}
@@ -555,8 +562,8 @@ export default function App() {
                       <span>{tr("Research systems")}</span>
                       <span>{tr("UKM")}</span>
                     </div>
-                  </article>
-                  <article className="timeline-entry" data-reveal>
+                  </MotionCard>
+                  <MotionCard as="article" className="timeline-entry">
                     <div className="timeline-dot" />
                     <div className="timeline-date">{tr("UKM COURSEWORK")}</div>
                     <h3>{tr("Project Team Leader")}</h3>
@@ -568,8 +575,8 @@ export default function App() {
                         "Leading university teams of 4–6 students, coordinating responsibilities and supporting planning and delivery.",
                       )}
                     </p>
-                  </article>
-                  <article className="timeline-entry" data-reveal>
+                  </MotionCard>
+                  <MotionCard as="article" className="timeline-entry">
                     <div className="timeline-dot" />
                     <div className="timeline-date">
                       <GraduationCap size={16} />
@@ -588,7 +595,7 @@ export default function App() {
                         "Expected graduation: August 2027. Learning by building, questioning and connecting ideas.",
                       )}
                     </p>
-                  </article>
+                  </MotionCard>
                 </div>
                 <div className="experience-art">
                   <span className="outline-word" aria-hidden="true">
@@ -606,6 +613,7 @@ export default function App() {
 
             <section id="contact" className="section contact-section">
               <div className="page-width">
+                <LandscapeScene />
                 <div className="eyebrow" data-reveal>
                   <span>06 /</span>
                   {tr("WHAT’S NEXT?")}
@@ -627,7 +635,7 @@ export default function App() {
                       {tr("I’d love to hear from you.")}
                     </StoryStatement>
                     {profile.email ? (
-                      <div className="email-row">
+                      <MotionCard className="email-row">
                         <a href={`mailto:${profile.email}`}>{profile.email}</a>
                         <button
                           className="icon-button"
@@ -639,7 +647,7 @@ export default function App() {
                           {copied ? <Check size={18} /> : <Copy size={18} />}
                         </button>
                         <span role="status">{copied ? tr("Copied!") : ""}</span>
-                      </div>
+                      </MotionCard>
                     ) : (
                       <Magnetic
                         className="primary"

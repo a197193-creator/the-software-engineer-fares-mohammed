@@ -17,6 +17,7 @@ import HeroMessage from "./HeroMessage";
 import { useAvatarGuide } from "./AvatarGuideContext";
 import { useAvatarMotion } from "../hooks/useAvatarMotion";
 import { useMotionSettings } from "./MotionSettings";
+import LandscapeScene from "./LandscapeScene";
 const external = { target: "_blank", rel: "noopener noreferrer" };
 export default function PortfolioHero({ motion, ready, goTo }) {
   const { language, hero, tr } = useLanguage();
@@ -74,6 +75,7 @@ export default function PortfolioHero({ motion, ready, goTo }) {
       id="home"
       className={`hero hero-phase-one page-width ${visible && ready ? "hero-visible" : ""} ${failed ? "scene-missing" : ""}`}
     >
+      <LandscapeScene variant="hero" />
       <div className="hero-photo" aria-hidden="true">
         <div className="hero-portrait-motion" ref={portrait}>
           <div className="hero-portrait-breath">
@@ -127,6 +129,15 @@ export default function PortfolioHero({ motion, ready, goTo }) {
               <ArrowUpRight size={17} />
             </a>
           </span>
+          <span className="hero-action-reveal">
+            <Magnetic
+              href="#contact"
+              onClick={jump("contact")}
+              className="secondary hero-contact"
+            >
+              {tr("Contact me")} <Mail size={17} />
+            </Magnetic>
+          </span>
         </div>
         <div className="hero-socials">
           <a
@@ -157,6 +168,7 @@ export default function PortfolioHero({ motion, ready, goTo }) {
           )}
         </div>
       </div>
+      <div className="mobile-guide-slot" aria-hidden="true" />
       <div className="hero-art">
         <SectionAvatar section="home" motion={motion} imageHidden={!failed} />
       </div>
