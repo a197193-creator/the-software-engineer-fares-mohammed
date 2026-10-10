@@ -66,7 +66,7 @@ function ProjectCard({ project, onOpen, motion, featured }) {
             </div>
             <details className="project-contribution">
               <summary>{tr("My contribution")}</summary>
-              <p>{tr(project.solution)}</p>
+              <p>{tr(project.contribution || project.solution)}</p>
             </details>
             <div className="project-card-actions">
               <button
@@ -275,6 +275,11 @@ export function ProjectDialog({ project, close }) {
             <span key={tag}>{tr(tag)}</span>
           ))}
         </div>
+        {project.dates && (
+          <p className="project-date" dir="ltr">
+            {project.dates}
+          </p>
+        )}
         <div className="case-columns">
           <div>
             <h3>{tr("The problem")}</h3>
@@ -294,20 +299,60 @@ export function ProjectDialog({ project, close }) {
             </li>
           ))}
         </ul>
-        <div className="learning">
-          <Sparkles size={21} aria-hidden="true" />
-          <div>
-            <h3>{tr("What I learned")}</h3>
-            <p>{tr(project.learning)}</p>
+        {project.contribution && (
+          <div className="learning">
+            <div>
+              <h3>{tr("My contribution")}</h3>
+              <p>{tr(project.contribution)}</p>
+            </div>
           </div>
-        </div>
-        {project.screenshot && (
-          <img
-            className="case-screenshot"
-            src={project.screenshot}
-            alt={`${tr(project.name)} — ${tr("Application preview")}`}
-            loading="lazy"
-          />
+        )}
+        {project.learning && (
+          <div className="learning">
+            <Sparkles size={21} aria-hidden="true" />
+            <div>
+              <h3>{tr("What I learned")}</h3>
+              <p>{tr(project.learning)}</p>
+            </div>
+          </div>
+        )}
+        {project.evidence && (
+          <div className="learning">
+            <div>
+              <h3>{tr("Project evidence")}</h3>
+              <p>{tr(project.evidence)}</p>
+            </div>
+          </div>
+        )}
+        {project.note && (
+          <p className="project-scope-note">{tr(project.note)}</p>
+        )}
+        {project.gallery?.length > 0 && (
+          <section
+            className="case-gallery"
+            aria-label={tr("Real project screenshots")}
+          >
+            <h3>{tr("Real project screenshots")}</h3>
+            <div className="case-gallery-grid">
+              {project.gallery.map((item) => (
+                <figure key={item.src}>
+                  <a
+                    href={item.src}
+                    {...externalProps}
+                    aria-label={`${tr("Open screenshot")} — ${tr(item.caption)}`}
+                  >
+                    <img
+                      src={item.src}
+                      alt={tr(item.caption)}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </a>
+                  <figcaption>{tr(item.caption)}</figcaption>
+                </figure>
+              ))}
+            </div>
+          </section>
         )}
         <div className="case-footer">
           <span>{tr(project.context)}</span>

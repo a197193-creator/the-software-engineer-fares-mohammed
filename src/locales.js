@@ -1,5 +1,7 @@
+import { projectTranslations } from "./projectContent";
 // English is the verified source copy. Arabic preserves its meaning and project facts.
 export const arabic = {
+  ...projectTranslations,
   "Motion intensity": "مستوى الحركة",
   Subtle: "هادئ",
   Balanced: "متوازن",

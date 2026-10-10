@@ -304,6 +304,57 @@
   aspect-ratio: 3/2;
   transition: transform var(--motion-interaction) var(--motion-ease);
 }
+.project-date {
+  color: var(--muted);
+  font-size: 13px;
+}
+.project-scope-note {
+  padding: 16px 18px;
+  border-inline-start: 2px solid #f5c66a;
+  background: #f5c66a0c;
+  line-height: 1.75;
+  font-size: 14px;
+}
+.case-gallery {
+  margin-top: 30px;
+}
+.case-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.case-gallery figure {
+  margin: 0;
+  min-width: 0;
+}
+.case-gallery a {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #101722;
+}
+.case-gallery img {
+  display: block;
+  width: 100%;
+  height: 300px;
+  object-fit: contain;
+}
+.case-gallery figcaption {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 9px;
+  line-height: 1.5;
+}
+@media (max-width: 600px) {
+  .case-gallery-grid {
+    grid-template-columns: 1fr;
+  }
+  .case-gallery img {
+    height: auto;
+    max-height: 420px;
+  }
+}
 @media (hover: hover) and (pointer: fine) {
   .project-card:is(:hover, :focus-within) .project-preview-image {
     transform: scale(var(--motion-hover-scale));

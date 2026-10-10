@@ -49,7 +49,7 @@ export const guideCopy = {
       },
       contact: {
         message:
-          "Enjoyed the journey? You can connect with Fares on GitHub. More ways to get in touch are coming soon.",
+          "Enjoyed the journey? Email Fares, connect on LinkedIn, or send a WhatsApp message. His GitHub is here too.",
         action: "Finish the tour",
       },
     },
@@ -94,7 +94,7 @@ export const guideCopy = {
       },
       contact: {
         message:
-          "استمتعت بالجولة؟ يمكنك التواصل مع فارس عبر GitHub. ستُضاف وسائل أخرى للتواصل قريبًا.",
+          "استمتعت بالجولة؟ تواصل مع فارس بالبريد أو LinkedIn أو WhatsApp. ستجد رابط GitHub هنا أيضًا.",
         action: "إنهاء الجولة",
       },
     },

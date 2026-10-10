@@ -65,19 +65,19 @@ const toolkit = [
     Icon: Globe,
     title: "Web development",
     desc: "Clear interfaces that connect people to information.",
-    tags: ["HTML", "CSS", "JavaScript", "WordPress"],
+    tags: ["React", "TypeScript", "HTML", "CSS", "JavaScript", "PHP"],
   },
   {
     Icon: Database,
     title: "Backend & data",
     desc: "The structure behind a reliable application.",
-    tags: ["Supabase", "Firebase", "SQLite"],
+    tags: ["Supabase", "PostgreSQL", "Auth", "Storage"],
   },
   {
     Icon: Sparkles,
     title: "AI integration",
     desc: "Making intelligent tools practical and accessible.",
-    tags: ["Groq AI", "AI-assisted apps", "OCR"],
+    tags: ["Groq AI", "AI-assisted apps", "Edge Functions"],
   },
 ];
 function stored(key, fallback) {
@@ -463,7 +463,7 @@ export default function App() {
               <div
                 className="marquee"
                 aria-label={tr(
-                  "Flutter, Dart, JavaScript, Supabase, Firebase, Groq AI, WordPress, SQLite",
+                  "Flutter, Dart, React, TypeScript, Supabase, Groq AI, PostgreSQL, Kotlin",
                 )}
               >
                 <div className="marquee-track" aria-hidden="true">
@@ -474,10 +474,10 @@ export default function App() {
                         "Dart",
                         "JavaScript",
                         "Supabase",
-                        "Firebase",
+                        "React",
                         "Groq AI",
-                        "WordPress",
-                        "SQLite",
+                        "TypeScript",
+                        "PostgreSQL",
                       ].map((t) => (
                         <span key={t}>
                           <span>✳</span>
@@ -518,12 +518,15 @@ export default function App() {
                   <article className="timeline-entry" data-reveal>
                     <div className="timeline-dot" />
                     <div className="timeline-date">
-                      SEP 2026 — JAN 2027{" "}
+                      3 SEP 2026 — 19 JAN 2027{" "}
                       <span className="in-progress">{tr("In progress")}</span>
                     </div>
                     <h3>{tr("Software Engineering Intern")}</h3>
                     <p className="organization">
                       {tr("UMBI / The Malaysian Cohort (TMC)")}
+                    </p>
+                    <p className="contact-note">
+                      {tr("Internship location: Cheras, Selangor, Malaysia")}
                     </p>
                     <p>
                       {tr(
@@ -562,7 +565,7 @@ export default function App() {
                     </p>
                     <p>
                       {tr(
-                        "Coordinating student teams, organizing responsibilities and helping ideas move from planning to delivery.",
+                        "Leading university teams of 4–6 students, coordinating responsibilities and supporting planning and delivery.",
                       )}
                     </p>
                   </article>
@@ -572,13 +575,17 @@ export default function App() {
                       <GraduationCap size={16} />
                       {tr("EDUCATION")}
                     </div>
-                    <h3>{tr("Software Engineering")}</h3>
+                    <h3>
+                      {tr(
+                        "Bachelor of Software Engineering with Honours (Information System Development)",
+                      )}
+                    </h3>
                     <p className="organization">
                       {tr("Universiti Kebangsaan Malaysia")}
                     </p>
                     <p>
                       {tr(
-                        "Learning by building, questioning and connecting ideas.",
+                        "Expected graduation: August 2027. Learning by building, questioning and connecting ideas.",
                       )}
                     </p>
                   </article>
@@ -644,7 +651,9 @@ export default function App() {
                       </Magnetic>
                     )}
                     <p className="contact-note">
-                      {tr("More ways to connect coming soon.")}
+                      {tr(
+                        "Email, LinkedIn or WhatsApp — choose what works for you.",
+                      )}
                     </p>
                   </div>
                   <div className="contact-art">
@@ -679,7 +688,7 @@ export default function App() {
                   </div>
                   <span>
                     <MapPin size={14} />
-                    {tr("Malaysia · UTC+8")}
+                    {tr("Based in Kajang, Selangor, Malaysia · UTC+8")}
                   </span>
                 </div>
               </div>
