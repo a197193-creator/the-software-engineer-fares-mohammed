@@ -17,6 +17,7 @@ import "./pointer.css";
 import "./project-showcase.css";
 import "./motion.css";
 import "./journey-polish.css";
+import "./welcome-integration.css";
 
 createRoot(document.getElementById("root")).render(
   <LanguageProvider>

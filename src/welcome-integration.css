@@ -1,0 +1,139 @@
+/* ## WELCOME CUTOUT — genuine asset alpha; only the cropped torso fades at bottom. */
+.welcome-experience {
+  background: #090b11;
+}
+.welcome-scene {
+  /* Shared coordinates match the selected transparent artwork, not the old backdrop. */
+  --orb-en-x: 16%;
+  --orb-en-y: 52%;
+  --orb-ar-x: 84.3%;
+  --orb-ar-y: 53%;
+  aspect-ratio: 1765 / 891;
+  z-index: 2;
+}
+.welcome-depth { isolation: isolate; }
+.welcome-image {
+  display: block;
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+  /* Hands and orbs finish above 87%; this only softens the cropped robe edge. */
+  mask-image: linear-gradient(to bottom, #000 0 87%, transparent 100%);
+}
+.welcome-experience .sphere-en { left: var(--orb-en-x); top: var(--orb-en-y); }
+.welcome-experience .sphere-ar { left: var(--orb-ar-x); top: var(--orb-ar-y); }
+.welcome-experience .interactive-sphere { z-index: 2; width: 22%; background: transparent; }
+/* ## ORB LIGHTING — diffuse, independent of the sharp image; no blend-mode removal. */
+.welcome-light {
+  position: absolute;
+  width: 48%;
+  height: 87%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+  opacity: .7;
+  filter: blur(18px);
+  animation: welcome-light-breathe 9s ease-in-out infinite;
+}
+.welcome-light-en {
+  left: var(--orb-en-x);
+  top: var(--orb-en-y);
+  background: radial-gradient(ellipse, #40dfff18 0%, #40dfff09 32%, #40dfff02 56%, transparent 72%);
+}
+.welcome-light-ar {
+  left: var(--orb-ar-x);
+  top: var(--orb-ar-y);
+  background: radial-gradient(ellipse, #f5c66a1c 0%, #f5c66a0a 32%, #f5c66a02 56%, transparent 72%);
+  animation-delay: -3s;
+}
+@keyframes welcome-light-breathe { 50% { opacity: .9; } }
+/* ## QUIET SCENERY — existing landscape and particles only, with restrained contrast. */
+.welcome-experience .landscape-welcome { opacity: .36; background: #090b11; }
+.welcome-experience .landscape-welcome:after {
+  background: linear-gradient(0deg, #090b1166, #090b1133 40%, #090b11 92%);
+}
+.welcome-experience .landscape-far > circle { opacity: .16; }
+.welcome-experience .landscape-horizon { opacity: .45; }
+.welcome-experience .landscape-petals { animation-duration: 10s; }
+.welcome-experience .welcome-ambient { opacity: .5; }
+/* ## LANGUAGE CARDS — preserve the bilingual split and copy, improve optical spacing. */
+.welcome-experience .language-choice {
+  background: linear-gradient(145deg, #121921ed, #0d1019f2);
+  border-color: color-mix(in srgb, var(--language-color) 28%, #26303a);
+  padding: 26px;
+}
+.welcome-experience .language-choice h2 { text-wrap: balance; line-height: 1.13; }
+.welcome-experience .choice-ar h2 { line-height: 1.45; }
+.welcome-experience .language-choice p { color: #d6dce4; }
+.welcome-experience .language-cta { line-height: 1.6; }
+.welcome-experience .choice-ar { text-align: right; }
+/* ## LIVING LANGUAGE ORBS — CSS runs outside React, with no frame-by-frame state. */
+.language-orb {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: var(--sphere-color);
+  opacity: .96;
+  transition: opacity .35s ease, filter .35s ease;
+  filter: drop-shadow(0 0 7px color-mix(in srgb, var(--sphere-color) 18%, transparent));
+}
+.language-orb svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.orb-latitudes, .orb-orbit-ring { transform-origin: 100px 100px; }
+.orb-letter {
+  transform: translate(var(--letter-x), var(--letter-y)) scale(var(--letter-scale));
+  transform-origin: 100px 100px;
+  opacity: var(--letter-opacity);
+}
+.orb-letter text {
+  font-family: "DM Sans", sans-serif;
+  font-size: 28px;
+  font-weight: 500;
+  fill: currentColor;
+}
+.sphere-ar .orb-letter text { font-family: "Noto Sans Arabic", "Noto Naskh Arabic", serif; font-size: 32px; }
+.welcome-experience[data-orb-motion="true"] .language-orb { animation: portal-float 7s ease-in-out infinite; }
+.welcome-experience[data-orb-motion="true"] .sphere-ar .language-orb { animation-duration: 8.5s; animation-delay: -2.4s; }
+.welcome-experience[data-orb-motion="true"] .orb-latitudes { animation: portal-turn 28s linear infinite; }
+.welcome-experience[data-orb-motion="true"] .orb-orbit-ring { animation: portal-turn 36s linear infinite reverse; }
+.welcome-experience[data-orb-motion="true"] .orb-letter { animation: portal-letter 16.8s linear var(--letter-delay) infinite; }
+.welcome-experience[data-orb-motion="true"] .sphere-ar .orb-letter { animation-duration: 18s; }
+.welcome-experience[data-highlight="en"] .sphere-en .language-orb,
+.welcome-experience[data-highlight="ar"] .sphere-ar .language-orb,
+.interactive-sphere:is(:hover, :focus-visible) .language-orb { opacity: 1; filter: drop-shadow(0 0 9px color-mix(in srgb, var(--sphere-color) 30%, transparent)); }
+.welcome-experience[data-highlight="en"] .choice-en,
+.welcome-experience[data-highlight="ar"] .choice-ar {
+  border-color: color-mix(in srgb, var(--language-color) 65%, #26303a);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--language-color) 5%, transparent);
+}
+.welcome-experience[data-highlight="en"] .welcome-light-en,
+.welcome-experience[data-highlight="ar"] .welcome-light-ar { opacity: 1; }
+.welcome-experience .interactive-sphere { transition: transform .35s ease; }
+.welcome-experience[data-highlight="en"] .sphere-ar,
+.welcome-experience[data-highlight="ar"] .sphere-en { opacity: 1; }
+.welcome-experience .sphere-tag { top: 90%; }
+.welcome-experience .language-choices { margin-bottom: 22px; }
+.welcome-experience .welcome-status { padding-bottom: 20px; }
+@keyframes portal-float { 50% { transform: translateY(-3px); } }
+@keyframes portal-turn { to { transform: rotate(360deg); } }
+@keyframes portal-letter {
+  0%, 100% { transform: translate(0, -44px) scale(.76); opacity: .28; filter: blur(.35px); }
+  25% { transform: translate(46px, 0) scale(.9); opacity: .6; filter: blur(.1px); }
+  50% { transform: translate(0, 44px) scale(1.04); opacity: .95; filter: none; }
+  75% { transform: translate(-46px, 0) scale(.9); opacity: .6; filter: blur(.1px); }
+}
+/* Pause the current phase when hidden; motion-off uses the authored resting positions. */
+.welcome-experience[data-page-visible="false"] *,
+.welcome-experience:not(.phase-choose) .language-orb * { animation-play-state: paused !important; }
+@media (max-width: 767px) {
+  .welcome-experience .language-choices { gap: 14px; }
+  .welcome-experience .language-choice { padding: 18px 13px; }
+  .welcome-experience .language-choice h2 { font-size: clamp(27px, 7.4vw, 34px); }
+  .welcome-light { filter: blur(10px); }
+  .welcome-experience .landscape-welcome { opacity: .3; }
+  .welcome-experience .sphere-tag { top: 90%; font-size: 11px; }
+}
+.phase-transition .welcome-light, .phase-leaving .welcome-light { animation-play-state: paused; }
+.motion-off .welcome-light, .motion-off .language-orb, .motion-off .language-orb * { animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .welcome-light, .language-orb, .language-orb * { animation: none !important; }
+}

@@ -112,14 +112,6 @@
   height: 100%;
   object-fit: contain;
 }
-.welcome-image-shade {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(0deg, #080b10 0%, #080b1070 15%, transparent 32%),
-    linear-gradient(180deg, #080b1060, transparent 18%);
-}
 .interactive-sphere {
   position: absolute;
   top: 50.5%;
@@ -779,9 +771,6 @@ html[lang="ar"] .filter-button {
   .welcome-scene {
     top: 93px;
     width: calc(100% - 12px);
-  }
-  .welcome-image-shade {
-    background: linear-gradient(0deg, #080b10, transparent 28%);
   }
   .sphere-tag {
     display: none;

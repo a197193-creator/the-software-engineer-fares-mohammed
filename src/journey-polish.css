@@ -204,8 +204,6 @@
 .intro-sequence { z-index: 1; }
 .welcome-experience { background: #0b080e; }
 .welcome-experience .language-choice { background: linear-gradient(140deg, #221520f0, #100d16f5); }
-.welcome-image { mask-image: radial-gradient(ellipse at center, #000 35%, transparent 75%); }
-.welcome-experience .welcome-image-shade { background: linear-gradient(0deg, #0b080e, transparent 35%); }
 .cinematic-transition {
   background: radial-gradient(ellipse at 50% 44%, #281326, #0b080ee8 72%);
   --choice: #f5c66a;

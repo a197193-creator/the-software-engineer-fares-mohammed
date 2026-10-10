@@ -1,5 +1,13 @@
 # Asset provenance
 
+## Transparent welcome guardian and living language portals — October 10, 2026
+
+The original `welcome-guardian.webp` is opaque and remains unchanged for rollback. No existing transparent pose included this two-palm welcome composition. The built-in ImageGen editor extracted the foreground, then removed both baked holographic orbs from the selected cutout. It retains the guardian's clothing, extended hands and cyan/gold illumination on the palms. No background architecture or static orbs are concealed underneath the procedural portals.
+
+The selected original PNG is saved locally at `avatar-assets/welcome-guardian-orbless.png` (excluded from Git). ImageGen's original remains at `C:\Users\User\.codex\generated_images\01a11c42-0ddb-7b80-91d8-d173d78763d3\exec-988d4ce8-16f4-4535-9476-637556ab3c0b.png`. The site uses `public/assets/welcome-guardian-orbless.webp`: 1765 × 891, 233,712 bytes, genuine RGBA. Format conversion preserves the source alpha byte-for-byte; 951,478 pixels are fully transparent. Empty areas formerly occupied by the orbs have maximum alpha 1/255 (visually transparent), with no residual orb graphics. The extraction is AI-assisted, so it is not a pixel-identical photographic mask.
+
+The edit specification is preserved in `asset-prompts/welcome-guardian-orbless.txt`. `LanguageOrb.jsx` draws the new spheres using SVG: six English glyphs and five Arabic glyphs (ف، ا، ر، س، م); ن was removed at the owner's request. CSS supplies slow rotation, floating and depth-dependent glyph opacity. Both portals and separate diffuse lights use normalized coordinates in the avatar container. Only the cropped robe's bottom edge receives a CSS fade; alpha elsewhere comes from the asset itself. Reduced motion provides arranged static glyphs. A visibility listener pauses Welcome animations when the document is hidden and is removed on unmount. No GIF, new 3D engine or animation-frame loop was added.
+
 ## Avatar poses
 
 Generated with the built-in ImageGen tool from the character reference supplied by the owner.

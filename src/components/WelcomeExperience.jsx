@@ -5,9 +5,10 @@ import { welcomeCopy } from "../locales";
 import CinematicTransition from "./CinematicTransition";
 import LandscapeScene from "./LandscapeScene";
 import { usePointerSurface } from "../hooks/usePointerSurface";
+import LanguageOrb from "./LanguageOrb";
 
 export const welcomeAssets = {
-  image: "/assets/welcome-guardian.webp",
+  image: "/assets/welcome-guardian-orbless.webp",
 };
 function InteractiveSphere({
   language,
@@ -30,10 +31,7 @@ function InteractiveSphere({
       lang={language}
       dir={language === "ar" ? "rtl" : "ltr"}
     >
-      <span className="sphere-breath" aria-hidden="true">
-        <span className="sphere-ring" />
-        <span className="sphere-focus-ring" />
-      </span>
+      <LanguageOrb language={language} />
       <span className="sphere-tag">
         {language === "en" ? "ENGLISH" : "العربية"}
       </span>
@@ -84,6 +82,7 @@ export default function WelcomeExperience({ motion, onReveal, onComplete }) {
   const [phase, setPhase] = useState("choose");
   const [highlight, setHighlight] = useState(null);
   const [selected, setSelected] = useState(null);
+  const [pageVisible, setPageVisible] = useState(() => !document.hidden);
   const root = useRef(null),
     lock = useRef(false),
     finished = useRef(false),
@@ -105,6 +104,11 @@ export default function WelcomeExperience({ motion, onReveal, onComplete }) {
       motion ? 680 : 0,
     );
   }, [motion, setLanguage]);
+  useEffect(() => {
+    const updateVisibility = () => setPageVisible(!document.hidden);
+    document.addEventListener("visibilitychange", updateVisibility);
+    return () => document.removeEventListener("visibilitychange", updateVisibility);
+  }, []);
   useEffect(() => {
     const before = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -153,6 +157,8 @@ export default function WelcomeExperience({ motion, onReveal, onComplete }) {
       className={`welcome-experience phase-${phase}`}
       data-highlight={highlight || "none"}
       data-selected={selected || "none"}
+      data-orb-motion={motion && phase === "choose"}
+      data-page-visible={pageVisible}
       dir="ltr"
       role="dialog"
       aria-modal="true"
@@ -181,15 +187,17 @@ export default function WelcomeExperience({ motion, onReveal, onComplete }) {
       </header>
       <div className="welcome-scene">
         <div className="welcome-depth">
+          {/* The lights and orb controls share the cutout's normalized coordinates. */}
+          <div className="welcome-light welcome-light-en" aria-hidden="true" />
+          <div className="welcome-light welcome-light-ar" aria-hidden="true" />
           <img
             className="welcome-image"
             src={welcomeAssets.image}
-            width="1280"
-            height="647"
+            width="1765"
+            height="891"
             alt=""
             fetchPriority="high"
           />
-          <div className="welcome-image-shade" />
           <InteractiveSphere
             language="en"
             disabled={phase !== "choose"}

@@ -1,0 +1,8 @@
+Tool: built-in ImageGen; transparent_background=true.
+Input: avatar-assets/welcome-guardian-transparent.png, extracted from the owner's welcome-guardian.webp.
+Selected output: exec-988d4ce8-16f4-4535-9476-637556ab3c0b.png.
+
+Use case: object-removal and background-extraction.
+Edit this existing transparent guardian cutout ONLY to remove BOTH floating holographic orbs and all their haze from the empty space above the hands. The cyan ball on the left and golden ball on the right must be completely absent. The removed ball areas must be genuinely transparent alpha zero, without glow, letters, geometry, discs, smoky residuals or dark patches.
+Preserve exactly the SAME masked guardian character identity, sunglasses, face covering, headwrap, black robes, every gold embroidered pattern, composition, frontal pose, extended arms, hands and each finger. KEEP subtle cyan lighting already reflected on the left fingers/palm and subtle warm gold lighting on the right fingers/palm. Do not remove or shorten fingers. Do not restyle, repaint or redesign the character. Retain the same landscape aspect ratio 1764:892, character size, head and hand locations, and cropped torso baseline, without zooming or reframing.
+Empty background and spaces between fingers, arms and torso are completely transparent. Fine antialiased fabric and finger edges, no colored outlines, speckles, grainy alpha or architecture. Transparent PNG, no objects, no text, no new content.
