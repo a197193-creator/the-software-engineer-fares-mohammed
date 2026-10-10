@@ -518,7 +518,7 @@ export default function App() {
                   <article className="timeline-entry" data-reveal>
                     <div className="timeline-dot" />
                     <div className="timeline-date">
-                      3 SEP 2026 — 19 JAN 2027{" "}
+                      <bdi dir="ltr">3 SEP 2026 — 19 JAN 2027</bdi>{" "}
                       <span className="in-progress">{tr("In progress")}</span>
                     </div>
                     <h3>{tr("Software Engineering Intern")}</h3>
