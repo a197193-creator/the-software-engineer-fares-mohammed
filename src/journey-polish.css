@@ -71,7 +71,9 @@
   transform: perspective(1000px) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg));
   transform-origin: center;
   transition: transform var(--motion-interaction, .26s) var(--motion-ease, ease),
-    scale var(--motion-interaction, .26s) ease, border-color .26s ease, box-shadow .26s ease;
+    scale var(--motion-interaction, .26s) var(--motion-ease, ease),
+    translate var(--motion-interaction, .26s) var(--motion-ease, ease),
+    border-color .26s ease, box-shadow .26s ease;
 }
 .motion-card:after {
   content: "";
@@ -133,10 +135,14 @@
   .motion-panel[data-floating="true"] > .motion-card-float {
     animation: shared-card-float var(--motion-cycle, 8s) ease-in-out infinite;
   }
+}
+/* Pointer feedback follows device capability, independently of desktop idle float. */
+@media (hover: hover) and (pointer: fine) {
   .motion-panel:has(.motion-card:is(:hover, :focus-within)) { z-index: 2; }
   .motion-panel:has(.motion-card:is(:hover, :focus-within)) > .motion-card-float { animation-play-state: paused; }
-  .motion-card:is(:hover, :focus-within) {
+  .motion-panel .motion-card:is(:hover, :focus-within) {
     scale: var(--motion-card-scale, 1.01);
+    translate: 0 calc(var(--motion-float, 2px) * -1);
     border-color: #40dfff85;
     box-shadow: 0 12px 30px #0003, 0 0 20px #40dfff0a;
   }
@@ -237,10 +243,20 @@ html[data-theme="light"] .landscape-section { opacity: .85; }
 .motion-off #crimson-world canvas { display: none !important; }
 .motion-off #crimson-world .crimson-fallback { opacity: 1; }
 @media (hover: none), (pointer: coarse) { .motion-card { transform: none; } }
-.motion-off .motion-card { transform: none !important; scale: 1; }
+/* Variable values keep CSS compilation from folding these into transform and
+   accidentally leaving a separate hover scale active in the static fallback. */
+.motion-off .motion-card {
+  transform: none !important;
+  scale: var(--motion-rest-scale, 1) !important;
+  translate: var(--motion-rest-translate, none) !important;
+}
 .motion-off :is(.landscape-far, .landscape-near, .landscape-petals) { transition: none; transform: none !important; opacity: 1 !important; }
 @media (prefers-reduced-motion: reduce) {
-  .motion-card { transform: none !important; scale: 1 !important; }
+  .motion-card {
+    transform: none !important;
+    scale: var(--motion-rest-scale, 1) !important;
+    translate: var(--motion-rest-translate, none) !important;
+  }
   .motion-card-float, .landscape-petals { animation: none !important; }
   .landscape-far, .landscape-near, .landscape-petals { transition: none; transform: none !important; opacity: 1 !important; }
 }

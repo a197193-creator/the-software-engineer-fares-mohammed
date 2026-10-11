@@ -1,5 +1,9 @@
 # Moving text and supplied section artwork — 11 October 2026
 
+Later update: the supplied PNGs now reuse the shared card interactions at the
+user's request. See [shared-card-artwork-motion.md](shared-card-artwork-motion.md)
+for the subsequent hover/float implementation and checks.
+
 ## Changes
 
 - Hero messages change every 3.2 seconds instead of 6. The pause/resume button and its reserved column were removed. Hover and keyboard focus freeze both phrase rotation and the existing writing effect; leaving resumes them. Touch no longer sets an irreversible pause. Typing uses elapsed time (26ms per English grapheme / 85ms per complete Arabic word).

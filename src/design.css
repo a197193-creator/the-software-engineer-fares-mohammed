@@ -803,10 +803,6 @@ button {
     border 0.3s,
     transform 0.3s;
 }
-.skill-card:hover {
-  border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
-  transform: translateY(-4px);
-}
 .skill-top {
   display: flex;
   align-items: center;

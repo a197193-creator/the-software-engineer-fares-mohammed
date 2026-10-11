@@ -91,10 +91,17 @@ html[data-cursor-accent="ar"] { --cursor-accent: #f5c66a; }
   .message-transition .intro-note { font-size: 16px; line-height: 1.8; }
 }
 
-/* ## SECTION ARTWORK — true-alpha supplied stills; no synthetic loop or backdrop. */
+/* ## SECTION ARTWORK — shared card motion over true alpha, without a visible panel. */
 .section-intro { display: block; width: 100%; min-width: 0; grid-column: 1 / -1; margin-bottom: clamp(20px, 3vw, 36px); }
 .section-artwork { width: 100%; aspect-ratio: 4 / 1; }
 .section-artwork img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.section-artwork:after {
+  /* The tracking light is clipped to artwork alpha instead of filling a rectangle. */
+  mask-image: var(--artwork-image);
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+}
+.motion-panel .section-artwork:is(:hover, :focus-within) { box-shadow: none; }
 .section-guide-slot { display: none; }
 #journey-guide .journey-launcher { bottom: var(--guide-footer-offset, 24px); }
 @media (max-width: 1099px) {

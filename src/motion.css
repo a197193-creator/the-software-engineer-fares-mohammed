@@ -114,6 +114,7 @@
 .cinematic[data-motion-level="subtle"]
   :is(
     .project-float,
+    .motion-card-float,
     .avatar-motion-entry,
     .avatar-motion-breath,
     .hero-portrait-breath,
