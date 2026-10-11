@@ -639,6 +639,7 @@
         mobileSlotTop = 0;
       let bubbleHeight = 244;
       let footerTop = Infinity;
+      let readingBandTop = Infinity;
       let guideLayout = "";
       const bubbleSize = new ResizeObserver(([entry]) => {
         bubbleHeight =
@@ -935,6 +936,9 @@
           guide.style.setProperty("--guide-mobile-width", `${Math.max(180, (slotBounds?.width || innerWidth - 40) - 92)}px`);
           contentRight = root.querySelector(".header-inner")?.getBoundingClientRect().right || innerWidth - 24;
           footerTop = root.querySelector("footer.footer")?.getBoundingClientRect().top ?? Infinity;
+          const readingBand = root.querySelector(".marquee")?.getBoundingClientRect();
+          readingBandTop = readingBand && readingBand.bottom > 0 && readingBand.top < innerHeight
+            ? readingBand.top : Infinity;
           guide.style.setProperty("--guide-footer-offset", `${Math.max(24, innerHeight - footerTop + 32)}px`);
           updateAttention();
           targetDirty = false;
@@ -954,8 +958,10 @@
           : mobileSlotLeft + 45;
         // RTL reserves the left rail for the same guardian, with copy on the right.
         const targetX = desktop && state.lang === "ar" ? innerWidth - baseX : baseX;
+        // The full-width technology band needs the same clear space as the footer.
+        const readingBoundary = Math.min(footerTop, readingBandTop);
         const targetY = desktop
-          ? stopBeforeFooter(innerHeight - targetH - 20, targetH, footerTop)
+          ? stopBeforeFooter(innerHeight - targetH - 20, targetH, readingBoundary)
           : mobileSlotTop + 24;
         const mix = animated && desktop ? 1 - Math.exp(-dt * 7) : 1;
         const layout = `${desktop}:${state.lang}`;
@@ -976,7 +982,7 @@
         character.style.width = `${(h * 600) / 850}px`;
         character.style.height = `${h}px`;
         // Apply the hard boundary after easing/drift so rapid scrolling cannot overshoot.
-        const renderY = desktop ? stopBeforeFooter(y + drift, h, footerTop) : y;
+        const renderY = desktop ? stopBeforeFooter(y + drift, h, readingBoundary) : y;
         const bubbleTop = Math.max(95, renderY - bubbleHeight - 20);
         character.style.transform = `translate3d(${x - (h * 600) / 850 / 2}px,${renderY}px,0) rotate(${animated && desktop ? Math.sin(progress * Math.PI * 8) * 1.1 : 0}deg)`;
         bubble.style.top = `${bubbleTop}px`;
