@@ -30,13 +30,14 @@
 }
 .hero-message {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 32px;
-  gap: 7px 12px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 4px;
   align-items: center;
   margin-block: 0 22px;
   padding-inline-start: 13px;
   border-inline-start: 1px solid #efbc6d77;
-  max-width: 415px;
+  width: fit-content;
+  max-width: 100%;
   text-align: start;
 }
 .hero-message-label {
@@ -74,20 +75,6 @@
   transform: translateY(0);
   pointer-events: auto;
   user-select: text;
-}
-.hero-message-toggle {
-  grid-column: 2;
-  grid-row: 1 / span 2;
-  width: 32px;
-  min-height: 44px;
-  display: grid;
-  place-items: center;
-  border: 1px solid #efbc6d44;
-  border-radius: 8px;
-  color: #f0d1a0;
-}
-.hero-message-toggle:hover {
-  background: #efbc6d12;
 }
 .hero-message:focus-visible {
   outline: 1px solid #efbc6d;

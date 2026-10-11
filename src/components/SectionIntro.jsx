@@ -1,5 +1,19 @@
-// Reserve a compact guide slot only; replacement artwork is specified in docs.
-// Keep the slot separate from headings so the guardian cannot cover body text.
+// Supplied decorative illustrations, separate from real project screenshots.
+// The compact guide slot remains independent of the artwork and headings.
 export default function SectionIntro({ section }) {
-  return <div className="section-intro section-guide-slot" data-section={section} aria-hidden="true" />;
+  return (
+    <div className="section-intro" data-section={section} aria-hidden="true">
+      <div className="section-artwork">
+        <img
+          src={`/assets/sections/${section}-intro.png`}
+          width="1920"
+          height="480"
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      <div className="section-guide-slot" />
+    </div>
+  );
 }

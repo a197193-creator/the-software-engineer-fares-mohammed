@@ -852,16 +852,20 @@ button {
 }
 .marquee-track {
   display: flex;
+  direction: ltr;
   width: max-content;
-  animation: marquee 38s linear infinite;
+  animation: marquee 22s linear infinite;
 }
-.marquee:hover .marquee-track {
+.marquee:is(:hover, :focus-visible) .marquee-track {
   animation-play-state: paused;
 }
 .marquee-group {
   display: flex;
+  flex: 0 0 auto;
+  min-width: 100vw;
+  justify-content: space-around;
   gap: 52px;
-  padding-right: 52px;
+  padding-inline-end: 52px;
 }
 .marquee-group > span {
   font-family: var(--display);
@@ -876,4 +880,34 @@ button {
 .marquee-group > span > span {
   color: var(--accent);
   font-size: 18px;
+}
+.marquee:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 3px;
+}
+/* Keep every technology readable when continuous motion is disabled. */
+:is(.motion-off, .cinematic[data-motion-level="subtle"]) .marquee {
+  mask-image: none;
+}
+:is(.motion-off, .cinematic[data-motion-level="subtle"]) .marquee-track {
+  width: 100%;
+  animation: none;
+  transform: none;
+}
+:is(.motion-off, .cinematic[data-motion-level="subtle"]) .marquee-group {
+  min-width: 0;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px 32px;
+  padding: 0;
+}
+:is(.motion-off, .cinematic[data-motion-level="subtle"]) .marquee-group + .marquee-group {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee { mask-image: none; }
+  .marquee-track { width: 100%; transform: none; }
+  .marquee-group { min-width: 0; width: 100%; flex-wrap: wrap; justify-content: center; gap: 16px 32px; padding: 0; }
+  .marquee-group + .marquee-group { display: none; }
 }

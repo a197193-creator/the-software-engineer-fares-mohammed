@@ -843,19 +843,6 @@
           writer.dataset.typing = "false";
         }
       }
-      function finishWriting() {
-        if (writer) {
-          writerCount = writer.units.length;
-          text(writer, writer.full);
-          writer.dataset.typing = "false";
-        }
-      }
-      listen(root, "pointerover", (event) => {
-        if (event.target.closest(".hero-message")) finishWriting();
-      });
-      listen(root, "focusin", (event) => {
-        if (event.target.closest(".hero-message")) finishWriting();
-      });
       const observer = new MutationObserver(sync);
       observer.observe(root, {
         subtree: true,
@@ -1003,9 +990,11 @@
           writerCount < writer.units.length
         ) {
           writerTime += dt;
-          if (writerTime > (state.lang === "ar" ? 0.13 : 0.042)) {
-            writerTime = 0;
-            writerCount++;
+          const cadence = state.lang === "ar" ? 0.085 : 0.026;
+          if (writerTime >= cadence) {
+            const steps = Math.floor(writerTime / cadence);
+            writerTime -= steps * cadence;
+            writerCount = Math.min(writer.units.length, writerCount + steps);
             text(writer, writer.units.slice(0, writerCount).join(""));
             writer.dataset.typing = String(writerCount < writer.units.length);
           }

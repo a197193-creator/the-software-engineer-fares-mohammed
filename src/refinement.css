@@ -91,11 +91,14 @@ html[data-cursor-accent="ar"] { --cursor-accent: #f5c66a; }
   .message-transition .intro-note { font-size: 16px; line-height: 1.8; }
 }
 
-/* ## GUIDE SPACE — no placeholder artwork; desktop has its reserved rail. */
-.section-intro { display: none; }
+/* ## SECTION ARTWORK — true-alpha supplied stills; no synthetic loop or backdrop. */
+.section-intro { display: block; width: 100%; min-width: 0; grid-column: 1 / -1; margin-bottom: clamp(20px, 3vw, 36px); }
+.section-artwork { width: 100%; aspect-ratio: 4 / 1; }
+.section-artwork img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.section-guide-slot { display: none; }
 #journey-guide .journey-launcher { bottom: var(--guide-footer-offset, 24px); }
 @media (max-width: 1099px) {
-  .section-intro { display: block; width: 100%; min-width: 0; grid-column: 1 / -1; height: 180px; margin-bottom: 24px; }
+  .section-guide-slot { display: block; height: 180px; }
 }
 
 /* ## REAL PROJECT MEDIA — dedicated phone, browser and document presentations. */
@@ -148,13 +151,13 @@ html[data-cursor-accent="ar"] { --cursor-accent: #f5c66a; }
   .project-dialog .dialog-content { padding: 28px 22px; }
 }
 /* ## MOTION FALLBACKS — static, readable content regardless of chosen intensity. */
-.motion-off .section-intro, .motion-off .section-intro-art { animation: none !important; transition: none; opacity: .62; transform: none; }
+.motion-off .section-intro { animation: none !important; transition: none; transform: none; }
 .motion-off .energy-cursor, .motion-off .pointer-atmosphere { display: none; }
 .motion-off .message-transition .intro-trace i { animation: none; transform: none; }
 .motion-off .gallery-primary .project-media { animation: none; }
 @media (hover: none), (pointer: coarse) { .energy-cursor, .pointer-atmosphere { display: none; } }
 @media (prefers-reduced-motion: reduce) {
-  .section-intro, .section-intro-art { animation: none !important; transition: none; opacity: .62; transform: none; }
+  .section-intro { animation: none !important; transition: none; transform: none; }
   .energy-cursor, .pointer-atmosphere { display: none; }
   .message-transition .intro-trace i { animation: none; transform: none; }
   .gallery-primary .project-media { animation: none; }

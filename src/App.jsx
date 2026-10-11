@@ -505,6 +505,8 @@ export default function App() {
               </div>
               <div
                 className="marquee"
+                dir="ltr"
+                tabIndex={mainMotion ? 0 : undefined}
                 aria-label={tr(
                   "Flutter, Dart, React, TypeScript, Supabase, Groq AI, PostgreSQL, Kotlin",
                 )}

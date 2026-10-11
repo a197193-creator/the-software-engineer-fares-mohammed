@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { Pause, Play } from "lucide-react";
 import { useLanguage } from "../LanguageContext";
 import { useStoryMotion } from "./StoryTypography";
 import { useAvatarGuide } from "./AvatarGuideContext";
@@ -12,7 +11,6 @@ export default function HeroMessage({ heroVisible }) {
   const [index, setIndex] = useState(0);
   const [visible, setVisible] = useState(false);
   const [pageVisible, setPageVisible] = useState(() => !document.hidden);
-  const [paused, setPaused] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
   useEffect(() => {
@@ -36,7 +34,6 @@ export default function HeroMessage({ heroVisible }) {
     heroVisible &&
     visible &&
     pageVisible &&
-    !paused &&
     !hovered &&
     !focused;
   useEffect(() => {
@@ -44,7 +41,7 @@ export default function HeroMessage({ heroVisible }) {
     const timer = setTimeout(() => {
       if (!document.hidden)
         setIndex((current) => (current + 1) % hero.messages.length);
-    }, 6000);
+    }, 3200);
     return () => clearTimeout(timer);
   }, [running, index, hero.messages]);
   const current = motion ? index : 0;
@@ -60,11 +57,7 @@ export default function HeroMessage({ heroVisible }) {
         if (event.pointerType === "mouse") setHovered(true);
       }}
       onPointerLeave={() => setHovered(false)}
-      onPointerDown={(event) => {
-        if (event.pointerType !== "mouse" && !event.target.closest("button"))
-          setPaused(true);
-      }}
-      onFocusCapture={(event) => setFocused(!event.target.closest("button"))}
+      onFocusCapture={() => setFocused(true)}
       onBlurCapture={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget))
           setFocused(false);
@@ -83,17 +76,6 @@ export default function HeroMessage({ heroVisible }) {
           </span>
         ))}
       </div>
-      {motion && (
-        <button
-          className="hero-message-toggle"
-          type="button"
-          aria-label={paused ? hero.messageResume : hero.messagePause}
-          aria-pressed={paused}
-          onClick={() => setPaused((value) => !value)}
-        >
-          {paused ? <Play size={14} /> : <Pause size={14} />}
-        </button>
-      )}
     </div>
   );
 }

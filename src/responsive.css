@@ -611,7 +611,7 @@
   }
   .marquee-group {
     gap: 30px;
-    padding-right: 30px;
+    padding-inline-end: 30px;
   }
   .marquee-group > span {
     gap: 30px;

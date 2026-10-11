@@ -1,6 +1,6 @@
 # Portfolio section artwork — copy-ready prompts
 
-These are decorative section introductions, not genuine project screenshots. The weak SVG placeholders have been removed. The portfolio's real screenshot galleries and existing guardian remain unchanged.
+These are decorative section introductions, not genuine project screenshots. The weak SVG placeholders have been removed. The portfolio's real screenshot galleries and existing guardian remain unchanged. The supplied artwork has now been integrated as true-alpha stills; see `text-and-artwork-polish.md` for exports and validation.
 
 Use each full prompt independently; the image maker needs no knowledge of the website. **Transparent PNG stills are the recommended first delivery.** Supply the files below and they can be integrated without adding a second character or replacing the live background.
 

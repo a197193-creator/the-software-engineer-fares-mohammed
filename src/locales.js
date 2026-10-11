@@ -290,8 +290,6 @@ export const heroCopy = {
     projects: "Explore My Projects",
     about: "More About Me",
     messageLabel: "My focus",
-    messagePause: "Pause focus messages",
-    messageResume: "Resume focus messages",
     messages: [
       "Building useful software.",
       "Turning ideas into working products.",
@@ -308,8 +306,6 @@ export const heroCopy = {
     projects: "استكشف مشاريعي",
     about: "المزيد عني",
     messageLabel: "ما أعمل عليه",
-    messagePause: "إيقاف تبديل الرسائل",
-    messageResume: "استئناف تبديل الرسائل",
     messages: [
       "أطوّر برمجيات تلبي احتياجات حقيقية.",
       "أحوّل الأفكار إلى منتجات قابلة للاستخدام.",

@@ -118,7 +118,7 @@
     .avatar-motion-breath,
     .hero-portrait-breath,
     .hero-ambient-light,
-    .marquee-group,
+    .marquee-track,
     .scroll-hint
   ) {
   animation: none;
