@@ -82,4 +82,14 @@ Production output: initial JS 496.38 kB / 165.61 kB gzip; CSS 130.02 kB / 25.91 
 3. Real facial/lip animation requires a rigged model or suitable animation assets; the current guardian remains a sharp static-pose guide.
 4. Tab-visibility pausing has explicit listener/timeline cleanup, but the in-app browser did not expose a reliable hidden-tab state for a real inactive-tab test.
 
-Viewport changes during the measured portal intentionally finish with a normal fade rather than replaying stale geometry. LinkedIn/WhatsApp contact destinations were preserved; no messages were sent. Production deployment and smoke-check details are recorded below once verified.
+Viewport changes during the measured portal intentionally finish with a normal fade rather than replaying stale geometry. LinkedIn/WhatsApp contact destinations were preserved; no messages were sent.
+
+## Production verification — 11 October 2026
+
+- Application commit: `5e840c0`, on `codex/premium-journey-refinement` and the existing default branch `codex/portfolio`.
+- Vercel deployment `dpl_FwTanJWFSi86z1MzUnBjjssSXjaL` completed with `READY` status on the existing project.
+- Live URL: https://the-software-engineer-fares-mohamme.vercel.app/#home
+- Published English desktop orb → welcome → Hero, project 1–2–2 geometry, loaded gallery images and modal keyboard flow verified. Published Arabic RTL, Contact dialogue, mobile orb handoff/menu/Home navigation also verified. No captured console errors or broken loaded images; one app bar; released scroll locks.
+- All 27 asset/project destination requests also returned 200 on production.
+- Desktop checkout `C:/Users/User/Desktop/the-software-engineer-fares-mohammed` fast-forwarded to the implementation while preserving the user's untracked evidence/avatar folders. Primary source remains `C:/Users/User/Documents/ChatGPT/protofolio`.
+- Local QA screenshots are in the ignored `.qa/` directory, including `premium-welcome-production.png`, `premium-portal-production.png`, `premium-hero-production.png`, `premium-gallery-production.png`, and `premium-mobile-ar-production.png`.
