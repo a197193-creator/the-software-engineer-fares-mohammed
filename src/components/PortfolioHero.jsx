@@ -15,7 +15,6 @@ import SectionAvatar from "./SectionAvatar";
 import { StoryHeading } from "./StoryTypography";
 import HeroMessage from "./HeroMessage";
 import { useMotionSettings } from "./MotionSettings";
-import LandscapeScene from "./LandscapeScene";
 const external = { target: "_blank", rel: "noopener noreferrer" };
 export default function PortfolioHero({ motion, ready, goTo }) {
   const { language, hero, tr } = useLanguage();
@@ -65,7 +64,6 @@ export default function PortfolioHero({ motion, ready, goTo }) {
       id="home"
       className={`hero hero-phase-one page-width ${visible && ready ? "hero-visible" : ""}`}
     >
-      <LandscapeScene variant="hero" />
       <div className="hero-copy" dir={language === "ar" ? "rtl" : "ltr"}>
         <div className="eyebrow">{hero.eyebrow}</div>
         <StoryHeading

@@ -1,5 +1,7 @@
 # Premium journey refinement
 
+This is the historical first refinement report. The later user-requested message-only entrance, removed chapter cards/section drawings, larger cursor and footer-safe avatar are described in `welcome-footer-polish.md`; that report supersedes those earlier visual choices.
+
 ## Investigation and approach
 
 The application is a React/Vite single page with hash section navigation, LanguageContext, GSAP/ScrollTrigger and Lenis. The procedural Three.js environment is lazy loaded from the index entry. AvatarGuideContext supplies dialogue to the existing single journey guardian. All verified project and profile data stay intact.

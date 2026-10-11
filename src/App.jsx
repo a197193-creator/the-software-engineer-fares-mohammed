@@ -24,7 +24,6 @@ import {
 import { profile, projects } from "./data";
 import SectionAvatar, {
   avatarScenes,
-  ChapterRail,
 } from "./components/SectionAvatar";
 import Projects, { ProjectDialog } from "./components/Projects";
 import Guide from "./components/Guide";
@@ -49,9 +48,9 @@ import { navigateSection } from "./scrollController";
 const external = { target: "_blank", rel: "noopener noreferrer" };
 const navItems = [
   ["home", "Home"],
-  ["projects", "Projects"],
   ["about", "About"],
   ["skills", "Skills"],
+  ["projects", "Projects"],
   ["experience", "Experience"],
   ["contact", "Contact"],
 ];
@@ -140,6 +139,12 @@ export default function App() {
     mainReady,
     language,
   );
+  useEffect(() => {
+    if (!welcomeVisible) return;
+    // Set the destination behind Welcome before its shared background is revealed.
+    const target = navItems.some(([id]) => `#${id}` === location.hash) ? location.hash.slice(1) : "home";
+    navigateSection(target, { smooth: false });
+  }, [welcomeVisible]);
   useEffect(() => {
     if (welcomeVisible || !portfolioReady) return;
     const focusTimer = setTimeout(() => {
@@ -375,7 +380,6 @@ export default function App() {
           >
             <PortfolioHero motion={mainMotion} ready={mainReady} goTo={goTo} />
 
-            <ChapterRail goTo={goTo} active={active} />
 
             <section id="about" className="section page-width about-section">
               <SectionIntro section="about" />

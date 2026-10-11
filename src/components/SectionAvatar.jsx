@@ -1,7 +1,6 @@
 import { useLanguage } from "../LanguageContext";
 import { useEffect, useRef, useState } from "react";
 import AvatarGuide from "./AvatarGuide";
-import MotionCard from "./MotionCard";
 import { avatarScenes } from "../avatarPoseRegistry";
 export { avatarScenes } from "../avatarPoseRegistry";
 
@@ -74,50 +73,5 @@ export default function SectionAvatar({
         </figcaption>
       </AvatarGuide>
     </figure>
-  );
-}
-
-export function ChapterRail({ goTo, active }) {
-  const { tr } = useLanguage();
-  return (
-    <nav
-      className="chapter-rail"
-      aria-label={tr("Explore the portfolio chapters")}
-    >
-      {Object.entries(avatarScenes).map(([id, scene]) => (
-        <MotionCard
-          as="button"
-          className={`chapter-card ${active === id ? "current" : ""}`}
-          key={id}
-          onClick={() => goTo(id)}
-          aria-label={`${tr("Explore")} ${tr(scene.name)}`}
-        >
-          <span className="chapter-label">
-            <b>{scene.number}.</b> {tr(scene.name)}
-          </span>
-          <span className="chapter-picture">
-            <img
-              src={scene.image}
-              alt=""
-              width="180"
-              height="240"
-              loading="lazy"
-              onError={(event) => {
-                if (!event.currentTarget.src.endsWith(scene.fallback))
-                  event.currentTarget.src = scene.fallback;
-              }}
-            />
-            <span className="chapter-quote">
-              <i aria-hidden="true">“</i>
-              {tr(scene.quote)}
-            </span>
-          </span>
-          <span className="chapter-link">
-            {tr("Explore chapter")}
-            <span>↗</span>
-          </span>
-        </MotionCard>
-      ))}
-    </nav>
   );
 }

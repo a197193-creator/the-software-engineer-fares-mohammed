@@ -4,7 +4,7 @@ import { desktopPointerQuery } from "../hooks/usePointerSurface";
 import { useMotionSettings } from "./MotionSettings";
 
 const particleCount = 6;
-const lifetime = 340;
+const lifetime = 520;
 const editable =
   "input,textarea,select,[contenteditable]:not([contenteditable='false'])";
 
@@ -74,7 +74,7 @@ export default function CinematicCursor({ enabled }) {
           return;
         }
         alive = true;
-        grains[i].style.opacity = ((1 - age) * 0.24).toFixed(3);
+        grains[i].style.opacity = ((1 - age) * 0.6).toFixed(3);
         grains[i].style.transform =
           `translate3d(${particle.x + particle.dx * age}px,${particle.y + 5 * age}px,0) scale(${1 - age * 0.45})`;
       });
@@ -113,8 +113,8 @@ export default function CinematicCursor({ enabled }) {
       const now = performance.now();
       if (
         config.particles > 0 &&
-        now - seedTime > 42 &&
-        Math.hypot(targetX - seedX, targetY - seedY) > 10
+        now - seedTime > 32 &&
+        Math.hypot(targetX - seedX, targetY - seedY) > 7
       ) {
         Object.assign(particles[index], {
           born: now,

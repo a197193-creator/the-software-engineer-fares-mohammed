@@ -84,7 +84,11 @@
         inset: 0;
         width: 100%;
         height: 100%;
+        opacity: 0;
+        transition: opacity .65s ease;
       }
+      #crimson-world[data-webgl="true"] canvas { opacity: 1; }
+      .crimson-fallback { transition: opacity .65s ease; }
       .crimson-fallback {
         position: absolute;
         inset: 0;
@@ -586,6 +590,7 @@
     <script type="module">
       import { avatarScenes, loadAvatarPose } from "/src/avatarPoseRegistry.js";
       import { guideCopy, guideSections } from "/src/guideDialogue.js";
+      import { stopBeforeFooter } from "/src/guideBoundary.js";
 
       // ## LIFECYCLE AND EXISTING-APP BRIDGE
       // React keeps owning section selection, visit preferences and speech timing.
@@ -601,6 +606,7 @@
       const reduced = matchMedia("(prefers-reduced-motion: reduce)");
       const state = {
         ready: false,
+        welcome: true,
         blocked: true,
         motion: true,
         section: "home",
@@ -632,6 +638,8 @@
         pointerY = 0,
         mobileSlotTop = 0;
       let bubbleHeight = 244;
+      let footerTop = Infinity;
+      let guideLayout = "";
       const bubbleSize = new ResizeObserver(([entry]) => {
         bubbleHeight =
           entry.borderBoxSize?.[0]?.blockSize ||
@@ -645,7 +653,7 @@
         removals.push(() => node.removeEventListener(event, fn, options));
       }
       const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-      const running = () => state.ready && !state.blocked && !document.hidden;
+      const running = () => (state.welcome || (state.ready && !state.blocked)) && !document.hidden;
       function wake() {
         if (!frame && !disposed) frame = requestAnimationFrame(tick);
       }
@@ -664,6 +672,7 @@
           portfolio?.dataset.ready === "true" &&
           !portfolio.hasAttribute("inert");
         state.blocked = site.dataset.motionBlocked === "true";
+        state.welcome = !!root.querySelector(".welcome-experience");
         state.motion =
           !reduced.matches &&
           !document.documentElement.classList.contains("motion-off");
@@ -685,7 +694,7 @@
             ? "dismissed"
             : "minimized"
           : "expanded";
-        world.dataset.visible = String(state.ready);
+        world.dataset.visible = String(state.ready || state.welcome);
         guide.hidden = !state.ready || state.blocked;
         guide.dataset.mode = state.mode;
         guide.dir = state.lang === "ar" ? "rtl" : "ltr";
@@ -729,7 +738,7 @@
         if (currentPose !== state.section) setPose(state.section);
         syncWriter();
         targetDirty = true;
-        if (state.ready && state.motion && !state.light && !scene && !loading)
+        if ((state.ready || state.welcome) && state.motion && !state.light && !scene && !loading)
           loadWorld();
         wake();
       }
@@ -914,6 +923,13 @@
         }
         const animated = state.motion && state.level !== "subtle";
         if (animated) time += dt;
+        if (state.welcome) {
+          // Selection, message and main page share this same canvas and camera state.
+          progress = clamp(scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight), 0, 1);
+          if (scene && !state.light && state.motion) scene.render(time, animated ? progress : 0, 0, 0, dt, animated);
+          if (animated) wake();
+          return;
+        }
         if (targetDirty) {
           const home = root.querySelector("#home");
           const bounds = home?.getBoundingClientRect();
@@ -924,13 +940,15 @@
             0,
             1,
           );
-          const slot = root.querySelector(`#${state.section} .mobile-guide-slot, #${state.section} .landscape-section`);
+          const slot = root.querySelector(`#${state.section} .mobile-guide-slot, #${state.section} .section-guide-slot`);
           const slotBounds = slot?.getBoundingClientRect();
           mobileSlotTop = slotBounds ? scrollY + slotBounds.top : 0;
           mobileSlotLeft = slotBounds?.left || 20;
           guide.style.setProperty("--guide-mobile-left", `${mobileSlotLeft + 92}px`);
           guide.style.setProperty("--guide-mobile-width", `${Math.max(180, (slotBounds?.width || innerWidth - 40) - 92)}px`);
           contentRight = root.querySelector(".header-inner")?.getBoundingClientRect().right || innerWidth - 24;
+          footerTop = root.querySelector("footer.footer")?.getBoundingClientRect().top ?? Infinity;
+          guide.style.setProperty("--guide-footer-offset", `${Math.max(24, innerHeight - footerTop + 32)}px`);
           updateAttention();
           targetDirty = false;
         }
@@ -950,10 +968,13 @@
         // RTL reserves the left rail for the same guardian, with copy on the right.
         const targetX = desktop && state.lang === "ar" ? innerWidth - baseX : baseX;
         const targetY = desktop
-          ? innerHeight - targetH - 20
+          ? stopBeforeFooter(innerHeight - targetH - 20, targetH, footerTop)
           : mobileSlotTop + 24;
         const mix = animated && desktop ? 1 - Math.exp(-dt * 7) : 1;
-        if (!h) {
+        const layout = `${desktop}:${state.lang}`;
+        // LTR/RTL and fixed/absolute changes must not sweep the image across copy.
+        if (!h || guideLayout !== layout) {
+          guideLayout = layout;
           h = targetH;
           x = targetX;
           y = targetY;
@@ -967,8 +988,12 @@
             : 0;
         character.style.width = `${(h * 600) / 850}px`;
         character.style.height = `${h}px`;
-        character.style.transform = `translate3d(${x - (h * 600) / 850 / 2}px,${y + drift}px,0) rotate(${animated && desktop ? Math.sin(progress * Math.PI * 8) * 1.1 : 0}deg)`;
-        bubble.style.top = `${Math.max(95, y - bubbleHeight - 20)}px`;
+        // Apply the hard boundary after easing/drift so rapid scrolling cannot overshoot.
+        const renderY = desktop ? stopBeforeFooter(y + drift, h, footerTop) : y;
+        const bubbleTop = Math.max(95, renderY - bubbleHeight - 20);
+        character.style.transform = `translate3d(${x - (h * 600) / 850 / 2}px,${renderY}px,0) rotate(${animated && desktop ? Math.sin(progress * Math.PI * 8) * 1.1 : 0}deg)`;
+        bubble.style.top = `${bubbleTop}px`;
+        bubble.style.visibility = desktop && (bubbleTop + bubbleHeight > footerTop - 32 || bubbleTop + bubbleHeight > renderY - 12) ? "hidden" : "";
         guide.style.setProperty("--guide-mobile-top", `${mobileSlotTop + 8}px`);
         if (
           writer &&

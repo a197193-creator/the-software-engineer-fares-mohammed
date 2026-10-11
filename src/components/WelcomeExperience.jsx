@@ -3,7 +3,6 @@ import { ArrowRight, SkipForward } from "lucide-react";
 import { useLanguage } from "../LanguageContext";
 import { welcomeCopy } from "../locales";
 import CinematicTransition from "./CinematicTransition";
-import LandscapeScene from "./LandscapeScene";
 import { usePointerSurface } from "../hooks/usePointerSurface";
 import LanguageOrb from "./LanguageOrb";
 
@@ -82,7 +81,6 @@ export default function WelcomeExperience({ motion, onReveal, onComplete, onAcce
   const [phase, setPhase] = useState("choose");
   const [highlight, setHighlight] = useState(null);
   const [selected, setSelected] = useState(null);
-  const [origin, setOrigin] = useState(null);
   const [pageVisible, setPageVisible] = useState(() => !document.hidden);
   const root = useRef(null),
     lock = useRef(false),
@@ -127,15 +125,9 @@ export default function WelcomeExperience({ motion, onReveal, onComplete, onAcce
     setHighlight(value);
     onAccent(value);
   }
-  function choose(value, source) {
+  function choose(value) {
     if (lock.current) return;
     lock.current = true;
-    const sphere = source?.matches(".interactive-sphere") ? source : root.current.querySelector(`.sphere-${value}`);
-    const bounds = sphere.querySelector(".language-orb svg").getBoundingClientRect();
-    setOrigin({left: bounds.left, top: bounds.top, width: bounds.width, height: bounds.height,
-      glyphs:[...sphere.querySelectorAll(".orb-letter")].map(node => { const style = getComputedStyle(node); return {transform:style.transform,opacity:style.opacity,filter:style.filter}; }),
-      orbit:getComputedStyle(sphere.querySelector(".orb-orbit-ring")).transform,
-    });
     selectedRef.current = value;
     setLanguage(value);
     setSelected(value);
@@ -177,7 +169,6 @@ export default function WelcomeExperience({ motion, onReveal, onComplete, onAcce
       <h1 id="welcome-title" className="sr-only">
         Fares Mohammed — Choose your language / اختر لغتك
       </h1>
-      <LandscapeScene variant="welcome" motion={motion} />
       <header className="welcome-header">
         <div className="welcome-brand">
           <span>F</span>
@@ -245,7 +236,7 @@ export default function WelcomeExperience({ motion, onReveal, onComplete, onAcce
         />
       </div>
       {phase !== "choose" && selected && (
-        <CinematicTransition language={selected} origin={origin} motion={motion} onFinish={finish} />
+        <CinematicTransition language={selected} motion={motion} onFinish={finish} />
       )}
       <div
         className="welcome-status"

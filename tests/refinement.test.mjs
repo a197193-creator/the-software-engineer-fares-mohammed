@@ -1,20 +1,20 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { portalGeometry } from "../src/portalGeometry.js";
+import { stopBeforeFooter } from "../src/guideBoundary.js";
 import { projectMedia, featuredProjectId } from "../src/projectMedia.js";
 import { verifiedProjects } from "../src/projectContent.js";
 import { existsSync } from "node:fs";
 
-test("portal centers on the viewport and covers every corner at all target sizes", () => {
-  for (const [width,height] of [[1920,1080],[1440,900],[1024,768],[768,1024],[390,844]]) {
-    for (const left of [width*.16,width*.84]) {
-      const origin={left,top:110,width:width*.15,height:width*.15};
-      const result=portalGeometry(origin,width,height);
-      assert.equal(origin.left+origin.width/2+result.x,width/2);
-      assert.equal(origin.top+origin.height/2+result.y,height/2);
-      assert.ok(origin.width*.73/2*result.scale > Math.hypot(width,height)/2);
+test("guardian remains above footer even during fast scrolling and drift", () => {
+  for (const viewport of [768,900,1080]) {
+    for (const footerTop of [1300,viewport,500,200,0,-100]) {
+      for (const height of [150,310,460]) {
+        const top = stopBeforeFooter(viewport - height - 20 + 7, height, footerTop);
+        assert.ok(top + height <= footerTop - 32);
+      }
     }
   }
+  assert.equal(stopBeforeFooter(550,310,1500),550);
 });
 test("featured project and all real media remain present", () => {
   assert.equal(verifiedProjects.length,5);
