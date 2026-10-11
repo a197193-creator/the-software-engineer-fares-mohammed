@@ -29,11 +29,9 @@ import SectionAvatar, {
 import Projects, { ProjectDialog } from "./components/Projects";
 import Guide from "./components/Guide";
 import { AvatarGuideProvider } from "./components/AvatarGuideContext";
-import AvatarController from "./components/AvatarController";
 import { Magnetic } from "./components/Effects";
 import WelcomeExperience from "./components/WelcomeExperience";
 import PortfolioHero from "./components/PortfolioHero";
-import SandCursor from "./components/SandCursor";
 import CinematicCursor from "./components/CinematicCursor";
 import {
   StoryHeading,
@@ -45,7 +43,8 @@ import { useMotion, usePageTracking } from "./hooks/useMotion";
 import { useMotionSettings } from "./components/MotionSettings";
 import { motionVariables } from "./motionConfig";
 import MotionCard from "./components/MotionCard";
-import LandscapeScene from "./components/LandscapeScene";
+import SectionIntro from "./components/SectionIntro";
+import { navigateSection } from "./scrollController";
 
 const external = { target: "_blank", rel: "noopener noreferrer" };
 const navItems = [
@@ -89,6 +88,12 @@ function stored(key, fallback) {
     return fallback;
   }
 }
+function focusSection(id) {
+  const heading = document.getElementById(id)?.querySelector("h1, h2");
+  if (!heading) return;
+  heading.tabIndex = -1;
+  heading.focus({ preventScroll: true });
+}
 
 function Heading({ number, label, children }) {
   const { tr } = useLanguage();
@@ -106,6 +111,7 @@ export default function App() {
   const { language, setLanguage, tr } = useLanguage();
   const [welcomeVisible, setWelcomeVisible] = useState(true);
   const [portfolioReady, setPortfolioReady] = useState(false);
+  const [cursorAccent, setCursorAccent] = useState(null);
   const [active, setActive] = useState("home");
   const [navHidden, setNavHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -122,6 +128,11 @@ export default function App() {
   const menuRef = useRef(null);
   const navigationFrame = useRef(0);
   useEffect(() => () => cancelAnimationFrame(navigationFrame.current), []);
+  useEffect(() => {
+    const previous = history.scrollRestoration;
+    history.scrollRestoration = "manual";
+    return () => { history.scrollRestoration = previous; };
+  }, []);
   usePageTracking(setActive, setNavHidden);
   useMotion(
     mainMotion,
@@ -132,10 +143,32 @@ export default function App() {
   useEffect(() => {
     if (welcomeVisible || !portfolioReady) return;
     const focusTimer = setTimeout(() => {
-      document.getElementById("hero-title")?.focus({ preventScroll: true });
+      if (document.activeElement !== document.body && document.activeElement?.isConnected) return;
+      const target = navItems.some(([id]) => `#${id}` === location.hash) ? location.hash.slice(1) : "home";
+      navigateSection(target, { smooth: false });
+      focusSection(target);
     }, 50);
     return () => clearTimeout(focusTimer);
   }, [welcomeVisible, portfolioReady]);
+  useEffect(() => {
+    document.documentElement.dataset.cursorAccent = welcomeVisible ? cursorAccent || "default" : language;
+  }, [cursorAccent, welcomeVisible, language]);
+  useEffect(() => {
+    if (!mainReady) return;
+    const restore = () => {
+      const id = location.hash.slice(1) || "home";
+      if (!navItems.some(([section]) => section === id)) return;
+      setMenuOpen(false);
+      setSelected(null);
+      setActive(id);
+      setNavHidden(false);
+      navigateSection(id, { smooth: false });
+      focusSection(id);
+    };
+    window.addEventListener("popstate", restore);
+    window.addEventListener("hashchange", restore);
+    return () => { window.removeEventListener("popstate", restore); window.removeEventListener("hashchange", restore); };
+  }, [mainReady]);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -193,15 +226,13 @@ export default function App() {
     setNavHidden(false);
     cancelAnimationFrame(navigationFrame.current);
     const navigate = () => {
-      document.getElementById(id)?.scrollIntoView({
-        behavior: mainMotion ? "smooth" : "instant",
-        block: "start",
-      });
+      navigateSection(id, { smooth: mainMotion });
+      focusSection(id);
     };
     // Let the mobile menu release its scroll lock before measuring the target.
     if (menuOpen) navigationFrame.current = requestAnimationFrame(navigate);
     else navigate();
-    history.replaceState(null, "", `#${id}`);
+    if (location.hash !== `#${id}`) history.pushState(null, "", `#${id}`);
   }
   const jump = (id) => (e) => {
     e.preventDefault();
@@ -236,13 +267,14 @@ export default function App() {
           data-motion-blocked={menuOpen || !!selected || !mainReady}
           style={motionVariables(settings.config)}
         >
-          <a className="skip-link" href="#about">
+          <a className="skip-link" href="#about" onClick={jump("about")}>
             {tr("Skip to content")}
           </a>
           <div className="scroll-progress" aria-hidden="true" />
-          <header
+          {!welcomeVisible && <header
             className={`header ${active === "home" ? "on-hero" : ""} ${navHidden && !menuOpen ? "nav-hidden" : ""}`}
           >
+            <div className="header-inner page-width">
             <a
               className="brand"
               href="#home"
@@ -317,7 +349,8 @@ export default function App() {
                 {menuOpen ? <X /> : <Menu />}
               </button>
             </div>
-          </header>
+            </div>
+          </header>}
           {menuOpen && (
             <nav
               ref={menuRef}
@@ -345,7 +378,7 @@ export default function App() {
             <ChapterRail goTo={goTo} active={active} />
 
             <section id="about" className="section page-width about-section">
-              <LandscapeScene />
+              <SectionIntro section="about" />
               <div className="about-art">
                 <span className="outline-word" aria-hidden="true">
                   {tr("CURIOUS.")}
@@ -413,7 +446,7 @@ export default function App() {
 
             <section id="skills" className="section skills-section">
               <div className="page-width">
-                <LandscapeScene />
+                <SectionIntro section="skills" />
                 <div className="section-heading" data-reveal>
                   <div>
                     <Heading number="03" label="MY TOOLKIT">
@@ -502,7 +535,7 @@ export default function App() {
               id="experience"
               className="section page-width experience-section"
             >
-              <LandscapeScene />
+              <SectionIntro section="experience" />
               <div className="section-heading" data-reveal>
                 <div>
                   <Heading number="05" label="THE JOURNEY">
@@ -613,7 +646,7 @@ export default function App() {
 
             <section id="contact" className="section contact-section">
               <div className="page-width">
-                <LandscapeScene />
+                <SectionIntro section="contact" />
                 <div className="eyebrow" data-reveal>
                   <span>06 /</span>
                   {tr("WHAT’S NEXT?")}
@@ -632,6 +665,7 @@ export default function App() {
                         "A project, an opportunity, or just a good conversation.",
                       )}
                       <br />
+                      {" "}
                       {tr("I’d love to hear from you.")}
                     </StoryStatement>
                     {profile.email ? (
@@ -702,16 +736,6 @@ export default function App() {
               </div>
             </section>
           </StoryMain>
-          <AvatarController />
-          <CinematicCursor
-            enabled={
-              mainMotion &&
-              portfolioReady &&
-              !welcomeVisible &&
-              !menuOpen &&
-              !selected
-            }
-          />
           <footer className="footer page-width">
             <span>
               © {new Date().getFullYear()} {tr("Fares Mohammed")}
@@ -723,6 +747,7 @@ export default function App() {
                 setMenuOpen(false);
                 setWelcomeVisible(true);
                 setPortfolioReady(false);
+                setCursorAccent(null);
               }}
             >
               {tr("Replay welcome")}
@@ -738,13 +763,13 @@ export default function App() {
           )}
         </div>
       </div>
-      <SandCursor enabled={mainMotion && welcomeVisible} />
+      <CinematicCursor enabled={mainMotion && !menuOpen && !selected} />
       {welcomeVisible && (
         <WelcomeExperience
           motion={mainMotion}
+          onAccent={setCursorAccent}
           onReveal={() => {
             setPortfolioReady(true);
-            goTo("home");
           }}
           onComplete={() => {
             setWelcomeVisible(false);

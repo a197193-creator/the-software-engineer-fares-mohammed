@@ -15,7 +15,9 @@ import { usePointerSurface } from "../hooks/usePointerSurface";
 import { useAvatarGuide } from "./AvatarGuideContext";
 import ProjectPreview from "./ProjectPreview";
 import { useProjectEntrance } from "../hooks/useProjectEntrance";
-import LandscapeScene from "./LandscapeScene";
+import SectionIntro from "./SectionIntro";
+import { ProjectGallery } from "./ProjectMedia";
+import { featuredProjectId } from "../projectMedia";
 
 const externalProps = { target: "_blank", rel: "noopener noreferrer" };
 const filters = ["All work", "Mobile", "Web", "AI"];
@@ -113,7 +115,7 @@ export default function Projects({ onOpen, motion = true }) {
   const { tr } = useLanguage();
   const [filter, setFilter] = useState("All work");
   const visibleProjects = [...projects]
-    .sort((a, b) => Number(b.id === "diacare") - Number(a.id === "diacare"))
+    .sort((a, b) => Number(b.id === featuredProjectId) - Number(a.id === featuredProjectId))
     .filter(
       (project) =>
         filter === "All work" || filterTypes[filter].includes(project.type),
@@ -124,7 +126,7 @@ export default function Projects({ onOpen, motion = true }) {
       className="section page-width projects-section"
       aria-labelledby="projects-heading"
     >
-      <LandscapeScene />
+      <SectionIntro section="projects" />
       <div className="section-heading projects-heading">
         <div data-reveal>
           <div className="eyebrow">
@@ -180,13 +182,13 @@ export default function Projects({ onOpen, motion = true }) {
           <span>{tr("Select a project to explore")}</span>
         </div>
         <div id="project-grid" className="project-grid">
-          {visibleProjects.map((project, index) => (
+          {visibleProjects.map((project) => (
             <ProjectCard
               key={project.id}
               project={project}
               onOpen={onOpen}
               motion={motion}
-              featured={index === 0}
+              featured={project.id === featuredProjectId}
             />
           ))}
         </div>
@@ -262,13 +264,12 @@ export function ProjectDialog({ project, close }) {
       >
         <X aria-hidden="true" />
       </button>
-      <ProjectPreview project={project} />
-      <div className="dialog-content">
-        <div className="eyebrow">
-          {tr(project.category)}
-          <span> / {tr(project.status)}</span>
-        </div>
+      <div className="dialog-heading">
+        <div className="eyebrow">{tr(project.category)}<span> / {tr(project.status)}</span></div>
         <h2 id={titleId}>{tr(project.name)}</h2>
+      </div>
+      {project.gallery?.length ? <ProjectGallery project={project} /> : <ProjectPreview project={project} />}
+      <div className="dialog-content">
         <p id={descriptionId} className="dialog-intro">
           {tr(project.description)}
         </p>
@@ -328,33 +329,6 @@ export function ProjectDialog({ project, close }) {
         )}
         {project.note && (
           <p className="project-scope-note">{tr(project.note)}</p>
-        )}
-        {project.gallery?.length > 0 && (
-          <section
-            className="case-gallery"
-            aria-label={tr("Real project screenshots")}
-          >
-            <h3>{tr("Real project screenshots")}</h3>
-            <div className="case-gallery-grid">
-              {project.gallery.map((item) => (
-                <figure key={item.src}>
-                  <a
-                    href={item.src}
-                    {...externalProps}
-                    aria-label={`${tr("Open screenshot")} — ${tr(item.caption)}`}
-                  >
-                    <img
-                      src={item.src}
-                      alt={tr(item.caption)}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </a>
-                  <figcaption>{tr(item.caption)}</figcaption>
-                </figure>
-              ))}
-            </div>
-          </section>
         )}
         <div className="case-footer">
           <span>{tr(project.context)}</span>

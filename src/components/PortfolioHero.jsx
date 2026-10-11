@@ -14,24 +14,14 @@ import { Magnetic } from "./Effects";
 import SectionAvatar from "./SectionAvatar";
 import { StoryHeading } from "./StoryTypography";
 import HeroMessage from "./HeroMessage";
-import { useAvatarGuide } from "./AvatarGuideContext";
-import { useAvatarMotion } from "../hooks/useAvatarMotion";
 import { useMotionSettings } from "./MotionSettings";
 import LandscapeScene from "./LandscapeScene";
 const external = { target: "_blank", rel: "noopener noreferrer" };
 export default function PortfolioHero({ motion, ready, goTo }) {
   const { language, hero, tr } = useLanguage();
-  const [failed, setFailed] = useState(false);
   const [visible, setVisible] = useState(false);
   const root = useRef(null);
-  const portrait = useRef(null);
-  const guide = useAvatarGuide();
   const { config } = useMotionSettings();
-  useAvatarMotion(portrait, {
-    section: "home",
-    enabled: motion && guide.available && guide.section === "home",
-    portrait: true,
-  });
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) =>
       setVisible(entry.isIntersecting),
@@ -73,24 +63,9 @@ export default function PortfolioHero({ motion, ready, goTo }) {
     <section
       ref={root}
       id="home"
-      className={`hero hero-phase-one page-width ${visible && ready ? "hero-visible" : ""} ${failed ? "scene-missing" : ""}`}
+      className={`hero hero-phase-one page-width ${visible && ready ? "hero-visible" : ""}`}
     >
       <LandscapeScene variant="hero" />
-      <div className="hero-photo" aria-hidden="true">
-        <div className="hero-portrait-motion" ref={portrait}>
-          <div className="hero-portrait-breath">
-            <img
-              src="/assets/cinematic-hero.webp"
-              alt=""
-              width="1672"
-              height="941"
-              fetchPriority="high"
-              onError={() => setFailed(true)}
-            />
-          </div>
-        </div>
-        <div className="hero-ambient-light" />
-      </div>
       <div className="hero-copy" dir={language === "ar" ? "rtl" : "ltr"}>
         <div className="eyebrow">{hero.eyebrow}</div>
         <StoryHeading
@@ -170,7 +145,7 @@ export default function PortfolioHero({ motion, ready, goTo }) {
       </div>
       <div className="mobile-guide-slot" aria-hidden="true" />
       <div className="hero-art">
-        <SectionAvatar section="home" motion={motion} imageHidden={!failed} />
+        <SectionAvatar section="home" motion={motion} imageHidden />
       </div>
       <div className="hero-bottom">
         <a href="#about" onClick={jump("about")}>

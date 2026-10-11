@@ -124,7 +124,7 @@
   animation: none;
 }
 .cinematic[data-page-active="false"] *:not(.project-dialog),
-.cinematic[data-motion-blocked="true"] *:not(.project-dialog) {
+.cinematic[data-motion-blocked="true"] main * {
   animation-play-state: paused !important;
 }
 .cinematic[data-motion-level="subtle"] .avatar-motion-spring {

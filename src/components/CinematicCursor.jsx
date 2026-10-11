@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { desktopPointerQuery } from "../hooks/usePointerSurface";
 import { useMotionSettings } from "./MotionSettings";
@@ -12,11 +12,6 @@ export default function CinematicCursor({ enabled }) {
   const { config } = useMotionSettings();
   const overlay = useRef(null);
   const atmosphere = useRef(null);
-  const heroField = useRef(null);
-  const [heroHost, setHeroHost] = useState(null);
-  useEffect(() => {
-    setHeroHost(document.querySelector(".hero-photo"));
-  }, []);
 
   useEffect(() => {
     if (!enabled || !overlay.current || !atmosphere.current) return;
@@ -32,9 +27,7 @@ export default function CinematicCursor({ enabled }) {
     let frame = 0,
       last = 0,
       index = 0,
-      visible = false,
-      dirty = true;
-    let bounds = null;
+      visible = false;
     let x = 0,
       y = 0,
       targetX = 0,
@@ -53,7 +46,6 @@ export default function CinematicCursor({ enabled }) {
       root.removeAttribute("data-hover");
       root.removeAttribute("data-pressed");
       glow.removeAttribute("data-visible");
-      heroField.current?.removeAttribute("data-visible");
       particles.forEach((particle, i) => {
         particle.born = 0;
         grains[i].style.opacity = "0";
@@ -70,17 +62,8 @@ export default function CinematicCursor({ enabled }) {
       const blend = 1 - Math.exp(-dt / 48);
       x += (targetX - x) * blend;
       y += (targetY - y) * blend;
-      if (dirty && heroHost) {
-        bounds = heroHost.getBoundingClientRect();
-        dirty = false;
-      }
       ring.style.transform = `translate3d(${x.toFixed(2)}px,${y.toFixed(2)}px,0)`;
       glow.style.transform = `translate3d(${x.toFixed(2)}px,${y.toFixed(2)}px,0)`;
-      if (heroField.current && bounds) {
-        const inHero = y >= bounds.top && y <= bounds.bottom;
-        heroField.current.toggleAttribute("data-visible", inHero);
-        heroField.current.style.transform = `translate3d(${(x - bounds.left).toFixed(2)}px,${(y - bounds.top).toFixed(2)}px,0)`;
-      }
       let alive = false;
       particles.forEach((particle, i) => {
         if (!particle.born) return;
@@ -121,17 +104,12 @@ export default function CinematicCursor({ enabled }) {
         y = targetY;
         seedX = x;
         seedY = y;
-        dirty = true;
         visible = true;
         root.setAttribute("data-visible", "");
         glow.setAttribute("data-visible", "");
       }
       const interactive = target.closest("a,button,[role='button']");
-      root.dataset.hover = interactive
-        ? interactive.matches(".primary")
-          ? "gold"
-          : "cyan"
-        : "none";
+      root.dataset.hover = interactive ? "interactive" : "none";
       const now = performance.now();
       if (
         config.particles > 0 &&
@@ -151,10 +129,6 @@ export default function CinematicCursor({ enabled }) {
       }
       wake();
     };
-    const geometry = () => {
-      dirty = true;
-      if (visible) wake();
-    };
     const down = () => {
       if (visible) root.setAttribute("data-pressed", "");
     };
@@ -168,29 +142,24 @@ export default function CinematicCursor({ enabled }) {
       [window, "blur", hide],
       [window, "keydown", hide],
       [document, "visibilitychange", hide],
-      [window, "scroll", geometry],
-      [window, "resize", geometry],
+      [window, "resize", hide],
     ];
     events.forEach(([target, event, handler]) =>
       target.addEventListener(event, handler, { passive: true }),
     );
     fine.addEventListener("change", hide);
     reduced.addEventListener("change", hide);
-    // Bilingual copy/fonts may resize the Hero without a window resize.
-    const heroResize = new ResizeObserver(geometry);
-    if (heroHost) heroResize.observe(heroHost);
     return () => {
       events.forEach(([target, event, handler]) =>
         target.removeEventListener(event, handler),
       );
       fine.removeEventListener("change", hide);
       reduced.removeEventListener("change", hide);
-      heroResize.disconnect();
       hide();
     };
-  }, [enabled, heroHost, config]);
+  }, [enabled, config]);
 
-  return (
+  return createPortal(
     <>
       <div ref={atmosphere} className="pointer-atmosphere" aria-hidden="true" />
       <div ref={overlay} className="energy-cursor" aria-hidden="true">
@@ -201,15 +170,7 @@ export default function CinematicCursor({ enabled }) {
           <i key={i} className="energy-grain" />
         ))}
       </div>
-      {heroHost &&
-        createPortal(
-          <div
-            ref={heroField}
-            className="pointer-hero-field"
-            aria-hidden="true"
-          />,
-          heroHost,
-        )}
     </>
+    , document.body
   );
 }

@@ -774,9 +774,6 @@
     padding: 21px;
     max-height: calc(100svh - 150px);
   }
-  .cursor-follower {
-    display: none;
-  }
   .dialog-content {
     padding: 27px 23px;
   }
@@ -860,9 +857,6 @@
   scroll-behavior: auto !important;
   transition-duration: 0.01ms !important;
 }
-.motion-off .cursor-follower {
-  display: none;
-}
 .motion-off .project-card,
 .motion-off .magnetic {
   transform: none !important;
@@ -874,8 +868,5 @@
     animation: none !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
-  }
-  .cursor-follower {
-    display: none;
   }
 }

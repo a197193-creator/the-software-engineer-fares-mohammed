@@ -421,26 +421,6 @@
         clip-path: inset(50%);
         white-space: nowrap;
       }
-      @media (min-width: 1100px) {
-        .crimson-active .site main > section:not(#home),
-        .crimson-active .site .chapter-rail,
-        .crimson-active .site > footer,
-        .crimson-active .site .avatar-guide-tools {
-          width: calc(100% - 370px);
-          max-width: 1250px;
-          margin-left: 5.4%;
-          margin-right: auto;
-        }
-        .crimson-active .site main > section:not(#home) > .page-width {
-          width: 100%;
-        }
-        .crimson-active .cinematic .project-workspace .project-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-        .crimson-active .project-panel:last-child:not([data-featured="true"]) {
-          grid-column: 1/-1;
-        }
-      }
       @media (max-width: 1099px) {
         .crimson-active .site {
           padding-bottom: 190px;
@@ -786,6 +766,24 @@
           guide.querySelector('[data-action="minimize"]').click();
         }
       });
+      // ## AVATAR ATTENTION — mirror existing flat poses toward real content.
+      let contentRight = innerWidth - 24;
+      let mobileSlotLeft = 20;
+      let facing = "right";
+      function updateAttention() {
+        const section = root.querySelector(`#${state.section}`);
+        const content = section?.querySelector(".hero-copy, .about-copy, .section-heading");
+        const textBounds = content?.getBoundingClientRect();
+        const guideBounds = bubble.getBoundingClientRect();
+        const avatarCenter = innerWidth >= 1100 ? (state.lang === "ar" ? innerWidth - (contentRight - 140) : contentRight - 140) : mobileSlotLeft + 45;
+        const target = innerWidth < 1100 ? guideBounds.left + guideBounds.width / 2 : textBounds ? textBounds.left + textBounds.width / 2 : guideBounds.left + guideBounds.width / 2;
+        const next = target < avatarCenter ? "left" : "right";
+        if (next !== facing) {
+          facing = next;
+          setPose(state.section);
+        }
+        character.dataset.facing = facing;
+      }
       async function setPose(section) {
         currentPose = section;
         const version = ++poseVersion;
@@ -793,6 +791,7 @@
         if (disposed || version !== poseVersion || !src) return;
         pictureIndex = 1 - pictureIndex;
         pictures[pictureIndex].src = src;
+        pictures[pictureIndex].style.transform = facing === "left" ? "scaleX(-1)" : "scaleX(1)";
         pictures.forEach((image, index) => {
           image.dataset.active = String(index === pictureIndex);
           image.style.transitionDuration = state.motion ? ".48s" : "0s";
@@ -926,7 +925,13 @@
             1,
           );
           const slot = root.querySelector(`#${state.section} .mobile-guide-slot, #${state.section} .landscape-section`);
-          mobileSlotTop = slot ? scrollY + slot.getBoundingClientRect().top : 0;
+          const slotBounds = slot?.getBoundingClientRect();
+          mobileSlotTop = slotBounds ? scrollY + slotBounds.top : 0;
+          mobileSlotLeft = slotBounds?.left || 20;
+          guide.style.setProperty("--guide-mobile-left", `${mobileSlotLeft + 92}px`);
+          guide.style.setProperty("--guide-mobile-width", `${Math.max(180, (slotBounds?.width || innerWidth - 40) - 92)}px`);
+          contentRight = root.querySelector(".header-inner")?.getBoundingClientRect().right || innerWidth - 24;
+          updateAttention();
           targetDirty = false;
         }
         const desktop = innerWidth >= 1100;
@@ -940,8 +945,8 @@
             Math.min(310, availableHeight) * homeBlend
           : 135;
         const baseX = desktop
-          ? innerWidth * 0.77 * (1 - homeBlend) + (innerWidth - 158) * homeBlend
-          : 65;
+          ? innerWidth * 0.77 * (1 - homeBlend) + (contentRight - 140) * homeBlend
+          : mobileSlotLeft + 45;
         // RTL reserves the left rail for the same guardian, with copy on the right.
         const targetX = desktop && state.lang === "ar" ? innerWidth - baseX : baseX;
         const targetY = desktop

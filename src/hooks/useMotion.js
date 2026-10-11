@@ -4,6 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 import "lenis/dist/lenis.css";
 import { useMotionSettings } from "../components/MotionSettings";
+import { registerScrollController } from "../scrollController";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,16 +25,20 @@ export function useMotion(enabled, blocked, ready, layoutKey) {
       "(min-width: 768px) and (hover: hover) and (pointer: fine)",
     );
     let lenis;
+    let release;
     const tick = (time) => lenis?.raf(time * 1000);
     const stop = () => {
       gsap.ticker.remove(tick);
+      release?.();
+      release = undefined;
       lenis?.destroy();
       lenis = undefined;
     };
     const sync = () => {
       stop();
       if (!media.matches) return;
-      lenis = new Lenis({ duration: 1.1, anchors: true, smoothWheel: true });
+      lenis = new Lenis({ duration: 1.1, anchors: false, smoothWheel: true });
+      release = registerScrollController(lenis);
       lenis.on("scroll", ScrollTrigger.update);
       gsap.ticker.add(tick);
     };

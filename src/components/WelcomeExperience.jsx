@@ -22,7 +22,7 @@ function InteractiveSphere({
       className={`interactive-sphere sphere-${language} ${selected ? "selected" : ""}`}
       type="button"
       disabled={disabled}
-      onClick={() => onChoose(language)}
+      onClick={(event) => onChoose(language, event.currentTarget)}
       onPointerEnter={() => onHighlight(language)}
       onPointerLeave={() => onHighlight(null)}
       onFocus={() => onHighlight(language)}
@@ -77,25 +77,24 @@ function LanguageChoice({ language, disabled, onChoose, onHighlight, motion }) {
     </section>
   );
 }
-export default function WelcomeExperience({ motion, onReveal, onComplete }) {
+export default function WelcomeExperience({ motion, onReveal, onComplete, onAccent }) {
   const { language, setLanguage, welcome } = useLanguage();
   const [phase, setPhase] = useState("choose");
   const [highlight, setHighlight] = useState(null);
   const [selected, setSelected] = useState(null);
+  const [origin, setOrigin] = useState(null);
   const [pageVisible, setPageVisible] = useState(() => !document.hidden);
   const root = useRef(null),
     lock = useRef(false),
     finished = useRef(false),
     callbacks = useRef({ onReveal, onComplete }),
     selectedRef = useRef(language),
-    timer = useRef(null),
     exitTimer = useRef(null);
   callbacks.current = { onReveal, onComplete };
   const finish = useCallback(() => {
     if (finished.current) return;
     finished.current = true;
     lock.current = true;
-    clearTimeout(timer.current);
     setLanguage(selectedRef.current);
     setPhase("leaving");
     callbacks.current.onReveal();
@@ -115,25 +114,34 @@ export default function WelcomeExperience({ motion, onReveal, onComplete }) {
     root.current?.focus({ preventScroll: true });
     return () => {
       document.body.style.overflow = before;
-      clearTimeout(timer.current);
       clearTimeout(exitTimer.current);
     };
   }, []);
   useEffect(() => {
-    if (phase !== "transition") return;
-    // CSS completion and this bounded timer share the same guarded exit.
-    timer.current = setTimeout(finish, motion ? 4200 : 2200);
-    return () => clearTimeout(timer.current);
-  }, [motion, phase, finish]);
-  function choose(value) {
+    // Back/forward cancels the portal without leaving a scroll lock or overlay.
+    window.addEventListener("popstate", finish);
+    return () => window.removeEventListener("popstate", finish);
+  }, [finish]);
+  function highlightLanguage(value) {
+    if (lock.current) return;
+    setHighlight(value);
+    onAccent(value);
+  }
+  function choose(value, source) {
     if (lock.current) return;
     lock.current = true;
+    const sphere = source?.matches(".interactive-sphere") ? source : root.current.querySelector(`.sphere-${value}`);
+    const bounds = sphere.querySelector(".language-orb svg").getBoundingClientRect();
+    setOrigin({left: bounds.left, top: bounds.top, width: bounds.width, height: bounds.height,
+      glyphs:[...sphere.querySelectorAll(".orb-letter")].map(node => { const style = getComputedStyle(node); return {transform:style.transform,opacity:style.opacity,filter:style.filter}; }),
+      orbit:getComputedStyle(sphere.querySelector(".orb-orbit-ring")).transform,
+    });
     selectedRef.current = value;
     setLanguage(value);
     setSelected(value);
     setHighlight(value);
+    onAccent(value);
     setPhase("transition");
-    root.current.scrollTop = 0;
     root.current.querySelector(".intro-skip")?.focus({ preventScroll: true });
   }
   function keyDown(event) {
@@ -203,14 +211,14 @@ export default function WelcomeExperience({ motion, onReveal, onComplete }) {
             disabled={phase !== "choose"}
             selected={selected === "en"}
             onChoose={choose}
-            onHighlight={setHighlight}
+            onHighlight={highlightLanguage}
           />
           <InteractiveSphere
             language="ar"
             disabled={phase !== "choose"}
             selected={selected === "ar"}
             onChoose={choose}
-            onHighlight={setHighlight}
+            onHighlight={highlightLanguage}
           />
         </div>
       </div>
@@ -226,18 +234,18 @@ export default function WelcomeExperience({ motion, onReveal, onComplete }) {
           language="en"
           disabled={phase !== "choose"}
           onChoose={choose}
-          onHighlight={setHighlight}
+          onHighlight={highlightLanguage}
         />
         <LanguageChoice
           motion={motion}
           language="ar"
           disabled={phase !== "choose"}
           onChoose={choose}
-          onHighlight={setHighlight}
+          onHighlight={highlightLanguage}
         />
       </div>
       {phase !== "choose" && selected && (
-        <CinematicTransition language={selected} onFinish={finish} />
+        <CinematicTransition language={selected} origin={origin} motion={motion} onFinish={finish} />
       )}
       <div
         className="welcome-status"

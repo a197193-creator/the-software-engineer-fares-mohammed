@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   BookOpen,
   CalendarDays,
@@ -7,6 +6,7 @@ import {
   Smartphone,
 } from "lucide-react";
 import { useLanguage } from "../LanguageContext";
+import ProjectMedia from "./ProjectMedia";
 
 const icons = {
   mobile: Smartphone,
@@ -18,21 +18,11 @@ const icons = {
 // These are editorial project maps, not invented application screenshots.
 export default function ProjectPreview({ project }) {
   const { tr } = useLanguage();
-  const [failed, setFailed] = useState(false);
   const Icon = icons[project.type] || Code2;
   return (
     <div className={`project-visual project-preview ${project.type}`}>
-      {project.screenshot && !failed ? (
-        <img
-          className="project-preview-image"
-          src={project.screenshot}
-          alt={`${tr(project.name)} — ${tr("Application preview")}`}
-          loading="lazy"
-          decoding="async"
-          width="960"
-          height="640"
-          onError={() => setFailed(true)}
-        />
+      {project.screenshot ? (
+        <ProjectMedia src={project.screenshot} alt={`${tr(project.name)} — ${tr("Application preview")}`} />
       ) : (
         <>
           <div className="preview-grid" aria-hidden="true" />

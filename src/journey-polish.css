@@ -224,15 +224,6 @@ html[lang="ar"] .cinematic .desktop-nav { margin-inline-end: auto; margin-inline
 html[lang="ar"] .cinematic .header { direction: rtl; }
 .brand-mark { font-family: "Cormorant Garamond", Georgia, serif !important; }
 html[lang="ar"] .cinematic :is(.about-copy, .section-heading, .contact-copy, .timeline-entry, .skill-card) { text-align: right; }
-@media (min-width: 1100px) {
-  .crimson-active .cinematic .hero-bottom { width: calc(100% - 300px); }
-  html[lang="ar"] .crimson-active .site main > section:not(#home),
-  html[lang="ar"] .crimson-active .site .chapter-rail,
-  html[lang="ar"] .crimson-active .site > footer,
-  html[lang="ar"] .crimson-active .site .avatar-guide-tools { margin-right: 5.4%; margin-left: auto; }
-  #journey-guide[dir="rtl"] .journey-bubble { left: 24px; right: auto; border-radius: 16px 16px 16px 4px; }
-  #journey-guide[dir="rtl"] .journey-launcher { left: 22px; right: auto; }
-}
 /* Mobile retains a compact avatar on the left and text beside it, in both languages. */
 @media (max-width: 767px) {
   .landscape-scene { margin-bottom: 28px; }

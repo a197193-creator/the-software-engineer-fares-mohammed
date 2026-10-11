@@ -18,6 +18,7 @@ import "./project-showcase.css";
 import "./motion.css";
 import "./journey-polish.css";
 import "./welcome-integration.css";
+import "./refinement.css";
 
 createRoot(document.getElementById("root")).render(
   <LanguageProvider>
