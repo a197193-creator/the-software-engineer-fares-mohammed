@@ -2,8 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import {
   ArrowUpRight,
   ArrowUp,
-  Sun,
-  Moon,
   Menu,
   X,
   Smartphone,
@@ -115,7 +113,6 @@ export default function App() {
   const [navHidden, setNavHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [selected, setSelected] = useState(null);
-  const [theme, setTheme] = useState(() => stored("fares-theme", "dark"));
   const [motion, setMotion] = useState(
     () => stored("fares-motion", "on") !== "off",
   );
@@ -175,17 +172,6 @@ export default function App() {
     return () => { window.removeEventListener("popstate", restore); window.removeEventListener("hashchange", restore); };
   }, [mainReady]);
 
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    document
-      .querySelector('meta[name="theme-color"]')
-      ?.setAttribute("content", theme === "dark" ? "#05090b" : "#f3f1ed");
-    try {
-      localStorage.setItem("fares-theme", theme);
-    } catch {
-      /* Storage is optional. */
-    }
-  }, [theme]);
   useEffect(() => {
     document.documentElement.classList.toggle("motion-off", !mainMotion);
     try {
@@ -330,17 +316,6 @@ export default function App() {
                 <Download size={17} aria-hidden="true" />
                 <span>{tr("Download CV")}</span>
               </a>
-              <button
-                className="icon-button theme-toggle"
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                aria-label={tr(
-                  theme === "dark"
-                    ? "Switch to light theme"
-                    : "Switch to dark theme",
-                )}
-              >
-                {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-              </button>
               <a
                 className="header-connect"
                 aria-label={tr("Contact me")}
