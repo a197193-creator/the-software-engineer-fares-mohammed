@@ -101,8 +101,7 @@ function useStoryEntrance(root, text, delay, heading) {
         scrollTrigger: {
           trigger: element,
           start: "top 88%",
-          once: true,
-          toggleActions: "play none none none",
+          toggleActions: "play none none reverse",
         },
         onStart: () => element.classList.add("story-running"),
         onComplete: () => element.classList.remove("story-running"),
@@ -120,7 +119,7 @@ function useStoryEntrance(root, text, delay, heading) {
           y: 0,
           opacity: 1,
           scale: 1,
-          duration: config.reveal,
+          duration: heading && config.level !== "subtle" ? config.reveal + .15 : config.reveal,
           ease: config.ease,
           stagger: heading
             ? { amount: Math.min(0.36, targets.length * config.stagger) }

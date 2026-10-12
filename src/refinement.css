@@ -19,6 +19,10 @@ html[data-cursor-accent="ar"] { --cursor-accent: #f5c66a; }
 .cinematic .header.nav-hidden:focus-within { transform: none; }
 .header-inner { display: flex; align-items: center; gap: clamp(14px, 2vw, 28px); height: 100%; }
 .cinematic .header-inner .header-actions { margin-inline-start: auto; }
+.cinematic .header-cv { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; white-space: nowrap; }
+.cinematic .header-cv span { display: none; }
+@media (min-width: 1700px) { .cinematic .header-cv { width: auto; padding-inline: 12px; } .cinematic .header-cv span { display: inline; font-size: 13px; } }
+.cinematic .header-cv:hover { color: var(--cursor-accent); }
 .cinematic .desktop-nav { margin: 0; }
 .welcome-header { left: 0; right: 0; }
 .welcome-experience .welcome-scene { position: relative; top: auto; left: auto; transform: none; margin: 82px auto 0; flex-shrink: 0; overflow: clip; }
@@ -104,6 +108,9 @@ html[data-cursor-accent="ar"] { --cursor-accent: #f5c66a; }
 .motion-panel .section-artwork:is(:hover, :focus-within) { box-shadow: none; }
 .section-guide-slot { display: none; }
 #journey-guide .journey-launcher { bottom: var(--guide-footer-offset, 24px); }
+#journey-guide .journey-character { width: 600px; height: 850px; transform-origin: 0 0; transition: opacity .18s ease; }
+#journey-guide .journey-character[data-occluded="true"] { visibility: hidden; opacity: 0; }
+#crimson-world[data-static="true"] .crimson-fallback { opacity: 1 !important; transition: none; }
 @media (max-width: 1099px) {
   .section-guide-slot { display: block; height: 180px; }
 }
@@ -164,6 +171,7 @@ html[data-cursor-accent="ar"] { --cursor-accent: #f5c66a; }
 .motion-off .gallery-primary .project-media { animation: none; }
 @media (hover: none), (pointer: coarse) { .energy-cursor, .pointer-atmosphere { display: none; } }
 @media (prefers-reduced-motion: reduce) {
+  #journey-guide .journey-character { transition: none; }
   .section-intro { animation: none !important; transition: none; transform: none; }
   .energy-cursor, .pointer-atmosphere { display: none; }
   .message-transition .intro-trace i { animation: none; transform: none; }

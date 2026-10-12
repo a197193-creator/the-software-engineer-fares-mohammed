@@ -1,0 +1,42 @@
+/* ## SCROLL SCENES — genuine supplied alpha artwork, four independent motion layers. */
+.section-intro { --scene-accent: #40dfff; }
+.section-intro[data-section="about"],
+.section-intro[data-section="experience"] { --scene-accent: #f5c66a; }
+.section-intro .section-artwork { overflow: visible; }
+.section-intro[data-depth-motion="true"] .section-artwork { perspective: 1200px; }
+.section-scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  isolation: isolate;
+  transform-origin: 50% 62%;
+}
+.section-intro[data-story-active="true"] .section-scene { will-change: transform, opacity; }
+/* Keep the existing pointer light registered to the moving illustration alpha,
+   rather than leaving a stationary glow mask behind on the outer card. */
+.section-intro .section-artwork:after { content: none; }
+.section-scene:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(260px circle at var(--pointer-x, 50%) var(--pointer-y, 50%), color-mix(in srgb, var(--scene-accent) 5%, transparent), transparent 72%);
+  mask-image: var(--artwork-image);
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  opacity: var(--pointer-active, 0);
+  transition: opacity var(--motion-interaction, .26s) ease;
+}
+.motion-off .section-scene,
+.cinematic[data-motion-level="subtle"] .section-scene {
+  transform: none !important;
+  opacity: 1 !important;
+}
+@media (hover: none), (pointer: coarse), (max-width: 1099px) {
+  .section-scene { transform: none !important; opacity: 1 !important; }
+  .section-scene:after { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .section-scene { transform: none !important; opacity: 1 !important; }
+  .section-scene:after { display: none; }
+}

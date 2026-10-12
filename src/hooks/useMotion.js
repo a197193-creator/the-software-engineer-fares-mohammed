@@ -12,11 +12,28 @@ export function useMotion(enabled, blocked, ready, layoutKey) {
   const { config, pageActive } = useMotionSettings();
   useEffect(() => {
     let active = true;
+    let layoutFrame = 0;
+    const refreshLayout = () => {
+      if (layoutFrame) return;
+      layoutFrame = requestAnimationFrame(() => {
+        layoutFrame = 0;
+        if (!active) return;
+        ScrollTrigger.refresh();
+        window.dispatchEvent(new Event("portfolio-layout"));
+      });
+    };
+    // Filters, native disclosures and language reflow change later chapter
+    // positions. Observe document flow, never animated transform bounds.
+    const observer = new ResizeObserver(refreshLayout);
+    const main = document.querySelector("main");
+    if (main) observer.observe(main);
     document.fonts.ready.then(() => {
-      if (active) ScrollTrigger.refresh();
+      if (active) refreshLayout();
     });
     return () => {
       active = false;
+      observer.disconnect();
+      cancelAnimationFrame(layoutFrame);
     };
   }, [layoutKey]);
   useEffect(() => {
@@ -78,6 +95,16 @@ export function useMotion(enabled, blocked, ready, layoutKey) {
           },
         },
       );
+      // Chapter accents follow approach progress; headings keep their own word layer.
+      gsap.utils.toArray(".section-heading").forEach((heading) => {
+        gsap.fromTo(heading, { "--chapter-progress": 0 }, {
+          "--chapter-progress": 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: heading, start: "top 92%", end: "top 48%", scrub: .6,
+          },
+        });
+      });
     });
     return () => context.revert();
   }, [enabled, ready, config]);

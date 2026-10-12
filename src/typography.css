@@ -28,6 +28,20 @@
 .cinematic .story-statement {
   text-wrap: pretty;
 }
+.cinematic .section-heading { position: relative; }
+.cinematic .section-heading::after {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  bottom: -22px;
+  width: min(140px, 25%);
+  height: 2px;
+  background: linear-gradient(90deg, #40dfff99, #f5c66a99, transparent);
+  transform: scaleX(var(--chapter-progress, 1));
+  transform-origin: left;
+  pointer-events: none;
+}
+html[lang="ar"] .cinematic .section-heading::after { transform-origin: right; }
 .hero-message {
   display: grid;
   grid-template-columns: minmax(0, 1fr);

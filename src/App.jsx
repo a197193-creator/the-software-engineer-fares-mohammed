@@ -18,7 +18,6 @@ import {
   Check,
   Network,
   MessageCircle,
-  GraduationCap,
   Code2,
 } from "lucide-react";
 import { profile, projects } from "./data";
@@ -44,6 +43,7 @@ import { motionVariables } from "./motionConfig";
 import MotionCard from "./components/MotionCard";
 import SectionIntro from "./components/SectionIntro";
 import { navigateSection } from "./scrollController";
+import EducationSnapshot from "./components/EducationSnapshot";
 
 const external = { target: "_blank", rel: "noopener noreferrer" };
 const navItems = [
@@ -320,6 +320,16 @@ export default function App() {
               >
                 {language === "en" ? "العربية" : "English"}
               </button>
+              <a
+                className="header-cv icon-button"
+                href={profile.cv}
+                download
+                aria-label={tr("Download CV")}
+                title={tr("Download CV")}
+              >
+                <Download size={17} aria-hidden="true" />
+                <span>{tr("Download CV")}</span>
+              </a>
               <button
                 className="icon-button theme-toggle"
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -615,26 +625,7 @@ export default function App() {
                       )}
                     </p>
                   </MotionCard>
-                  <MotionCard as="article" className="timeline-entry">
-                    <div className="timeline-dot" />
-                    <div className="timeline-date">
-                      <GraduationCap size={16} />
-                      {tr("EDUCATION")}
-                    </div>
-                    <h3>
-                      {tr(
-                        "Bachelor of Software Engineering with Honours (Information System Development)",
-                      )}
-                    </h3>
-                    <p className="organization">
-                      {tr("Universiti Kebangsaan Malaysia")}
-                    </p>
-                    <p>
-                      {tr(
-                        "Expected graduation: August 2027. Learning by building, questioning and connecting ideas.",
-                      )}
-                    </p>
-                  </MotionCard>
+                  <EducationSnapshot />
                 </div>
                 <div className="experience-art">
                   <span className="outline-word" aria-hidden="true">

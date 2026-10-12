@@ -1,0 +1,61 @@
+/* ## SCROLL SHOWCASE — the outer GSAP panel owns entry; float/tilt stay inside. */
+.cinematic .project-workspace {
+  border-color: color-mix(in srgb, var(--pointer-cyan, #40dfff) 29%, var(--line));
+  box-shadow: inset 0 1px 0 #ffffff05, 0 28px 70px #00000020;
+}
+.cinematic .project-workspace::before {
+  content: "";
+  position: absolute;
+  inset: -1px 13% auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #40dfff70 38%, #f5c66a50 72%, transparent);
+  pointer-events: none;
+}
+.cinematic .project-workspace .workspace-architecture {
+  background:
+    radial-gradient(ellipse at 8% 4%, #40dfff0c, transparent 42%),
+    radial-gradient(ellipse at 95% 72%, #f5c66a06, transparent 38%),
+    linear-gradient(#40dfff06 1px, transparent 1px),
+    linear-gradient(90deg, #40dfff06 1px, transparent 1px);
+  background-size: auto, auto, 64px 64px, 64px 64px;
+  mask-image: linear-gradient(180deg, #000, #000b 72%, transparent);
+}
+.cinematic .project-workspace .workspace-heading {
+  padding-block-end: 22px;
+  margin-block-end: 24px;
+  border-block-end: 1px solid var(--line);
+}
+.project-panel[data-project-revealing="true"] {
+  will-change: transform, opacity;
+}
+.cinematic .project-workspace .project-card {
+  border-color: color-mix(in srgb, var(--pointer-cyan, #40dfff) 12%, var(--line));
+}
+.cinematic .project-workspace .project-info {
+  background: linear-gradient(150deg, #40dfff03, transparent 48%);
+}
+.cinematic .project-workspace .project-panel[data-featured="true"] .project-meta {
+  padding-block-end: 12px;
+  border-block-end: 1px solid var(--line);
+}
+html[data-theme="light"] .cinematic .project-workspace {
+  box-shadow: inset 0 1px 0 #ffffff50, 0 18px 40px #12233308;
+}
+@media (max-width: 767px) {
+  .cinematic .project-workspace .workspace-heading {
+    padding-block-end: 16px;
+    margin-block-end: 19px;
+  }
+}
+.motion-off .project-panel {
+  opacity: 1 !important;
+  transform: none !important;
+  will-change: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  .project-panel {
+    opacity: 1 !important;
+    transform: none !important;
+    will-change: auto;
+  }
+}

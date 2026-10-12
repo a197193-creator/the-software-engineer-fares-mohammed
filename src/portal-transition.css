@@ -1,0 +1,46 @@
+/* ## CONTINUOUS PORTAL — transparent SVG travels over the same live environment. */
+.portal-transition {
+  --sphere-color: #40dfff;
+  --choice: var(--sphere-color);
+  isolation: isolate;
+  background: transparent;
+  animation: none;
+}
+.portal-transition[lang="ar"] { --sphere-color: #f5c66a; }
+.portal-transition[lang="ar"] .orb-letter text { font-family: "Noto Sans Arabic", "Noto Naskh Arabic", serif; font-size: 32px; }
+.portal-flight {
+  position: fixed;
+  margin: 0;
+  transform-origin: 50% 50%;
+  pointer-events: none;
+  will-change: transform, opacity;
+  z-index: 0;
+  opacity: 0;
+}
+.portal-visual, .portal-halo { position: absolute; inset: 0; }
+.portal-visual { transform-origin: 50% 50%; }
+.portal-halo {
+  opacity: 0;
+  background: radial-gradient(circle, transparent 27%, color-mix(in srgb, var(--sphere-color) 10%, transparent) 49%, transparent 74%);
+}
+.portal-atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 47%, color-mix(in srgb, var(--sphere-color) 12%, transparent), color-mix(in srgb, var(--sphere-color) 3%, transparent) 40%, transparent 72%);
+}
+.portal-transition .intro-message { z-index: 1; }
+.portal-transition .intro-message > * { opacity: 0; }
+.portal-transition .language-orb, .portal-transition .language-orb * { animation: none !important; transition: none !important; }
+.welcome-experience:not(.phase-choose) .language-orb { animation-play-state: paused !important; }
+/* The captured orb replaces its source in the same pre-paint layout pass. */
+.welcome-experience.phase-transition .interactive-sphere.selected .language-orb { visibility: hidden; }
+/* Cancellation retains the message fade but never restores the gateway behind it. */
+.welcome-experience.phase-leaving :is(.welcome-scene, .language-choices, .welcome-brand, .welcome-ambient, .welcome-status) { visibility: hidden; }
+.welcome-experience.phase-leaving .portal-flight { visibility: hidden; }
+.welcome-experience.phase-leaving .intro-message > * { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .portal-flight, .portal-atmosphere { display: none; }
+}

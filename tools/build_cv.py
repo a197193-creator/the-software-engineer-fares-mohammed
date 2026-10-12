@@ -67,7 +67,7 @@ story = [
     p('Software Engineering Student &amp; Developer', 'title'),
     p('Based in Kajang, Selangor, Malaysia  |  +60 18-298 9506', 'small'),
     p(link('mailto:sw.e.is.fares.mo@gmail.com', 'sw.e.is.fares.mo@gmail.com') + '  |  ' + link('https://www.linkedin.com/in/fares-elnagar-7ab187411/', 'LinkedIn') + '  |  ' + link('https://github.com/a197193-creator', 'GitHub'), 'small'),
-    p(link('https://the-software-engineer-fares-mohammed.vercel.app/', 'View my portfolio and project evidence'), 'small'),
+    p(link('https://the-software-engineer-fares-mohamme.vercel.app/', 'View my portfolio and project evidence'), 'small'),
     section('Profile'),
     p('Software Engineering student at UKM, currently completing an internship with The Malaysian Cohort at UMBI. I build mobile and web applications with Flutter, React, Supabase and useful AI integrations, taking projects from requirements through implementation, testing and documentation.'),
     section('Internship'),
@@ -80,7 +80,7 @@ story = [
     section('Education'),
     p('Universiti Kebangsaan Malaysia (UKM)', 'item'),
     p('Bachelor of Software Engineering with Honours<br/>(Information System Development)'),
-    p('Expected graduation: August 2027', 'small'),
+    p('Expected graduation: August 2027  |  CGPA: 3.33 / 4.00', 'small'),
     section('Technical skills'),
     p('<b>Mobile:</b> Flutter, Dart, Kotlin, Android Studio<br/><b>Web:</b> React, TypeScript, JavaScript, HTML, CSS, PHP<br/><b>Data &amp; AI:</b> Supabase, PostgreSQL, Auth, Storage, Edge Functions, Groq AI<br/><b>Engineering:</b> Java, OOP, requirements analysis, system design, software testing, debugging and technical documentation'),
     section('Leadership & languages'),
@@ -103,7 +103,7 @@ project('DIACARE', 'Individual final-year project, UKM  |  May - Jul 2026\n<br/>
     'Combined glucose and meal records, Malaysian food context, activity guidance, medication reminders, education and date-range PDF reports.',
     'Integrated native Android reminders with Kotlin and educational AI chat, nutrition estimates and report summaries through backend functions.',
     'Completed academic application. AI responses provide educational support.',
-], 'https://the-software-engineer-fares-mohammed.vercel.app/#projects', 'Screenshots and project details')
+], 'https://the-software-engineer-fares-mohamme.vercel.app/#projects', 'Screenshots and project details')
 project('TMC Research & Publications', 'Internship project  |  Sep - Oct 2026\n<br/>React, TypeScript, Vite, Tailwind CSS', [
     'Developed a responsive website for browsing TMC studies, subprojects and publications, including search, filtering and original-source links.',
     'Organized institutional content in local TypeScript data. Frontend prototype delivered; review and WordPress migration pending.',

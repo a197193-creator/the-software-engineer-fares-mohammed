@@ -9,6 +9,47 @@ import LanguageOrb from "./LanguageOrb";
 export const welcomeAssets = {
   image: "/assets/welcome-guardian-orbless.webp",
 };
+
+// Capture the real SVG before changing phase pauses its CSS orbit animations.
+// This is a visual snapshot of our own DOM, not another orb renderer/controller.
+function captureOrb(welcome, language) {
+  const source = welcome?.querySelector(`.sphere-${language} .language-orb`);
+  if (!source) return null;
+  const bounds = source.getBoundingClientRect();
+  const clone = source.cloneNode(true);
+  const originals = [source, ...source.querySelectorAll("*")];
+  const copies = [clone, ...clone.querySelectorAll("*")];
+  originals.forEach((element, index) => {
+    const style = getComputedStyle(element);
+    const copy = copies[index];
+    copy.style.animation = "none";
+    copy.style.transition = "none";
+    copy.style.transform = index === 0 ? "none" : style.transform;
+    copy.style.transformOrigin = style.transformOrigin;
+    copy.style.opacity = style.opacity;
+    copy.style.filter = style.filter;
+    copy.style.color = style.color;
+  });
+  // Keep SVG paint references independent of the fading source DOM.
+  const ids = new Map();
+  clone.querySelectorAll("[id]").forEach((element) => {
+    const id = element.id;
+    ids.set(id, `portal-${id}`);
+    element.id = ids.get(id);
+  });
+  clone.querySelectorAll("[fill], [stroke]").forEach((element) => {
+    for (const attribute of ["fill", "stroke"]) {
+      const value = element.getAttribute(attribute);
+      if (!value?.startsWith("url(#")) continue;
+      const id = value.slice(5, -1);
+      if (ids.has(id)) element.setAttribute(attribute, `url(#${ids.get(id)})`);
+    }
+  });
+  return {
+    bounds: { left: bounds.left, top: bounds.top, width: bounds.width, height: bounds.height },
+    node: clone,
+  };
+}
 function InteractiveSphere({
   language,
   disabled,
@@ -83,6 +124,7 @@ export default function WelcomeExperience({ motion, onReveal, onComplete, onAcce
   const [selected, setSelected] = useState(null);
   const [pageVisible, setPageVisible] = useState(() => !document.hidden);
   const root = useRef(null),
+    portal = useRef(null),
     lock = useRef(false),
     finished = useRef(false),
     callbacks = useRef({ onReveal, onComplete }),
@@ -128,6 +170,7 @@ export default function WelcomeExperience({ motion, onReveal, onComplete, onAcce
   function choose(value) {
     if (lock.current) return;
     lock.current = true;
+    portal.current = captureOrb(root.current, value);
     selectedRef.current = value;
     setLanguage(value);
     setSelected(value);
@@ -157,7 +200,7 @@ export default function WelcomeExperience({ motion, onReveal, onComplete, onAcce
       className={`welcome-experience phase-${phase}`}
       data-highlight={highlight || "none"}
       data-selected={selected || "none"}
-      data-orb-motion={motion && phase === "choose"}
+      data-orb-motion={motion}
       data-page-visible={pageVisible}
       dir="ltr"
       role="dialog"
@@ -236,7 +279,13 @@ export default function WelcomeExperience({ motion, onReveal, onComplete, onAcce
         />
       </div>
       {phase !== "choose" && selected && (
-        <CinematicTransition language={selected} motion={motion} onFinish={finish} />
+        <CinematicTransition
+          language={selected}
+          motion={motion}
+          origin={portal.current}
+          active={phase === "transition"}
+          onFinish={finish}
+        />
       )}
       <div
         className="welcome-status"

@@ -11,7 +11,7 @@
     <meta name="author" content="Fares Mohammed" />
     <link
       rel="canonical"
-      href="https://the-software-engineer-fares-mohammed.vercel.app/"
+      href="https://the-software-engineer-fares-mohamme.vercel.app/"
     />
     <meta
       property="og:title"
@@ -26,11 +26,11 @@
     <meta property="og:locale" content="en_MY" />
     <meta
       property="og:url"
-      content="https://the-software-engineer-fares-mohammed.vercel.app/"
+      content="https://the-software-engineer-fares-mohamme.vercel.app/"
     />
     <meta
       property="og:image"
-      content="https://the-software-engineer-fares-mohammed.vercel.app/og.png"
+      content="https://the-software-engineer-fares-mohamme.vercel.app/og.png"
     />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1734" />
@@ -50,7 +50,7 @@
     />
     <meta
       name="twitter:image"
-      content="https://the-software-engineer-fares-mohammed.vercel.app/og.png"
+      content="https://the-software-engineer-fares-mohamme.vercel.app/og.png"
     />
     <meta
       name="twitter:image:alt"
@@ -590,7 +590,8 @@
     <script type="module">
       import { avatarScenes, loadAvatarPose } from "/src/avatarPoseRegistry.js";
       import { guideCopy, guideSections } from "/src/guideDialogue.js";
-      import { stopBeforeFooter } from "/src/guideBoundary.js";
+      import { placeGuide } from "/src/guideBoundary.js";
+      import { canRenderWorld } from "/src/worldCapability.js";
 
       // ## LIFECYCLE AND EXISTING-APP BRIDGE
       // React keeps owning section selection, visit preferences and speech timing.
@@ -641,6 +642,8 @@
       let footerTop = Infinity;
       let readingBandTop = Infinity;
       let guideLayout = "";
+      let layoutKey = "";
+      let headerSafeTop = 96;
       const bubbleSize = new ResizeObserver(([entry]) => {
         bubbleHeight =
           entry.borderBoxSize?.[0]?.blockSize ||
@@ -655,6 +658,11 @@
       }
       const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
       const running = () => (state.welcome || (state.ready && !state.blocked)) && !document.hidden;
+      const worldAllowed = () => canRenderWorld({
+        motion: state.motion, level: state.level, light: state.light,
+        saveData: navigator.connection?.saveData,
+        memory: navigator.deviceMemory, cores: navigator.hardwareConcurrency,
+      });
       function wake() {
         if (!frame && !disposed) frame = requestAnimationFrame(tick);
       }
@@ -738,8 +746,13 @@
         );
         if (currentPose !== state.section) setPose(state.section);
         syncWriter();
-        targetDirty = true;
-        if ((state.ready || state.welcome) && state.motion && !state.light && !scene && !loading)
+        const nextLayout = [state.section, state.lang, state.mode, state.ready, state.welcome, state.blocked, state.level].join(":");
+        if (layoutKey !== nextLayout) { layoutKey = nextLayout; targetDirty = true; }
+        world.dataset.static = String(!worldAllowed());
+        if (!worldAllowed() && scene) {
+          scene.dispose(); scene = null; world.dataset.webgl = "false";
+        }
+        if ((state.ready || state.welcome) && worldAllowed() && !scene && !loading)
           loadWorld();
         wake();
       }
@@ -866,6 +879,7 @@
         attributeFilter: ["class", "lang", "data-theme"],
       });
       listen(reduced, "change", sync);
+      listen(window, "portfolio-layout", () => { targetDirty = true; wake(); });
       listen(document, "visibilitychange", () => {
         last = 0;
         wake();
@@ -915,7 +929,7 @@
           // Selection, message and main page share this same canvas and camera state.
           progress = clamp(scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight), 0, 1);
           if (scene && !state.light && state.motion) scene.render(time, animated ? progress : 0, 0, 0, dt, animated);
-          if (animated) wake();
+          if (animated && scene) wake();
           return;
         }
         if (targetDirty) {
@@ -935,11 +949,13 @@
           guide.style.setProperty("--guide-mobile-left", `${mobileSlotLeft + 92}px`);
           guide.style.setProperty("--guide-mobile-width", `${Math.max(180, (slotBounds?.width || innerWidth - 40) - 92)}px`);
           contentRight = root.querySelector(".header-inner")?.getBoundingClientRect().right || innerWidth - 24;
+          headerSafeTop = (root.querySelector(".header")?.getBoundingClientRect().height || 72) + 24;
           footerTop = root.querySelector("footer.footer")?.getBoundingClientRect().top ?? Infinity;
           const readingBand = root.querySelector(".marquee")?.getBoundingClientRect();
           readingBandTop = readingBand && readingBand.bottom > 0 && readingBand.top < innerHeight
             ? readingBand.top : Infinity;
           guide.style.setProperty("--guide-footer-offset", `${Math.max(24, innerHeight - footerTop + 32)}px`);
+          guide.style.setProperty("--guide-mobile-top", `${mobileSlotTop + 8}px`);
           updateAttention();
           targetDirty = false;
         }
@@ -949,7 +965,7 @@
           150,
           innerHeight - (state.mode === "expanded" ? bubbleHeight : 0) - 140,
         );
-        const targetH = desktop
+        const desiredH = desktop
           ? Math.min(460, availableHeight) * (1 - homeBlend) +
             Math.min(310, availableHeight) * homeBlend
           : 135;
@@ -960,8 +976,10 @@
         const targetX = desktop && state.lang === "ar" ? innerWidth - baseX : baseX;
         // The full-width technology band needs the same clear space as the footer.
         const readingBoundary = Math.min(footerTop, readingBandTop);
+        const placement = placeGuide(innerHeight - desiredH - 20, desiredH, readingBoundary, headerSafeTop);
+        const targetH = desktop ? placement.height : desiredH;
         const targetY = desktop
-          ? stopBeforeFooter(innerHeight - targetH - 20, targetH, readingBoundary)
+          ? placement.top
           : mobileSlotTop + 24;
         const mix = animated && desktop ? 1 - Math.exp(-dt * 7) : 1;
         const layout = `${desktop}:${state.lang}`;
@@ -979,15 +997,16 @@
           animated && desktop
             ? Math.sin(time * 0.65) * 2 + Math.sin(progress * Math.PI * 6) * 5
             : 0;
-        character.style.width = `${(h * 600) / 850}px`;
-        character.style.height = `${h}px`;
         // Apply the hard boundary after easing/drift so rapid scrolling cannot overshoot.
-        const renderY = desktop ? stopBeforeFooter(y + drift, h, readingBoundary) : y;
+        const presentation = desktop ? placeGuide(y + drift, h, readingBoundary, headerSafeTop) : { top: y, height: h, visible: true };
+        const renderY = presentation.top;
+        const renderH = presentation.height;
         const bubbleTop = Math.max(95, renderY - bubbleHeight - 20);
-        character.style.transform = `translate3d(${x - (h * 600) / 850 / 2}px,${renderY}px,0) rotate(${animated && desktop ? Math.sin(progress * Math.PI * 8) * 1.1 : 0}deg)`;
-        bubble.style.top = `${bubbleTop}px`;
-        bubble.style.visibility = desktop && (bubbleTop + bubbleHeight > footerTop - 32 || bubbleTop + bubbleHeight > renderY - 12) ? "hidden" : "";
-        guide.style.setProperty("--guide-mobile-top", `${mobileSlotTop + 8}px`);
+        character.dataset.occluded = String(!presentation.visible);
+        character.style.transform = `translate3d(${x - (renderH * 600) / 850 / 2}px,${renderY}px,0) rotate(${animated && desktop ? Math.sin(progress * Math.PI * 8) * 1.1 : 0}deg) scale(${renderH / 850})`;
+        bubble.style.top = desktop ? "0px" : "";
+        bubble.style.transform = desktop ? `translate3d(0,${bubbleTop}px,0)` : "";
+        bubble.style.visibility = desktop && (!presentation.visible || bubbleTop + bubbleHeight > footerTop - 32 || bubbleTop + bubbleHeight > renderY - 12) ? "hidden" : "";
         if (
           writer &&
           animated &&
@@ -1020,14 +1039,17 @@
             Math.abs(targetY - y) +
             Math.abs(targetH - h) >
           0.2;
-        if (animated || moving) wake();
+        const typing = heroVisible && writer && writerCount < writer.units.length &&
+          root.querySelector(".hero-message")?.dataset.running === "true";
+        const idleGuide = desktop && !guide.hidden && state.mode !== "dismissed";
+        if (moving || (animated && (scene || idleGuide || typing))) wake();
       }
       // ## THREE.JS — lazy-loaded only after Welcome; procedural digital garden.
       async function loadWorld() {
         loading = true;
         try {
           const THREE = await import("three");
-          if (disposed) return;
+          if (disposed || !worldAllowed()) return;
           scene = createWorld(THREE);
           world.dataset.webgl = "true";
           scene.resize();
@@ -1064,6 +1086,12 @@
         const rim = new T.DirectionalLight(0xffa191, 3.2);
         rim.position.set(8, 9, 4);
         stage.add(rim);
+        // Existing light gently changes character as chapters unfold; no extra lights.
+        const chapterRim = {
+          home: new T.Color(0xffa191), about: new T.Color(0xeab784),
+          skills: new T.Color(0x91c7dd), projects: new T.Color(0x7bb6ce),
+          experience: new T.Color(0xf4bb87), contact: new T.Color(0xd5b9a2),
+        };
         const garden = new T.Group();
         stage.add(garden);
         const dark = new T.MeshStandardMaterial({
@@ -1315,16 +1343,18 @@
         let cameraZ = 21,
           renderTime = 0,
           lost = false;
-        listen(canvas, "webglcontextlost", (event) => {
+        const contextLost = (event) => {
           event.preventDefault();
           lost = true;
           world.dataset.webgl = "false";
-        });
-        listen(canvas, "webglcontextrestored", () => {
+        };
+        const contextRestored = () => {
           lost = false;
           world.dataset.webgl = "true";
           wake();
-        });
+        };
+        canvas.addEventListener("webglcontextlost", contextLost);
+        canvas.addEventListener("webglcontextrestored", contextRestored);
         function resize() {
           moon.position.x = innerWidth < 768 ? 2 : 8;
           renderer.setPixelRatio(
@@ -1345,13 +1375,15 @@
                 : 1 / 30;
           if (animated && renderTime < cap) return;
           renderTime = 0;
-          cameraZ += (21 - p * 5 - cameraZ) * Math.min(1, dt * 5);
+          const depth = innerWidth < 768 ? 3.5 : state.level === "cinematic" ? 7 : 6;
+          cameraZ += (21 - p * depth - cameraZ) * Math.min(1, dt * 5);
           camera.position.set(
             Math.sin(p * Math.PI * 1.5) * 1.7 + px * 0.22,
             4.2 + p * 0.7 - py * 0.12,
             cameraZ,
           );
           camera.lookAt(0, 2.5, -7);
+          rim.color.lerp(chapterRim[state.section] || chapterRim.home, Math.min(1, dt * 1.5));
           rainMaterial.uniforms.uTime.value = t;
           leafSeeds.forEach((s, i) => {
             dummy.position.set(
@@ -1372,6 +1404,8 @@
           renderer.render(stage, camera);
         }
         function dispose() {
+          canvas.removeEventListener("webglcontextlost", contextLost);
+          canvas.removeEventListener("webglcontextrestored", contextRestored);
           const geometries = new Set(),
             materials = new Set();
           stage.traverse((o) => {
