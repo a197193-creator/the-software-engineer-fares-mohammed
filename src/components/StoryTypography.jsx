@@ -112,7 +112,7 @@ function useStoryEntrance(root, text, delay, heading) {
           yPercent: heading ? config.wordRise : 0,
           y: heading ? 0 : config.revealDistance * 0.5,
           opacity: 0,
-          scale: (index, node) => (node.dataset.storyHighlight ? 0.97 : 1),
+          scale: (index, node) => (node.dataset.storyHighlight ? (config.level === "cinematic" ? .94 : .97) : 1),
         },
         {
           yPercent: 0,

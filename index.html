@@ -1121,7 +1121,7 @@
           new T.PlaneGeometry(90, 90),
           new T.MeshStandardMaterial({
             color: 0x0d1420,
-            roughness: 0.46,
+            roughness: 0.28,
             metalness: 0.48,
           }),
         );
@@ -1232,6 +1232,33 @@
         moon.position.set(8, 9, -23);
         moon.scale.set(10, 10, 1);
         stage.add(moon);
+        // ## ATMOSPHERIC DEPTH — one small shared texture, no post-processing passes.
+        const lightCanvas = document.createElement("canvas");
+        lightCanvas.width = lightCanvas.height = 128;
+        const lightContext = lightCanvas.getContext("2d");
+        const lightGradient = lightContext.createRadialGradient(64, 64, 0, 64, 64, 64);
+        lightGradient.addColorStop(0, "rgba(255,255,255,.65)");
+        lightGradient.addColorStop(.35, "rgba(255,255,255,.2)");
+        lightGradient.addColorStop(1, "rgba(255,255,255,0)");
+        lightContext.fillStyle = lightGradient;
+        lightContext.fillRect(0, 0, 128, 128);
+        const atmosphereTexture = new T.CanvasTexture(lightCanvas);
+        atmosphereTexture.colorSpace = T.SRGBColorSpace;
+        const halo = new T.Sprite(new T.SpriteMaterial({ map: atmosphereTexture, color: 0x82dcea, transparent: true, opacity: .16, depthWrite: false, fog: false }));
+        halo.position.set(8, 9, -23.4);
+        halo.scale.set(17, 17, 1);
+        stage.add(halo);
+        const groundLight = new T.Mesh(new T.PlaneGeometry(15, 30), new T.MeshBasicMaterial({ map: atmosphereTexture, color: 0x82dcea, transparent: true, opacity: .1, depthWrite: false }));
+        groundLight.rotation.x = -Math.PI / 2;
+        groundLight.position.set(2, -1.775, -8);
+        garden.add(groundLight);
+        const mists = Array.from({ length: 3 }, (_, i) => {
+          const mist = new T.Sprite(new T.SpriteMaterial({ map: atmosphereTexture, color: 0x8fcede, transparent: true, opacity: .085 - i * .015, depthWrite: false }));
+          mist.scale.set(38 + i * 8, 4 + i * 2, 1);
+          mist.position.set(i % 2 ? -3 : 3, -.5 + i * .35, -3 - i * 9);
+          stage.add(mist);
+          return mist;
+        });
         // ## CHERRY BLOSSOMS — branches + shared instanced petals at the edges.
         const petalShape = new T.Shape();
         petalShape.moveTo(0, -0.1);
@@ -1394,6 +1421,16 @@
           brass.color.lerp(lighting.detail, colorBlend);
           panel.color.lerp(lighting.panel, colorBlend);
           moon.material.color.lerp(lighting.moon, colorBlend);
+          halo.material.color.lerp(lighting.moon, colorBlend);
+          halo.position.x = moon.position.x;
+          halo.material.opacity = cinematic ? .23 + drift * .025 : .14;
+          groundLight.material.color.lerp(lighting.moon, colorBlend);
+          groundLight.material.opacity = cinematic ? .14 : .08;
+          mists.forEach((mist, i) => {
+            mist.visible = cinematic || i === 0;
+            mist.material.color.lerp(lighting.rim, colorBlend);
+            mist.position.x = Math.sin(t * .09 + i * 2.1) * (3 + i);
+          });
           blossomMaterial.color.lerp(lighting.blossom, colorBlend);
           rainMaterial.uniforms.uTime.value = t;
           leafSeeds.forEach((s, i) => {
@@ -1426,6 +1463,7 @@
           geometries.forEach((g) => g.dispose());
           materials.forEach((m) => m.dispose());
           moonTexture.dispose();
+          atmosphereTexture.dispose();
           renderer.dispose();
           canvas.remove();
         }

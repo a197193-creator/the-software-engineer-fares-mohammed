@@ -37,10 +37,13 @@ export default function CinematicTransition({ language, motion, origin, active =
         const inner = element.querySelector(".portal-visual");
         const glow = element.querySelector(".portal-halo");
         const letters = element.querySelectorAll(".orb-letter");
+        const rings = element.querySelectorAll(".portal-depth-ring");
         // Outer wrapper owns travel/zoom; inner wrapper owns only the activation pulse.
         timeline.to(inner, { scale: 1.035, duration: .12, ease: "power2.out" }, 0)
           .to(glow, { opacity: .55, duration: .2 }, 0)
           .to(inner, { scale: 1, duration: .2 }, .12)
+          .fromTo(rings, { scale: .88, opacity: 0 }, { scale: 1.18, opacity: .6, stagger: .08, duration: .3, ease: "sine.out" }, .16)
+          .to(rings, { scale: 1.65, opacity: 0, stagger: .05, duration: .4, ease: "sine.in" }, .48)
           .to(ui, { opacity: 0, duration: .3, ease: "power2.out" }, .1)
           .to(flight, { x: geometry.x, y: geometry.y, duration: .65, ease: "power3.inOut" }, .1)
           .to(flight, { scale: geometry.scale, duration: .85, ease: "power3.in" }, .16)
@@ -85,6 +88,7 @@ export default function CinematicTransition({ language, motion, origin, active =
       <div className="portal-flight" aria-hidden="true">
         <div className="portal-halo" />
         <div ref={visual} className="portal-visual" />
+        <div className="portal-optics"><i className="portal-depth-ring" /><i className="portal-depth-ring" /></div>
       </div>
       <div className="intro-message" role="status" aria-live="polite" aria-atomic="true">
         <div className="intro-seal" aria-hidden="true"><span>F</span></div>

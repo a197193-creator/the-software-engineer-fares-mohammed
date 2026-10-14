@@ -24,13 +24,14 @@ export default function SectionIntro({ section }) {
     element.dataset.depthMotion = String(enhanced);
     if (!enhanced) return;
 
-    const distance = config.level === "cinematic" ? 42 : 28;
+    const cinematic = config.level === "cinematic";
+    const distance = cinematic ? 56 : 28;
     const context = gsap.context(() => {
       // MotionCard owns entrance, float and pointer tilt. Only this fourth,
       // inner layer owns scroll depth, so no controllers share a transform.
       const timeline = gsap.timeline({ paused: true })
         .fromTo(scene.current,
-          { y: distance, scale: .955, rotationX: 5, opacity: .78 },
+          { y: distance, scale: cinematic ? .93 : .955, rotationX: cinematic ? 7 : 5, opacity: .78 },
           { y: 0, scale: 1, rotationX: 0, opacity: 1, duration: .6, ease: "sine.out" }, 0)
         .to(scene.current,
           { y: -distance * .55, scale: .985, rotationX: -2, opacity: .88, duration: .4, ease: "sine.in" }, .6);

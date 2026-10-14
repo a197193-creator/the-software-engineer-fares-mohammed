@@ -30,6 +30,7 @@ import { Magnetic } from "./components/Effects";
 import WelcomeExperience from "./components/WelcomeExperience";
 import PortfolioHero from "./components/PortfolioHero";
 import CinematicCursor from "./components/CinematicCursor";
+import LetterWaterfalls from "./components/LetterWaterfalls";
 import {
   StoryHeading,
   StoryStatement,
@@ -738,6 +739,7 @@ export default function App() {
         </div>
       </div>
       <CinematicCursor enabled={mainMotion && !introBusy && !menuOpen && !selected} />
+      <LetterWaterfalls enabled={mainMotion} suspended={introBusy || menuOpen || !!selected} />
       {welcomeVisible && (
         <WelcomeExperience
           motion={mainMotion}

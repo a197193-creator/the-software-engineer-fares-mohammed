@@ -24,6 +24,7 @@ import "./portal-transition.css";
 import "./section-story.css";
 import "./scroll-showcase.css";
 import "./premium-system.css";
+import "./cinema-depth.css";
 
 createRoot(document.getElementById("root")).render(
   <LanguageProvider>
