@@ -35,7 +35,7 @@ html[dir="rtl"] .crimson-active .cinematic .hero-phase-one { background: linear-
 .energy-cursor { z-index: var(--layer-cursor); }
 .welcome-experience .language-choice h2 { font-size: clamp(25px,2.6vw,38px); line-height: 1.3; }
 .message-transition .intro-greeting { font-size: clamp(36px,5vw,68px); line-height: 1.22; }
-.message-transition .intro-world { font-size: clamp(24px,3vw,38px); }
+.message-transition .intro-world { font-family: var(--font-latin); font-size: clamp(24px,3vw,38px); }
 html[lang="ar"] .cinematic, [lang="ar"].welcome-experience, .welcome-experience [lang="ar"], html[lang="ar"] .project-dialog { font-family: var(--font-arabic); }
 html[lang="ar"] .cinematic :is(h1,h2,h3,h4,p,.eyebrow,.button,.desktop-nav a), .welcome-experience [lang="ar"] :is(h2,p,span,button), .message-transition[lang="ar"] :is(h2,p), html[lang="ar"] .project-dialog :is(h2,h3) { font-family: var(--font-arabic); letter-spacing: 0; }
 html[lang="ar"] .cinematic :is(h1,h2,h3), .welcome-experience [lang="ar"] h2 { line-height: 1.55; }
