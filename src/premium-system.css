@@ -1,5 +1,7 @@
 /* ## PREMIUM SYSTEM — approved navy palette, shared rhythm and typography. */
 :root {
+  --language-accent: #40dfff;
+  --language-soft: #a8e5f0;
   --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
   --space-6: 24px; --space-8: 32px; --space-12: 48px;
   --radius-control: 12px; --radius-card: 16px; --radius-media: 12px;
@@ -11,10 +13,11 @@
   --layer-header: 40; --layer-welcome: 3000; --layer-cursor: 4500;
   --section-space: clamp(64px, 7vw, 112px);
 }
+html[lang="ar"] { --language-accent: #f5c66a; --language-soft: #f0d7ac; }
 :root, .crimson-active .site, .cinematic {
   --bg: #080b10; --surface: #101722; --raised: #172231;
   --text: #f4f5f7; --muted: #bec9d5; --subtle: #a4b2c2;
-  --line: #a8c7dd29; --accent: #f5c66a; --secondary: #8fd7e5;
+  --line: #a8c7dd29; --accent: var(--language-accent); --secondary: var(--language-soft);
   --glass: #101722ed; --display: var(--font-latin);
   font-family: var(--font-latin);
 }
@@ -38,7 +41,8 @@ html[lang="ar"] .cinematic :is(h1,h2,h3,h4,p,.eyebrow,.button,.desktop-nav a), .
 html[lang="ar"] .cinematic :is(h1,h2,h3), .welcome-experience [lang="ar"] h2 { line-height: 1.55; }
 html[lang="ar"] .cinematic p { line-height: 1.9; }
 .choice-ar .language-cta svg { transform: scaleX(-1); }
-.cinematic :is(button,a):focus-visible, .welcome-experience :is(button,a):focus-visible { outline: 2px solid #40dfff; outline-offset: 4px; }
+.cinematic :is(button,a):focus-visible { outline: 2px solid var(--language-accent); outline-offset: 4px; }
+.welcome-experience :is(button,a):focus-visible { outline: 2px solid var(--sphere-color, var(--choice, var(--language-accent))); outline-offset: 4px; }
 /* ## MEDIA LOADING — reserve dimensions; no synthetic product interfaces. */
 .project-media { position: relative; isolation: isolate; overflow: hidden; }
 .media-device { position: relative; z-index: 1; box-shadow: var(--shadow-device); border-radius: var(--radius-media); }
@@ -61,3 +65,39 @@ html[lang="ar"] .cinematic p { line-height: 1.9; }
 #crimson-world .crimson-vignette { background: linear-gradient(90deg,#080b10d9,transparent 65%),linear-gradient(0deg,#080b1080,transparent 35%,#080b1020); }
 @media (max-width: 767px) { .cinematic .section { padding-block: 64px; } .welcome-experience .language-choice h2 { font-size: clamp(21px,6vw,30px); } }
 @media (prefers-reduced-motion: reduce) { .project-media img, .media-placeholder, #journey-guide .journey-character img { transition: none; } }
+
+/* ## LANGUAGE COLOR — one selected hue, with a dark navy base and neutral body copy. */
+.cinematic { --pointer-cyan: var(--language-accent); }
+.cinematic .header.on-hero { --accent: var(--language-accent); }
+.cinematic :is(.accent-text,.hero-index,.hero-secondary,.header-identity,.eyebrow,.timeline-date,.preview-focus-label),
+.crimson-active .cinematic .crimson-writing { color: var(--language-accent); }
+.cinematic .hero-message-item { color: var(--language-soft); }
+.crimson-active .cinematic .hero-secondary, .cinematic .hero .eyebrow { color: var(--language-accent); }
+.crimson-active .cinematic .crimson-writing[data-typing="true"]::after { background: var(--language-accent); }
+.cinematic .section-intro { --scene-accent: var(--language-accent); }
+.cinematic .hero-message { border-inline-start-color: color-mix(in srgb,var(--language-accent) 48%,transparent); }
+.cinematic .button.primary { background: var(--language-accent); border-color: var(--language-accent); color: #080b10; box-shadow: 0 3px 24px color-mix(in srgb,var(--language-accent) 8%,transparent); }
+.cinematic :is(.button.secondary,.hero-contact,.header-connect) { border-color: color-mix(in srgb,var(--language-accent) 42%,transparent); }
+.cinematic .button.secondary:hover { background: color-mix(in srgb,var(--language-accent) 6%,transparent); }
+.cinematic .hero-socials a:hover { color: var(--language-accent); }
+.cinematic .education-snapshot { --academic-cyan: var(--language-accent); }
+.cinematic .section-heading::after { background: linear-gradient(90deg,var(--language-accent),transparent); }
+html[lang="ar"] .cinematic .section-heading::after { background: linear-gradient(270deg,var(--language-accent),transparent); }
+.cinematic .project-workspace::before { background: linear-gradient(90deg,transparent,color-mix(in srgb,var(--language-accent) 44%,transparent),transparent); }
+.cinematic .project-workspace .workspace-architecture { background: radial-gradient(ellipse at 8% 4%,color-mix(in srgb,var(--language-accent) 5%,transparent),transparent 42%),linear-gradient(color-mix(in srgb,var(--language-accent) 2%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--language-accent) 2%,transparent) 1px,transparent 1px); background-size: auto,64px 64px,64px 64px; }
+.cinematic .project-workspace .project-info { background: linear-gradient(150deg,color-mix(in srgb,var(--language-accent) 2%,transparent),transparent 48%); }
+.cinematic .workspace-heading > span::before, .cinematic .preview-lights i { background: var(--language-accent); }
+.cinematic .project-preview .project-symbol { color: var(--language-accent); border-color: color-mix(in srgb,var(--language-accent) 25%,transparent); background: color-mix(in srgb,var(--language-accent) 4%,transparent); }
+.cinematic .preview-focus li > span { color: var(--language-accent); }
+.project-media { background: radial-gradient(ellipse at 50% 45%,color-mix(in srgb,var(--language-accent) 7%,transparent),transparent 70%),linear-gradient(135deg,#151421,#0c111b); }
+.gallery-thumbnails button[aria-pressed="true"] { border-color: color-mix(in srgb,var(--language-accent) 54%,transparent); background: color-mix(in srgb,var(--language-accent) 4%,transparent); }
+.cinematic .motion-card::after { background: radial-gradient(260px circle at var(--pointer-x,50%) var(--pointer-y,50%),color-mix(in srgb,var(--language-accent) 5%,transparent),transparent 72%); }
+.cinematic .project-visual::after { background: radial-gradient(220px circle at var(--pointer-x,50%) var(--pointer-y,50%),color-mix(in srgb,var(--language-accent) 7%,transparent),transparent 70%); }
+#journey-guide .journey-character img { filter: drop-shadow(0 10px 22px #0008) drop-shadow(0 0 3px color-mix(in srgb,var(--language-accent) 12%,transparent)); }
+#journey-guide .journey-character::after { background: radial-gradient(ellipse,#0007,color-mix(in srgb,var(--language-accent) 5%,transparent) 45%,transparent 70%); }
+#journey-guide .journey-bubble { border-color: color-mix(in srgb,var(--language-accent) 30%,transparent); }
+#journey-guide :is(.journey-next,.journey-position,.journey-launcher) { color: var(--language-accent); }
+#journey-guide .journey-bubble::before { background: var(--language-accent); }
+#crimson-world .crimson-fallback { background: radial-gradient(ellipse at 78% 32%,color-mix(in srgb,var(--language-accent) 14%,transparent),transparent 40%),linear-gradient(120deg,#080b10 20%,#101722 70%,#080b10); }
+#crimson-world .crimson-moon { background: radial-gradient(circle at 33% 25%,var(--language-soft),color-mix(in srgb,var(--language-accent) 55%,#101722) 35%,color-mix(in srgb,var(--language-accent) 24%,#101722) 67%,#101722); box-shadow: 0 0 100px color-mix(in srgb,var(--language-accent) 8%,transparent); }
+#crimson-world .crimson-arches { border-color: color-mix(in srgb,var(--language-accent) 18%,transparent); box-shadow: 0 0 0 30px color-mix(in srgb,var(--language-accent) 3%,transparent),0 0 0 90px color-mix(in srgb,var(--language-accent) 2%,transparent); }

@@ -9,11 +9,14 @@ const desktopQuery =
 function savedIntensity() {
   try {
     const saved = localStorage.getItem("fares-motion-intensity");
-    if (Object.hasOwn(motionPresets, saved)) return saved;
+    const version = localStorage.getItem("fares-motion-default-version");
+    // Upgrade the former automatically persisted Balanced default once.
+    // A deliberate Subtle preference survives; future choices are all retained.
+    if (Object.hasOwn(motionPresets, saved) && (version === "2" || saved === "subtle")) return saved;
   } catch {
     /* Settings also work without storage. */
   }
-  return "balanced";
+  return "cinematic";
 }
 
 export function MotionSettingsProvider({ children }) {
@@ -43,6 +46,7 @@ export function MotionSettingsProvider({ children }) {
   useEffect(() => {
     try {
       localStorage.setItem("fares-motion-intensity", intensity);
+      localStorage.setItem("fares-motion-default-version", "2");
     } catch {
       /* Optional. */
     }

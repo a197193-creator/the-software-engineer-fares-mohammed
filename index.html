@@ -1086,11 +1086,10 @@
         const rim = new T.DirectionalLight(0x8fcede, 3.2);
         rim.position.set(8, 9, 4);
         stage.add(rim);
-        // Existing light gently changes character as chapters unfold; no extra lights.
-        const chapterRim = {
-          home: new T.Color(0x8fcede), about: new T.Color(0xeab784),
-          skills: new T.Color(0x91c7dd), projects: new T.Color(0x7bb6ce),
-          experience: new T.Color(0xf4bb87), contact: new T.Color(0xd5b9a2),
+        // Existing materials share the chosen orb hue; never recreate the scene on language changes.
+        const languageLighting = {
+          en: { rim: new T.Color(0x8fcede), detail: new T.Color(0x548f9e), panel: new T.Color(0x304857), moon: new T.Color(0x82dcea), blossom: new T.Color(0x567a8c) },
+          ar: { rim: new T.Color(0xf5c66a), detail: new T.Color(0xb58c49), panel: new T.Color(0x4d412e), moon: new T.Color(0xf5c66a), blossom: new T.Color(0x9c855d) },
         };
         const garden = new T.Group();
         stage.add(garden);
@@ -1200,9 +1199,10 @@
           return (seed - 1) / 2147483646;
         };
         const gradient = ctx.createRadialGradient(170, 150, 10, 256, 256, 250);
-        gradient.addColorStop(0, "#a1c4ce");
-        gradient.addColorStop(0.45, "#497b96");
-        gradient.addColorStop(1, "#17344d");
+        // Neutral texture keeps lunar detail while the sprite material supplies the selected hue.
+        gradient.addColorStop(0, "#d7d7d7");
+        gradient.addColorStop(0.45, "#828282");
+        gradient.addColorStop(1, "#353535");
         ctx.fillStyle = gradient;
         ctx.beginPath();
         ctx.arc(256, 256, 248, 0, Math.PI * 2);
@@ -1212,7 +1212,7 @@
             my = random() * 512,
             r = random() * 25 + 3;
           if (Math.hypot(mx - 256, my - 256) < 222) {
-            ctx.fillStyle = `rgba(55,13,37,${random() * 0.12})`;
+            ctx.fillStyle = `rgba(20,20,20,${random() * 0.12})`;
             ctx.beginPath();
             ctx.ellipse(mx, my, r, r * 0.7, random(), 0, Math.PI * 2);
             ctx.fill();
@@ -1375,15 +1375,26 @@
                 : 1 / 30;
           if (animated && renderTime < cap) return;
           renderTime = 0;
-          const depth = innerWidth < 768 ? 3.5 : state.level === "cinematic" ? 7 : 6;
+          const cinematic = animated && state.level === "cinematic";
+          const depth = innerWidth < 768 ? 3.5 : cinematic ? 8.5 : 6;
+          // Slow camera drift makes the live setting perceptible without moving content.
+          const drift = cinematic ? Math.sin(t * Math.PI / 6) : 0;
           cameraZ += (21 - p * depth - cameraZ) * Math.min(1, dt * 5);
           camera.position.set(
-            Math.sin(p * Math.PI * 1.5) * 1.7 + px * 0.22,
-            4.2 + p * 0.7 - py * 0.12,
+            Math.sin(p * Math.PI * 1.5) * 1.7 + px * (cinematic ? 0.38 : 0.22) + drift * 0.2,
+            4.2 + p * 0.7 - py * 0.12 + drift * 0.06,
             cameraZ,
           );
           camera.lookAt(0, 2.5, -7);
-          rim.color.lerp(chapterRim[state.section] || chapterRim.home, Math.min(1, dt * 1.5));
+          const lighting = languageLighting[state.lang] || languageLighting.en;
+          const colorBlend = animated ? Math.min(1, dt * 3) : 1;
+          rim.color.lerp(lighting.rim, colorBlend);
+          rim.intensity = cinematic ? 4.2 + drift * 0.35 : 3.2;
+          moon.material.opacity = cinematic ? 0.88 + drift * 0.06 : 0.85;
+          brass.color.lerp(lighting.detail, colorBlend);
+          panel.color.lerp(lighting.panel, colorBlend);
+          moon.material.color.lerp(lighting.moon, colorBlend);
+          blossomMaterial.color.lerp(lighting.blossom, colorBlend);
           rainMaterial.uniforms.uTime.value = t;
           leafSeeds.forEach((s, i) => {
             dummy.position.set(

@@ -33,15 +33,15 @@ export const motionPresets = {
     glow: 0.7,
   },
   cinematic: {
-    hoverScale: 1.025,
-    cardScale: 1.014,
-    float: 3,
-    revealDistance: 24,
+    hoverScale: 1.035,
+    cardScale: 1.02,
+    float: 5,
+    revealDistance: 32,
     wordRise: 105,
     stagger: 0.045,
     avatarFactor: 1,
     particles: 6,
-    glow: 1,
+    glow: 1.15,
   },
 };
 
