@@ -1,0 +1,63 @@
+/* ## PREMIUM SYSTEM — approved navy palette, shared rhythm and typography. */
+:root {
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-6: 24px; --space-8: 32px; --space-12: 48px;
+  --radius-control: 12px; --radius-card: 16px; --radius-media: 12px;
+  --shadow-card: 0 16px 40px #0004; --shadow-device: 0 16px 32px #0005;
+  --font-latin: "DM Sans", sans-serif;
+  --font-arabic: "Noto Sans Arabic", sans-serif;
+  --duration-fast: .18s; --duration-ui: .26s; --duration-pose: .48s;
+  --ease-ui: cubic-bezier(.2,.7,.3,1);
+  --layer-header: 40; --layer-welcome: 3000; --layer-cursor: 4500;
+  --section-space: clamp(64px, 7vw, 112px);
+}
+:root, .crimson-active .site, .cinematic {
+  --bg: #080b10; --surface: #101722; --raised: #172231;
+  --text: #f4f5f7; --muted: #bec9d5; --subtle: #a4b2c2;
+  --line: #a8c7dd29; --accent: #f5c66a; --secondary: #8fd7e5;
+  --glass: #101722ed; --display: var(--font-latin);
+  font-family: var(--font-latin);
+}
+.cinematic :is(h1,h2,h3,h4), .welcome-experience :is(h1,h2,h3), .project-dialog :is(h2,h3) { font-family: var(--font-latin); }
+.cinematic h2 { font-size: clamp(32px, 3.6vw, 54px); line-height: 1.18; letter-spacing: -.035em; }
+.crimson-active .cinematic .hero h1 { font-size: clamp(44px, 4.7vw, 70px); line-height: 1.12; letter-spacing: -.04em; }
+.cinematic .section { padding-block: var(--section-space); }
+.cinematic :is(.button,.icon-button,.header-connect), .language-cta { border-radius: var(--radius-control); }
+.cinematic :is(.skill-card,.timeline-entry,.project-card), .language-choice { border-radius: var(--radius-card); }
+.crimson-active .cinematic :is(.project-workspace,.skill-card,.timeline-entry), .language-choice { background: #101722ed; }
+.crimson-active .cinematic .header { background: #080b10ed; border-bottom: 1px solid var(--line); z-index: var(--layer-header); }
+.crimson-active .cinematic .hero-phase-one { background: linear-gradient(90deg,#080b10e6,#080b1099 42%,transparent 75%); }
+html[dir="rtl"] .crimson-active .cinematic .hero-phase-one { background: linear-gradient(270deg,#080b10e6,#080b1099 42%,transparent 75%); }
+.welcome-experience { z-index: var(--layer-welcome); transition: opacity .35s var(--ease-ui), visibility .35s; }
+.energy-cursor { z-index: var(--layer-cursor); }
+.welcome-experience .language-choice h2 { font-size: clamp(25px,2.6vw,38px); line-height: 1.3; }
+.message-transition .intro-greeting { font-size: clamp(36px,5vw,68px); line-height: 1.22; }
+.message-transition .intro-world { font-size: clamp(24px,3vw,38px); }
+html[lang="ar"] .cinematic, [lang="ar"].welcome-experience, .welcome-experience [lang="ar"], html[lang="ar"] .project-dialog { font-family: var(--font-arabic); }
+html[lang="ar"] .cinematic :is(h1,h2,h3,h4,p,.eyebrow,.button,.desktop-nav a), .welcome-experience [lang="ar"] :is(h2,p,span,button), .message-transition[lang="ar"] :is(h2,p), html[lang="ar"] .project-dialog :is(h2,h3) { font-family: var(--font-arabic); letter-spacing: 0; }
+html[lang="ar"] .cinematic :is(h1,h2,h3), .welcome-experience [lang="ar"] h2 { line-height: 1.55; }
+html[lang="ar"] .cinematic p { line-height: 1.9; }
+.choice-ar .language-cta svg { transform: scaleX(-1); }
+.cinematic :is(button,a):focus-visible, .welcome-experience :is(button,a):focus-visible { outline: 2px solid #40dfff; outline-offset: 4px; }
+/* ## MEDIA LOADING — reserve dimensions; no synthetic product interfaces. */
+.project-media { position: relative; isolation: isolate; overflow: hidden; }
+.media-device { position: relative; z-index: 1; box-shadow: var(--shadow-device); border-radius: var(--radius-media); }
+.media-placeholder { position: absolute; inset: 8px; background-size: contain; background-position: center; background-repeat: no-repeat; filter: blur(6px); opacity: .6; pointer-events: none; transition: opacity var(--duration-ui); }
+.project-media[data-loaded="true"] .media-placeholder { opacity: 0; }
+.project-media img { opacity: 0; transition: opacity var(--duration-ui) var(--ease-ui); }
+.project-media[data-loaded="true"] img { opacity: 1; }
+.media-phone .media-device { border-radius: 20px; }
+.project-panel:not([data-featured="true"]) .project-media { aspect-ratio: 16 / 10; height: auto; --media-stage-height: 300px; }
+.gallery-primary .project-media { border-radius: var(--radius-card); }
+/* ## CUTOUT LIGHTING — preserve sharp alpha and the existing pose controller. */
+#journey-guide .journey-character img { transition: opacity var(--duration-pose) var(--ease-ui); filter: drop-shadow(0 10px 22px #0008) drop-shadow(0 0 3px #40dfff20); }
+#journey-guide .journey-character:after { background: radial-gradient(ellipse,#0007,#40dfff0c 45%,transparent 70%); }
+#journey-guide .journey-bubble { background: linear-gradient(140deg,#172231f5,#101722f7); border-color: #8fd7e54d; }
+#journey-guide .journey-launcher { background: var(--surface); }
+#crimson-world { background: #080b10; }
+#crimson-world .crimson-fallback { background: radial-gradient(ellipse at 78% 32%,#21476066,transparent 40%),linear-gradient(120deg,#080b10 20%,#102232 70%,#080b10); }
+#crimson-world .crimson-moon { background: radial-gradient(circle at 33% 25%,#a1c4ce,#497b96 35%,#23485f 67%,#101d2a); box-shadow: 0 0 100px #40dfff15; }
+#crimson-world .crimson-arches { border-color: #8fd7e530; box-shadow: 0 0 0 30px #40dfff08,0 0 0 90px #40dfff05; }
+#crimson-world .crimson-vignette { background: linear-gradient(90deg,#080b10d9,transparent 65%),linear-gradient(0deg,#080b1080,transparent 35%,#080b1020); }
+@media (max-width: 767px) { .cinematic .section { padding-block: 64px; } .welcome-experience .language-choice h2 { font-size: clamp(21px,6vw,30px); } }
+@media (prefers-reduced-motion: reduce) { .project-media img, .media-placeholder, #journey-guide .journey-character img { transition: none; } }

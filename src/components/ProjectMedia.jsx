@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
+import { projectPlaceholders } from "../projectPlaceholders";
 import { projectMedia } from "../projectMedia";
 import { useLanguage } from "../LanguageContext";
 
@@ -6,12 +7,19 @@ export default function ProjectMedia({ src, alt, expanded = false }) {
   const { language } = useLanguage();
   const { width, height, kind } = projectMedia(src);
   const [failed, setFailed] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const image = useRef(null);
+  useLayoutEffect(() => {
+    setFailed(false);
+    setLoaded(Boolean(image.current?.complete && image.current.naturalWidth));
+  }, [src]);
   return (
-    <div className={`project-media media-${kind}`} data-expanded={expanded} style={{"--media-aspect": width / height}}>
+    <div className={`project-media media-${kind}`} data-expanded={expanded} data-loaded={loaded || failed} style={{"--media-aspect": width / height}}>
       <div className="media-device" style={{ "--media-ratio": `${width} / ${height}` }}>
+        <div className="media-placeholder" aria-hidden="true" style={{backgroundImage: `url("${projectPlaceholders[src] || ""}")`}} />
         {kind === "browser" && <div className="media-browser-bar" aria-hidden="true"><i/><i/><i/><span/></div>}
         {failed ? <p className="media-unavailable">{language === "ar" ? "الصورة غير متاحة حاليًا" : "Screenshot currently unavailable"}</p> :
-          <img src={src} alt={alt} width={width} height={height} loading="lazy" decoding="async" onError={() => setFailed(true)} />}
+          <img ref={image} src={src} alt={alt} width={width} height={height} loading="lazy" decoding="async" onLoad={() => setLoaded(true)} onError={() => setFailed(true)} />}
       </div>
     </div>
   );

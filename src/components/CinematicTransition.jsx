@@ -38,18 +38,18 @@ export default function CinematicTransition({ language, motion, origin, active =
         const glow = element.querySelector(".portal-halo");
         const letters = element.querySelectorAll(".orb-letter");
         // Outer wrapper owns travel/zoom; inner wrapper owns only the activation pulse.
-        timeline.to(inner, { scale: 1.035, duration: .18, ease: "power2.out" }, 0)
-          .to(glow, { opacity: .55, duration: .3 }, 0)
-          .to(inner, { scale: 1, duration: .32 }, .18)
-          .to(ui, { opacity: 0, duration: .5, ease: "power2.out" }, .16)
-          .to(flight, { x: geometry.x, y: geometry.y, duration: .9, ease: "power3.inOut" }, .18)
-          .to(flight, { scale: geometry.scale, duration: 1.25, ease: "power3.in" }, .35)
-          .to(letters, { opacity: 0, duration: .45 }, .7)
-          .to(atmosphere, { opacity: .65, duration: .7, ease: "sine.inOut" }, .72)
-          .to(flight, { opacity: 0, duration: .6, ease: "sine.inOut" }, 1.15)
-          .to(contents, { opacity: 1, y: 0, stagger: .075, duration: .65, ease: "power2.out" }, 1.2)
-          .to(atmosphere, { opacity: .22, duration: .9, ease: "sine.inOut" }, 1.6)
-          .to({}, { duration: 1.1 });
+        timeline.to(inner, { scale: 1.035, duration: .12, ease: "power2.out" }, 0)
+          .to(glow, { opacity: .55, duration: .2 }, 0)
+          .to(inner, { scale: 1, duration: .2 }, .12)
+          .to(ui, { opacity: 0, duration: .3, ease: "power2.out" }, .1)
+          .to(flight, { x: geometry.x, y: geometry.y, duration: .65, ease: "power3.inOut" }, .1)
+          .to(flight, { scale: geometry.scale, duration: .85, ease: "power3.in" }, .16)
+          .to(letters, { opacity: 0, duration: .25 }, .45)
+          .to(atmosphere, { opacity: .65, duration: .45, ease: "sine.inOut" }, .42)
+          .to(flight, { opacity: 0, duration: .4, ease: "sine.inOut" }, .7)
+          .to(contents, { opacity: 1, y: 0, stagger: .035, duration: .4, ease: "power2.out" }, .7)
+          .to(atmosphere, { opacity: .22, duration: .4, ease: "sine.inOut" }, 1.05);
+
       } else {
         // No camera movement for reduced motion or an unavailable source visual.
         timeline.to(ui, { opacity: 0, duration: .16, ease: "none" }, 0)

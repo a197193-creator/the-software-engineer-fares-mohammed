@@ -1,3 +1,4 @@
+import HeaderShell from "./HeaderShell";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowRight, SkipForward } from "lucide-react";
 import { useLanguage } from "../LanguageContext";
@@ -117,7 +118,7 @@ function LanguageChoice({ language, disabled, onChoose, onHighlight, motion }) {
     </section>
   );
 }
-export default function WelcomeExperience({ motion, onReveal, onComplete, onAccent }) {
+export default function WelcomeExperience({ motion, onReveal, onComplete, onAccent, onBusy }) {
   const { language, setLanguage, welcome } = useLanguage();
   const [phase, setPhase] = useState("choose");
   const [highlight, setHighlight] = useState(null);
@@ -140,9 +141,13 @@ export default function WelcomeExperience({ motion, onReveal, onComplete, onAcce
     callbacks.current.onReveal();
     exitTimer.current = setTimeout(
       () => callbacks.current.onComplete(),
-      motion ? 680 : 0,
+      motion ? 350 : 0,
     );
   }, [motion, setLanguage]);
+  useEffect(() => {
+    onBusy(phase !== "choose");
+    return () => onBusy(false);
+  }, [phase, onBusy]);
   useEffect(() => {
     const updateVisibility = () => setPageVisible(!document.hidden);
     document.addEventListener("visibilitychange", updateVisibility);
@@ -212,7 +217,7 @@ export default function WelcomeExperience({ motion, onReveal, onComplete, onAcce
       <h1 id="welcome-title" className="sr-only">
         Fares Mohammed — Choose your language / اختر لغتك
       </h1>
-      <header className="welcome-header">
+      <HeaderShell className="welcome-header">
         <div className="welcome-brand">
           <span>F</span>
           <div>
@@ -226,7 +231,7 @@ export default function WelcomeExperience({ motion, onReveal, onComplete, onAcce
           </span>
           <SkipForward size={15} />
         </button>
-      </header>
+      </HeaderShell>
       <div className="welcome-scene">
         <div className="welcome-depth">
           {/* The lights and orb controls share the cutout's normalized coordinates. */}

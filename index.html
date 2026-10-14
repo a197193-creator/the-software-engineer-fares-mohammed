@@ -1068,13 +1068,13 @@
           antialias: innerWidth >= 1100,
           powerPreference: "low-power",
         });
-        renderer.setClearColor(0x0b080e);
+        renderer.setClearColor(0x080b10);
         renderer.outputColorSpace = T.SRGBColorSpace;
         const canvas = renderer.domElement;
         canvas.setAttribute("aria-hidden", "true");
         world.insertBefore(canvas, world.querySelector(".crimson-vignette"));
         const stage = new T.Scene();
-        stage.fog = new T.FogExp2(0x100a14, 0.025);
+        stage.fog = new T.FogExp2(0x101722, 0.025);
         const camera = new T.PerspectiveCamera(
           43,
           innerWidth / innerHeight,
@@ -1082,31 +1082,31 @@
           90,
         );
         camera.position.set(0, 4.2, 21);
-        stage.add(new T.HemisphereLight(0xaa6881, 0x131422, 2));
-        const rim = new T.DirectionalLight(0xffa191, 3.2);
+        stage.add(new T.HemisphereLight(0x7da9c4, 0x131422, 2));
+        const rim = new T.DirectionalLight(0x8fcede, 3.2);
         rim.position.set(8, 9, 4);
         stage.add(rim);
         // Existing light gently changes character as chapters unfold; no extra lights.
         const chapterRim = {
-          home: new T.Color(0xffa191), about: new T.Color(0xeab784),
+          home: new T.Color(0x8fcede), about: new T.Color(0xeab784),
           skills: new T.Color(0x91c7dd), projects: new T.Color(0x7bb6ce),
           experience: new T.Color(0xf4bb87), contact: new T.Color(0xd5b9a2),
         };
         const garden = new T.Group();
         stage.add(garden);
         const dark = new T.MeshStandardMaterial({
-          color: 0x1a101a,
+          color: 0x101722,
           roughness: 0.75,
           metalness: 0.3,
         });
         const rose = new T.MeshStandardMaterial({
-          color: 0x542236,
+          color: 0x203947,
           roughness: 0.6,
           metalness: 0.4,
         });
         const brass = new T.MeshBasicMaterial({ color: 0xb57362 });
         const panel = new T.MeshBasicMaterial({
-          color: 0x693a47,
+          color: 0x304857,
           transparent: true,
           opacity: 0.23,
           side: T.DoubleSide,
@@ -1121,7 +1121,7 @@
         const floor = new T.Mesh(
           new T.PlaneGeometry(90, 90),
           new T.MeshStandardMaterial({
-            color: 0x100d15,
+            color: 0x0d1420,
             roughness: 0.46,
             metalness: 0.48,
           }),
@@ -1129,7 +1129,7 @@
         floor.rotation.x = -Math.PI / 2;
         floor.position.y = -1.8;
         garden.add(floor);
-        const grid = new T.GridHelper(70, 48, 0x5a2838, 0x291723);
+        const grid = new T.GridHelper(70, 48, 0x294756, 0x142634);
         grid.position.y = -1.79;
         garden.add(grid);
         // ## DISTANT LANDSCAPE — low-poly ridges behind the digital garden.
@@ -1144,7 +1144,7 @@
           ridge.lineTo(32, -1.8);
           ridge.closePath();
           const mountain = new T.Mesh(new T.ShapeGeometry(ridge), new T.MeshBasicMaterial({
-            color: layer ? 0x291426 : 0x1b1120,
+            color: layer ? 0x152b3a : 0x101d2a,
             side: T.DoubleSide,
           }));
           mountain.position.z = -29 - layer * 6;
@@ -1200,9 +1200,9 @@
           return (seed - 1) / 2147483646;
         };
         const gradient = ctx.createRadialGradient(170, 150, 10, 256, 256, 250);
-        gradient.addColorStop(0, "#e59788");
-        gradient.addColorStop(0.45, "#bc4b5b");
-        gradient.addColorStop(1, "#5a152d");
+        gradient.addColorStop(0, "#a1c4ce");
+        gradient.addColorStop(0.45, "#497b96");
+        gradient.addColorStop(1, "#17344d");
         ctx.fillStyle = gradient;
         ctx.beginPath();
         ctx.arc(256, 256, 248, 0, Math.PI * 2);
@@ -1239,7 +1239,7 @@
         petalShape.bezierCurveTo(0.12, 0.2, 0.18, 0.01, 0, -0.1);
         const petalGeometry = new T.ShapeGeometry(petalShape, 3);
         const blossomMaterial = new T.MeshBasicMaterial({
-          color: 0xa85868,
+          color: 0x567a8c,
           side: T.DoubleSide,
         });
         const blossoms = new T.InstancedMesh(
@@ -1323,7 +1323,7 @@
         const leaves = new T.InstancedMesh(
           petalGeometry,
           new T.MeshBasicMaterial({
-            color: 0xbb3e56,
+            color: 0x426a80,
             side: T.DoubleSide,
             transparent: true,
             opacity: 0.65,

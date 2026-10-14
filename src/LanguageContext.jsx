@@ -2,7 +2,7 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
+  useLayoutEffect,
   useState,
 } from "react";
 import { arabic, heroCopy, welcomeCopy } from "./locales";
@@ -27,7 +27,7 @@ export function LanguageProvider({ children }) {
       /* Works when storage is unavailable. */
     }
   }, []);
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.documentElement.lang = language;
     document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
   }, [language]);

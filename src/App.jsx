@@ -1,3 +1,4 @@
+import HeaderShell from "./components/HeaderShell";
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowUpRight,
@@ -107,6 +108,7 @@ function Heading({ number, label, children }) {
 export default function App() {
   const { language, setLanguage, tr } = useLanguage();
   const [welcomeVisible, setWelcomeVisible] = useState(true);
+  const [introBusy, setIntroBusy] = useState(false);
   const [portfolioReady, setPortfolioReady] = useState(false);
   const [cursorAccent, setCursorAccent] = useState(null);
   const [active, setActive] = useState("home");
@@ -262,7 +264,7 @@ export default function App() {
             {tr("Skip to content")}
           </a>
           <div className="scroll-progress" aria-hidden="true" />
-          {!welcomeVisible && <header
+          {!welcomeVisible && <HeaderShell
             className={`header ${active === "home" ? "on-hero" : ""} ${navHidden && !menuOpen ? "nav-hidden" : ""}`}
           >
             <div className="header-inner page-width">
@@ -340,7 +342,7 @@ export default function App() {
               </button>
             </div>
             </div>
-          </header>}
+          </HeaderShell>}
           {menuOpen && (
             <nav
               ref={menuRef}
@@ -735,10 +737,11 @@ export default function App() {
           )}
         </div>
       </div>
-      <CinematicCursor enabled={mainMotion && !menuOpen && !selected} />
+      <CinematicCursor enabled={mainMotion && !introBusy && !menuOpen && !selected} />
       {welcomeVisible && (
         <WelcomeExperience
           motion={mainMotion}
+          onBusy={setIntroBusy}
           onAccent={setCursorAccent}
           onReveal={() => {
             setPortfolioReady(true);
